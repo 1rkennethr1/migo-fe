@@ -2,9 +2,10 @@ import { Link } from "react-scroll";
 import { HiMenu } from "react-icons/hi";
 import { CgClose } from "react-icons/cg";
 import { useState } from "react";
+import { navlinks } from "../utils/util";
 const Nav = () => {
 	const [navOpened, setNavOpened] = useState(false);
-	const links = ["Home", "Services", "About", "Team", "Contact Us"];
+
 	return (
 		<nav className=" bg-white flex items-center justify-between px-[3rem] md:px-[5rem] h-[12.5vh] shadow-[0px_0px_10px_rgba(0,0,0,.1)]">
 			<img
@@ -24,16 +25,16 @@ const Nav = () => {
 					navOpened ? "bottom-[0]" : "bottom-full"
 				}`}
 			>
-				{links.map((e) => {
+				{navlinks.map((e) => {
 					return (
 						<Link
 							className={`cursor-pointer mb-7 md:mb-0 ${
-								e === "Contact Us"
+								e.name === "Contact Us"
 									? "text-white bg-[#EC2224] hover:opacity-80 px-5 py-2 rounded-lg"
 									: "hover:text-[#EC2224]"
 							} `}
 						>
-							{e}
+							{e.name}
 						</Link>
 					);
 				})}
