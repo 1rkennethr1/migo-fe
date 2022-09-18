@@ -7,6 +7,7 @@ import img5 from "../assets/5.png";
 import img6 from "../assets/6.png";
 import img7 from "../assets/7.png";
 import { motion } from "framer-motion";
+import { CgArrowRight } from "react-icons/cg";
 const Hero = () => {
 	const scale = {
 		initial: {
@@ -22,20 +23,43 @@ const Hero = () => {
 			},
 		},
 	};
+	const stagger = {
+		initial: { y: -100, opacity: 0 },
+		animate: {
+			y: 0,
+			opacity: 1,
+			transition: {
+				duration: 1,
+				delayChildren: 0.3,
+				staggerChildren: 0.2,
+				type: "spring",
+				damping: 30,
+				stiffness: 120,
+			},
+		},
+	};
 	return (
 		<Layout>
-			<motion.h1
-				initial={{ y: -100, opacity: 0 }}
-				animate={{ y: 0, opacity: 1 }}
-				transition={{ duration: 1, delay: 0.4 }}
-				className="text-6xl 2xl:text-7xl mb-10 text-center"
-			>
-				Discover the{" "}
-				<span className="font-semibold text-transparent  bg-clip-text bg-gradient-to-r from-[#df5355] to-pink-600">
-					hidden potential
-				</span>{" "}
-				of your workplace.
-			</motion.h1>
+			<motion.div variants={stagger} initial="initial" animate="animate">
+				<motion.h1 variants={stagger} className="text-6xl 2xl:text-7xl mb-5 text-center">
+					Discover the{" "}
+					<span className="font-semibold text-transparent  bg-clip-text bg-gradient-to-r from-[#df5355] to-pink-600">
+						hidden potential
+					</span>{" "}
+					of your workplace.
+				</motion.h1>
+				<motion.h2 variants={stagger} className="text-2xl 2xl:text-3xl text-center ">
+					Assess your employees like never before!
+				</motion.h2>
+				<motion.div variants={stagger} className="w-full flex justify-center mt-5">
+					<motion.button className="transition dark:text-black dark:bg-white dark:shadow-none duration-300 shadow-[0px_8px_20px_#00000019] hover:shadow-[0px_8px_20px_#00000020]  font-semibold rounded-lg px-[6.9rem] py-[1rem] mt-5 flex items-center gap-3">
+						Get Started
+						<div className="translate-y-[1%] text-3xl">
+							<CgArrowRight />
+						</div>
+					</motion.button>
+				</motion.div>
+			</motion.div>
 			<motion.div className="flex items-end justify-center gap-5 mb-10">
 				<motion.div
 					variants={scale}
@@ -85,9 +109,6 @@ const Hero = () => {
 					</div>
 				</motion.div>
 			</motion.div>
-			<button className="bg-[#ec2224] transition duration-300 hover:bg-[#ff5a65] text-white font-semibold rounded-lg px-[6.9rem] py-[.5rem] mt-10">
-				Get Started
-			</button>
 		</Layout>
 	);
 };
