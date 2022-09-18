@@ -6,3 +6,13 @@ An AI-driven system for automated process of rating and determining benefits for
 ```
   git clone https://https://github.com/whitewaterjunkie/migo.git
 ```
+```
+ cd migo
+```
+```
+ npm install
+```
+
+```
+ npm run dev
+```
