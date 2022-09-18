@@ -2,7 +2,7 @@ import Layout from "./Layout";
 import img1 from "../assets/1.webp";
 import img2 from "../assets/2.png";
 import img3 from "../assets/3.png";
-import img4 from "../assets/4.png";
+import img4 from "../assets/4.webp";
 import img5 from "../assets/5.png";
 import img6 from "../assets/6.webp";
 import img7 from "../assets/7.webp";
@@ -16,9 +16,9 @@ const Hero = () => {
 		animate: {
 			scale: 1,
 			transition: {
-				staggerChildren: 0.6,
+				staggerChildren: 0.4,
 
-				duration: 0.5,
+				duration: 0.2,
 				type: "spring",
 				damping: 20,
 				stiffness: 100,
@@ -83,9 +83,9 @@ const Hero = () => {
 
 				<div className="">
 					<motion.img
-						initial={{ scale: 0 }}
-						animate={{ scale: 1 }}
-						transition={{ delay: 1, duration: 0.69 }}
+						initial={{ scale: 0.8, opacity: 0 }}
+						animate={{ scale: 1, opacity: 1 }}
+						transition={{ delay: 1, duration: 0.5 }}
 						src={img4}
 						className="w-[424.78px]"
 						alt=""
