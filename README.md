@@ -3,16 +3,19 @@ An AI-driven system for automated process of rating and determining benefits for
 
 # Installation
 
+1. Clone the Repo
 ```
-  git clone https://https://github.com/whitewaterjunkie/migo.git
+ git clone https://https://github.com/whitewaterjunkie/migo.git
 ```
+2. Navigate to the Project Directory
 ```
  cd migo
 ```
+3. Install dependencies
 ```
  npm install
 ```
-
+4. Development Mode
 ```
  npm run dev
 ```
