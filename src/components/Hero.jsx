@@ -16,7 +16,8 @@ const Hero = () => {
 		animate: {
 			scale: 1,
 			transition: {
-				staggerChildren: 0.1,
+				staggerChildren: 0.6,
+
 				duration: 0.5,
 				type: "spring",
 				damping: 20,
@@ -84,7 +85,7 @@ const Hero = () => {
 					<motion.img
 						initial={{ scale: 0 }}
 						animate={{ scale: 1 }}
-						transition={{ delay: 0.3, type: "spring", damping: 20, stiffness: 100 }}
+						transition={{ delay: 1, duration: 0.69 }}
 						src={img4}
 						className="w-[424.78px]"
 						alt=""
