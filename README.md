@@ -19,3 +19,4 @@ An AI-driven system for automated process of rating and determining benefits for
   ```
     npm run dev
   ```
+**5. Visit https://localhost:5173**
