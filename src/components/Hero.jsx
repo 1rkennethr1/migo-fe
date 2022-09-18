@@ -30,7 +30,7 @@ const Hero = () => {
 			opacity: 1,
 			transition: {
 				duration: 1,
-				delayChildren: 0.3,
+				delayChildren: 0.6,
 				staggerChildren: 0.2,
 				type: "spring",
 				damping: 30,
