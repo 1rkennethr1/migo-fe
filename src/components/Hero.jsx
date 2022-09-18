@@ -1,11 +1,11 @@
 import Layout from "./Layout";
-import img1 from "../assets/1.png";
+import img1 from "../assets/1.webp";
 import img2 from "../assets/2.png";
 import img3 from "../assets/3.png";
 import img4 from "../assets/4.png";
 import img5 from "../assets/5.png";
-import img6 from "../assets/6.png";
-import img7 from "../assets/7.png";
+import img6 from "../assets/6.webp";
+import img7 from "../assets/7.webp";
 import { motion } from "framer-motion";
 import { CgArrowRight } from "react-icons/cg";
 const Hero = () => {
@@ -16,7 +16,8 @@ const Hero = () => {
 		animate: {
 			scale: 1,
 			transition: {
-				staggerChildren: 0.2,
+				staggerChildren: 0.1,
+				duration: 0.5,
 				type: "spring",
 				damping: 20,
 				stiffness: 100,
@@ -30,8 +31,7 @@ const Hero = () => {
 			opacity: 1,
 			transition: {
 				duration: 1,
-				delayChildren: 0.6,
-				staggerChildren: 0.2,
+
 				type: "spring",
 				damping: 30,
 				stiffness: 120,
