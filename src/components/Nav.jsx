@@ -2,13 +2,13 @@ import { Link } from "react-scroll";
 import { HiMenu } from "react-icons/hi";
 import { CgClose } from "react-icons/cg";
 import { useState } from "react";
-import { navlinks } from "../utils/links";
 import DarkModeButton from "./DarkModeButton";
+import { navlinks } from "../../utils/links";
 const Nav = () => {
 	const [navOpened, setNavOpened] = useState(false);
 
 	return (
-		<nav className="dark:bg-[#1a1a1a] transition-colors duration-300 fixed right-0 left-0 top-0 bg-white flex items-center justify-between px-[3rem] md:px-[5rem] h-[12.5vh] shadow-[0px_0px_10px_rgba(0,0,0,.1)]">
+		<nav className="dark:bg-[#202020] dark:shadow-none transition-colors duration-500 fixed right-0 left-0 top-0 bg-white flex items-center justify-between px-[3rem] md:px-[5rem] z-50 h-[12.5vh] shadow-[0px_0px_10px_rgba(0,0,0,.1)]">
 			<img
 				src="../migo.svg"
 				alt=""
@@ -22,7 +22,7 @@ const Nav = () => {
 				{navOpened ? <CgClose /> : <HiMenu />}
 			</div>
 			<div
-				className={`flex fixed top-[90px]  transition-[bottom]  bg-white md:bg-transparent dark:bg-[#1a1a1a] md:dark:bg-transparent left-0 right-0 overflow-hidden md:static flex-col md:flex-row gap-8 items-center ${
+				className={`flex fixed top-[100px]  transition-[bottom] duration-700  bg-white md:bg-transparent dark:bg-[#1a1a1a] md:dark:bg-transparent left-0 right-0 overflow-hidden md:static flex-col md:flex-row gap-8 items-center ${
 					navOpened ? "bottom-[0]" : "bottom-full"
 				}`}
 			>

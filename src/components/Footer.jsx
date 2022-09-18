@@ -1,5 +1,5 @@
 import { FaFacebookF, FaYoutube, FaTwitter, FaGithub } from "react-icons/fa";
-import { alliance } from "../utils/links";
+import { alliance } from "../../utils/links";
 
 const socials = [
 	{
