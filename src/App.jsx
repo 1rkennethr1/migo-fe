@@ -1,14 +1,9 @@
 import DarkModeButton from "./components/DarkModeButton";
-import Footer from "./components/Footer";
-import Hero from "./components/Hero";
-import Nav from "./components/Nav";
-import Info from "./components/Info";
-import About from "./components/About";
-import ContactUs from "./components/ContactUs";
 import { Route, Router, Routes, useLocation, Navigate } from "react-router-dom";
 import HomePage from "./routes/HomePage";
 import LoginPage from "./routes/LoginPage";
 import { AnimatePresence } from "framer-motion";
+
 function App() {
 	const loc = useLocation();
 	return (
