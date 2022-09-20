@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import Info from "../components/Info";
 import Nav from "../components/Nav";
+import Team from "../components/Team";
 import { motion } from "framer-motion";
 export default function HomePage() {
 	return (
@@ -18,6 +19,7 @@ export default function HomePage() {
 			<Hero />
 			<Info />
 			<About />
+			<Team />
 			<ContactUs />
 			<Footer />
 		</motion.div>
