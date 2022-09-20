@@ -27,9 +27,9 @@ const Info = () => {
 				scale: 1,
 				opacity: 1,
 				transition: {
-					duration: 0.4,
+					duration: 1,
 					type: "spring",
-					damping: 20,
+					damping: 100,
 					stiffness: 100,
 					delay: 0.5,
 				},
@@ -41,7 +41,7 @@ const Info = () => {
 					type: "spring",
 					damping: 100,
 					stiffness: 100,
-					delay: 1,
+					delay: 1.5,
 				},
 			});
 		}

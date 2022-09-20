@@ -64,27 +64,24 @@ const About = () => {
 	];
 	return (
 		<Layout>
-			<div className="flex flex-col items-center justify-center">
-				<motion.h1
-					animate={animate}
-					className="text-6xl text-center  border-black mb-10 flex-col flex items-center gap-4 "
-				>
-					<div className="">
+			<motion.div
+				animate={animate}
+				className="flex flex-col items-center justify-center"
+			>
+				<motion.h1 className="text-6xl text-center  border-black mb-10 flex-col flex items-center gap-4 ">
+					<motion.div animate={animate} className="">
 						Get to know <span className="font-semibold">Migo</span>{" "}
-					</div>
+					</motion.div>
 					<motion.div
 						animate={animate}
 						className="bg-[#E04344] h-2 rounded w-[70%]"
 					></motion.div>
 				</motion.h1>
-				<motion.h3
-					animate={animate}
-					className="text-2xl xl:text-3xl text-center px-[2rem] xl:px-[15rem] pb-20"
-				>
+				<motion.h3 className="text-2xl xl:text-3xl text-center px-[2rem] xl:px-[15rem] pb-20">
 					Migo, a system focusing on automated process of rating and determining
 					benefits ranking them based on criteria.
 				</motion.h3>
-				<motion.dib
+				<motion.div
 					ref={ref}
 					animate={animate}
 					className=" grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] 2xl:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] px-[5rem] gap-10 items-center justify-center text-center w-full pb-10"
@@ -92,8 +89,8 @@ const About = () => {
 					{abouts.map((e) => {
 						return <AboutItem e={e} />;
 					})}
-				</motion.dib>
-			</div>
+				</motion.div>
+			</motion.div>
 		</Layout>
 	);
 };
