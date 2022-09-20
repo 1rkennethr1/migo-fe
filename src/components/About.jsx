@@ -52,7 +52,7 @@ const About = () => {
 					Migo, a system focusing on automated process of rating and determining
 					benefits ranking them based on criteria.
 				</h3>
-				<div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] px-[5rem] gap-10 items-center justify-center text-center w-full pb-10">
+				<div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] 2xl:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] px-[5rem] gap-10 items-center justify-center text-center w-full pb-10">
 					{abouts.map((e) => {
 						return <AboutItem e={e} />;
 					})}
