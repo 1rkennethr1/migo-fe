@@ -5,6 +5,7 @@ import Nav from "./components/Nav";
 import Info from "./components/Info";
 import About from "./components/About";
 import ContactUs from "./components/ContactUs";
+import Team from './components/Team'
 function App() {
 	return (
 		<div className="App dark:bg-[#1a1a1a] transition-colors duration-500 ease-in-out dark:text-white overflow-x-hidden">
@@ -12,6 +13,7 @@ function App() {
 			<Hero />
 			<Info />
 			<About />
+			<Team/>
 			<ContactUs/>
 			<Footer />
 		</div>
