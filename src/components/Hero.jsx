@@ -9,6 +9,7 @@ import img7 from "../assets/7.webp";
 import { motion, useAnimation } from "framer-motion";
 import { CgArrowRight } from "react-icons/cg";
 import { Element } from "react-scroll";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
 	const scale = {
@@ -65,12 +66,14 @@ const Hero = () => {
 						variants={stagger}
 						className="w-full flex justify-center mt-5"
 					>
-						<motion.button className="transition dark:text-black dark:bg-white dark:shadow-none duration-300 shadow-[0px_8px_20px_#00000019] hover:shadow-[0px_8px_20px_#00000020]  font-semibold rounded-lg px-[6.9rem] py-[1rem] mt-5 flex items-center gap-3">
-							Get Started
-							<div className="translate-y-[1%] text-3xl">
-								<CgArrowRight />
-							</div>
-						</motion.button>
+						<Link to="/">
+							<motion.button className="transition-all dark:text-black dark:bg-white dark:shadow-none duration-300 shadow-[0px_8px_20px_#00000019] hover:translate-x-1 hover:shadow-[0px_8px_20px_#00000020]  font-semibold rounded-lg px-[6.9rem] py-[1rem] mt-5 flex items-center gap-3">
+								Get Started
+								<div className="translate-y-[1%] text-3xl">
+									<CgArrowRight />
+								</div>
+							</motion.button>
+						</Link>
 					</motion.div>
 				</motion.div>
 				<motion.div className="flex items-end justify-center gap-5 mb-10">
