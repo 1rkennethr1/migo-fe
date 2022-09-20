@@ -89,7 +89,7 @@ const About = () => {
 						className=" grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] 2xl:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] px-[5rem] gap-10 items-center justify-center text-center w-full pb-10"
 					>
 						{abouts.map((e) => {
-							return <AboutItem e={e} />;
+							return <AboutItem key={e.name} e={e} />;
 						})}
 					</motion.div>
 				</motion.div>
