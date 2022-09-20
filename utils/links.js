@@ -3,18 +3,23 @@ import { FaFacebook, FaGithub, FaTwitter, FaYoutube } from "react-icons/fa";
 export const navlinks = [
 	{
 		name: "Home",
+		to: "home",
 	},
 	{
 		name: "Services",
+		to: "info",
 	},
 	{
 		name: "About",
+		to: "about",
 	},
 	{
 		name: "Team",
+		to: "team",
 	},
 	{
 		name: "Contact Us",
+		to: "contact",
 	},
 ];
 

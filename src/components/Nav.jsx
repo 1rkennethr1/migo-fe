@@ -30,7 +30,11 @@ const Nav = () => {
 					return (
 						<Link
 							key={e.name}
-							to="oten"
+							to={e.to}
+							onClick={() => {
+								setNavOpened(!navOpened);
+							}}
+							smooth
 							className={`cursor-pointer mb-7 md:mb-0 transition-colors duration-300  ${
 								e.name === "Home" ? "mt-20 md:mt-0" : ""
 							}  ${
