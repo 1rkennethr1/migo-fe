@@ -8,7 +8,7 @@ const Nav = () => {
 	const [navOpened, setNavOpened] = useState(false);
 
 	return (
-		<nav className="dark:bg-[#202020] dark:shadow-none transition-colors duration-500 fixed right-0 left-0 top-0 bg-white flex items-center justify-between px-[3rem] md:px-[5rem] z-50 h-[12.5vh] shadow-[0px_0px_10px_rgba(0,0,0,.1)]">
+		<nav className="dark:bg-[#202020] dark:shadow-none transition-[colors_padding] duration-500 fixed right-0 left-0 top-0 bg-white flex items-center justify-between px-[2rem] md:px-[5rem] z-50 h-[12.5vh] shadow-[0px_0px_10px_rgba(0,0,0,.1)]">
 			<img
 				src="../migo.svg"
 				alt=""

@@ -1,18 +1,31 @@
 import Layout from "./Layout";
 import { motion } from "framer-motion";
-import pc from '../assets/pc.png'
+import pc from "../assets/pc.png";
+import blob from "../assets/blob.png";
 
-const Info = () =>{
-    return(
-        <Layout>
-            <div className="flex flex-col items-center justify-center">
-                <h1 className="font-bold text-7xl before:content-[''] before:border-8 before:border-t-0 before:border-x-0 before:rounded-md before:absolute before:mt-[5.5rem] before:border-[#E04344] before:px-20 before:ml-[12rem] before:w-[20rem] before:m-auto border-black pb-10">
-                    A new way to assess
-                </h1>
-                <h3 className="s font-regular text-5xl text-center w-[80%] pb-16">We’re changing the corporate world by ditching the manual assessment and outdated systems. That means it's fast, easy and friendly.</h3>
-                <img src={pc} alt='PC'></img>
-            </div>
-       </Layout>
-    )
-}
-export default Info
+const Info = () => {
+	return (
+		<Layout>
+			<div className="flex flex-col items-center justify-center relative lg:mb-20">
+				<h1 className="text-6xl text-center  border-black mb-10 flex-col flex items-center gap-4 ">
+					<div className="">
+						A new way to <span className="font-semibold">assess </span>{" "}
+					</div>
+					<div className="bg-[#E04344] h-2 rounded w-[60%]"></div>
+				</h1>
+
+				<h3 className="text-2xl md:text-4xl text-center  md:px-[2rem] mb-[8rem] ">
+					We’re changing the corporate world by ditching the manual assessment
+					and outdated systems. That means it's fast, easy and friendly.
+				</h3>
+				<div className="relative">
+					<img src={pc} width={850} alt="PC"></img>
+					<div className="absolute -z-10 top-[-5rem]  sm:top-[-10rem]">
+						<img width={850} src={blob} alt="" />
+					</div>
+				</div>
+			</div>
+		</Layout>
+	);
+};
+export default Info;
