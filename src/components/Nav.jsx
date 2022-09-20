@@ -32,7 +32,7 @@ const Nav = () => {
 							key={e.name}
 							to={e.to}
 							onClick={() => {
-								setNavOpened(!navOpened);
+								setNavOpened(false);
 							}}
 							smooth
 							className={`cursor-pointer mb-7 md:mb-0 transition-colors duration-300  ${
