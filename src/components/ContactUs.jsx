@@ -36,7 +36,7 @@ const ContactUs = () => {
 					</h1>
 					<div className="flex flex-col items-start gap-3">
 						{contact.map((e) => {
-							return <ContactUsItem e={e} />;
+							return <ContactUsItem key={e.title} e={e} />;
 						})}
 					</div>
 				</div>
@@ -62,10 +62,10 @@ const ContactUs = () => {
 							placeholder="Your message..."
 							className="shadow-lg p-5 border-[1px] border-[#e0e0e0] rounded-md resize-none h-[85%]"
 						></textarea>
-						<button
-							className="bg-[#EC2224] p-3 w-24 place-self-end rounded-md shadow-lg"
-							type="button"
-						>
+						<button 
+							type="button" 
+							className="!bg-[#EC2224] p-3 w-24 place-self-end rounded-md shadow-lg" 
+							>
 							<span className="text-white flex flex-row justify-center items-center gap-2">
 								Send
 								<BiSend className="text-2xl" />

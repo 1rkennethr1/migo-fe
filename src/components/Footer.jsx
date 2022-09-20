@@ -47,7 +47,7 @@ const Footer = () => {
 					<h2 className="text-3xl font-semibold">Alliance</h2>
 					<div className="flex flex-col gap-1">
 						{alliance.map((e) => {
-							return <a href="">{e.name}</a>;
+							return <a key={e.name} href="">{e.name}</a>;
 						})}
 					</div>
 				</div>
