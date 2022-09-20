@@ -69,7 +69,10 @@ const Info = () => {
 					<motion.div animate={animate} ref={ref} className="">
 						A new way to <span className="font-semibold">assess </span>{" "}
 					</motion.div>
-					<div className="bg-[#E04344] h-2 rounded w-[60%]"></div>
+					<motion.div
+						animate={animate}
+						className="bg-[#E04344] h-2 rounded w-[60%]"
+					></motion.div>
 				</motion.h1>
 
 				<motion.div className="text-2xl md:text-4xl text-center  md:px-[2rem] mb-[8rem] ">

@@ -8,7 +8,7 @@ import AboutItem from "./AboutItem";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 const About = () => {
-	const { ref, inView } = useInView();
+	const { ref, inView } = useInView({ triggerOnce: true });
 	const animate = useAnimation();
 	useEffect(() => {
 		if (inView) {
@@ -72,7 +72,10 @@ const About = () => {
 					<div className="">
 						Get to know <span className="font-semibold">Migo</span>{" "}
 					</div>
-					<div className="bg-[#E04344] h-2 rounded w-[70%]"></div>
+					<motion.div
+						animate={animate}
+						className="bg-[#E04344] h-2 rounded w-[70%]"
+					></motion.div>
 				</motion.h1>
 				<motion.h3
 					animate={animate}
