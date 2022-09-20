@@ -6,7 +6,7 @@ import blob from "../assets/blob.png";
 const Info = () => {
 	return (
 		<Layout>
-			<div className="flex flex-col items-center justify-center relative lg:mb-20">
+			<div className="flex flex-col items-center justify-center relative lg:mb-20 z-10 ">
 				<h1 className="text-6xl text-center  border-black mb-10 flex-col flex items-center gap-4 ">
 					<div className="">
 						A new way to <span className="font-semibold">assess </span>{" "}
@@ -20,7 +20,7 @@ const Info = () => {
 				</h3>
 				<div className="relative">
 					<img src={pc} width={850} alt="PC"></img>
-					<div className="absolute -z-10 top-[-5rem]  sm:top-[-10rem]">
+					<div className="absolute -z-10 top-[-5rem] transition-[top] duration-1000 sm:top-[-10rem]">
 						<img width={850} src={blob} alt="" />
 					</div>
 				</div>
