@@ -13,7 +13,12 @@ export default function HomePage() {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			transition={{ duration: 0.5, type: "spring", damping: 20, stiffness: 80 }}
+			transition={{
+				duration: 0.2,
+				type: "spring",
+				damping: 20,
+				stiffness: 100,
+			}}
 		>
 			<Nav />
 			<Hero />
