@@ -15,13 +15,14 @@ function App() {
 		<div
 			className={`App dark:bg-[#1a1a1a] transition-colors duration-500 ease-in-out dark:text-white overflow-x-hidden`}
 		>
-			<div className="flex ">
+			<div
+				className={`${loc.pathname.split("/").includes("main") ? "flex" : ""}`}
+			>
 				<AnimatePresence mode="wait">
 					{loc.pathname.split("/").includes("main") && (
 						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1, flexBasis: "300px" }}
-							exit={{ opacity: 0 }}
 						>
 							<Sidebar />
 						</motion.div>

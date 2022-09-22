@@ -48,7 +48,7 @@ const Sidebar = () => {
 		<motion.div
 			className={`${
 				clicked ? "w-[100px]" : "w-[300px]"
-			} absolute h-full bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-300 px-5 py-10 z-50`}
+			} absolute h-full bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-500 px-5 pt-16 z-50`}
 		>
 			<div className="w-max absolute bottom-0 left-0 h-max flex items-center justify-between">
 				<DarkModeButton />
@@ -59,11 +59,11 @@ const Sidebar = () => {
 			<div className="flex flex-col gap-7 justify-between">
 				<img
 					src={logo}
-					width={40}
-					height={40}
+					width={120}
+					height={120}
 					alt=""
 					srcset=""
-					className="mb-10"
+					className="mb-8 self-center ml-2"
 				/>
 				{tabs.map((e) => {
 					return (
