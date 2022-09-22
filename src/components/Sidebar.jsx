@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 
 import { BiLogOut } from "react-icons/bi";
+import DarkModeButton from "./DarkModeButton";
 const tabs = [
 	{
 		label: "Dashboard",
@@ -29,69 +30,74 @@ const tabs = [
 	},
 ];
 const Sidebar = () => {
-	const active = {
-		color: "white",
-		transitionProperty: "all",
-		transitionDuration: ".5",
-	};
-	const inactive = {
-		transition: "all .9 ease-in-out",
-	};
 	const location = useLocation();
+	console.log(location.pathname);
 	const [selectedTab, setSelectedTab] = useState(
 		tabs.find((e) => e.path === location.pathname)
 	);
 	useEffect(() => {
 		setSelectedTab(tabs.find((e) => e.path === location.pathname));
 	}, [location]);
+	const [clicked, setClicked] = useState(false);
+	const active = {
+		backgroundColor: "black",
+		color: "white",
+	};
+
 	return (
-		<div>
-			<div className="flex flex-col shadow-xl h-full fixed w-[300px] px-[1.5rem] pt-[5rem] gap-10">
-				<div className="flex justify-center mb-[2rem]">
-					<img src={logo} alt="" width={100} height={100} />
-				</div>
+		<motion.div
+			className={`${
+				clicked ? "w-[100px]" : "w-[300px]"
+			} absolute h-full bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-300 px-5 py-10 z-50`}
+		>
+			<div className="w-max absolute bottom-0 left-0 h-max flex items-center justify-between">
+				<DarkModeButton />
+				<Link to={"/"}>
+					<BiLogOut />
+				</Link>
+			</div>
+			<div className="flex flex-col gap-7 justify-between">
+				<img
+					src={logo}
+					width={40}
+					height={40}
+					alt=""
+					srcset=""
+					className="mb-10"
+				/>
 				{tabs.map((e) => {
 					return (
-						<div key={e.label} className="relative">
-							<NavLink
-								to={e.path}
-								onClick={() => {
-									setSelectedTab(e);
-									localStorage.setItem("tab", JSON.stringify(e));
-								}}
-								style={({ isActive }) => (isActive ? active : inactive)}
-							>
-								<div className="flex font-[600] items-center gap-2 text-center text-lg">
-									<div>{e.icon}</div>
-									<p className="">{e.label}</p>
-								</div>
-							</NavLink>
-							{selectedTab === e ? (
-								<motion.div
-									initial={{ y: -30, borderRadius: "5px" }}
-									animate={{ y: -30, borderRadius: "5px" }}
-									transition={{
-										duration: 1,
-										type: "spring",
-										bounce: 0.3,
-										damping: 20,
-										stiffness: 100,
+						<div className="relative dark:text-white text-black">
+							<div className="">
+								<NavLink
+									to={e.path}
+									onClick={() => {
+										setSelectedTab(e);
+										localStorage.setItem("tab", JSON.stringify(e));
 									}}
-									layoutId="active "
-									className="w-full   top-[1.5rem]  bg-[#EC2224] absolute h-[2.5rem] -z-10 "
-								></motion.div>
-							) : null}
-							{e.label === "Employees" && <div pos="absolute" top="60px"></div>}
+									style={({ isActive }) => (isActive ? active : undefined)}
+								>
+									<div className="flex items-center gap-3 py-2 ml-3">
+										<div className="text-2xl">{e.icon}</div>
+										<p className="translate-y-[3.5%] text-xl font-semibold ">
+											{e.label}
+										</p>
+									</div>
+								</NavLink>
+								{selectedTab === e ? (
+									<motion.div
+										initial={{ y: -43, borderRadius: "5px" }}
+										animate={{ y: -43, borderRadius: "5px" }}
+										layoutId="active "
+										className="w-[95%] bg-[#EC2224] absolute h-full -z-10 "
+									></motion.div>
+								) : null}
+							</div>
 						</div>
 					);
 				})}
 			</div>
-			<Link to={"/"}>
-				<div className="absolute bottom-[20px] left-[250px] text-3xl">
-					<BiLogOut />
-				</div>
-			</Link>
-		</div>
+		</motion.div>
 	);
 };
 
@@ -163,18 +169,18 @@ export default Sidebar;
 // 								pos="relative"
 // 								mt={e.label === "Assess" ? 5 : ""}
 // 							>
-// 								<NavLink
-// 									to={e.path}
-// 									onClick={() => {
-// 										setSelectedTab(e);
-// 										localStorage.setItem("tab", JSON.stringify(e));
-// 									}}
-// 									style={({ isActive }) => (isActive ? active : undefined)}
-// 								>
+// <NavLink
+// 	to={e.path}
+// 	onClick={() => {
+// 		setSelectedTab(e);
+// 		localStorage.setItem("tab", JSON.stringify(e));
+// 	}}
+// 	style={({ isActive }) => (isActive ? active : undefined)}
+// >
 // 									<Flex fontSize={"lg"} fontWeight={600} align="center" gap={3}>
 // 										<Box
 // 											style={{
-// 												transform: "translateY(8.5%)",
+// 												transform: "translateY(1%)",
 // 											}}
 // 											ml={3}
 // 										>
@@ -183,14 +189,14 @@ export default Sidebar;
 // 										<Text className="">{e.label}</Text>
 // 									</Flex>
 // 								</NavLink>
-// 								{selectedTab === e ? (
-// 									<motion.div
-// 										initial={{ y: -30, borderRadius: "5px" }}
-// 										animate={{ y: -30, borderRadius: "5px" }}
-// 										layoutId="active "
-// 										className="w-[95%] bg-[#EC2224] absolute h-full -z-10 "
-// 									></motion.div>
-// 								) : null}
+// {selectedTab === e ? (
+// 	<motion.div
+// 		initial={{ y: -30, borderRadius: "5px" }}
+// 		animate={{ y: -30, borderRadius: "5px" }}
+// 		layoutId="active "
+// 		className="w-[95%] bg-[#EC2224] absolute h-full -z-10 "
+// 	></motion.div>
+// ) : null}
 // 								{e.label === "Employees" && (
 // 									<Divider pos="absolute" top="60px"></Divider>
 // 								)}

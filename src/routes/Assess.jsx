@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 
 const Assess = () => {
 	return (
-		<motion.div className="">
+		<motion.div className="min-h-screen">
 			<div className=""></div>
 			<div className="">hello</div>
 		</motion.div>
