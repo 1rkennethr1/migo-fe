@@ -46,6 +46,10 @@ const Sidebar = () => {
 		color: "white",
 	};
 	const { minimized, setMinimized } = useStateContext();
+	const linkBg = {
+		initial: { y: -45, borderRadius: "6.9px" },
+		animate: { y: -48, borderRadius: minimized ? "6.9px" : "8px" },
+	};
 	return (
 		<motion.div
 			className={`relative ${
@@ -54,9 +58,9 @@ const Sidebar = () => {
 		>
 			<div
 				onClick={() => setMinimized(!minimized)}
-				className={`absolute cursor-pointer  rounded-xl p-2 bg-white shadow-sm ${
+				className={`absolute cursor-pointer transition-all top-5 duration-500  rounded-xl p-2 bg-white shadow-sm ${
 					minimized ? "right-[-20px]" : " scale-x-[-1] right-[-10px]"
-				} dark:bg-[#1a1a1a]`}
+				} dark:bg-[#1a1a1a] dark:text-white text-black`}
 			>
 				<IoIosArrowForward />
 			</div>
@@ -66,7 +70,7 @@ const Sidebar = () => {
 					<BiLogOut />
 				</Link>
 			</div>
-			<div className="flex flex-col gap-7 justify-between">
+			<div className="flex flex-col gap-5 justify-between">
 				<img
 					src={logo}
 					width={120}
@@ -78,7 +82,13 @@ const Sidebar = () => {
 				{tabs.map((e) => {
 					return (
 						<div className="relative dark:text-white text-black">
-							<div className="">
+							<div
+								className={`transition duration-150 ${
+									e === selectedTab
+										? ""
+										: "hover:bg-[#ededed] dark:hover:bg-[#282828]"
+								} rounded-lg py-1`}
+							>
 								<NavLink
 									to={e.path}
 									onClick={() => {
@@ -105,11 +115,11 @@ const Sidebar = () => {
 								</NavLink>
 								{selectedTab === e ? (
 									<motion.div
-										initial={{ y: -43, borderRadius: "6.9px" }}
-										animate={{ y: -43, borderRadius: "6.9px" }}
-										exit={{ y: -43, borderRadius: "6.9px" }}
+										initial="initial"
+										animate="animate"
+										variants={linkBg}
 										layoutId="active "
-										className="w-[95%] bg-[#EC2224] absolute h-full -z-10 "
+										className="w-full bg-[#EC2224] absolute h-full -z-10 "
 									></motion.div>
 								) : null}
 							</div>

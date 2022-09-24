@@ -91,7 +91,7 @@ export default function LoginPage() {
 						<motion.button
 							onMouseEnter={() => setWrf(false)}
 							whileHover={{ x: 3 }}
-							className="flex justify-center py-[1rem] rounded-lg dark:bg-white dark:text-black   bg-black text-white  px-[2rem] w-max mt-14 gap-3 items-center"
+							className="flex justify-center py-[1rem] rounded-lg dark:bg-white dark:text-black   bg-black text-white  px-[2rem] w-max mt-14 gap-3 items-center transition duration-500"
 						>
 							Homepage
 							<div className="text-2xl">

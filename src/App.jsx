@@ -19,9 +19,9 @@ function App() {
 		},
 		animate: {
 			opacity: 1,
-			flexBasis: minimized ? "120px" : "300px",
+			flexBasis: minimized ? "90px" : "300px",
 			transition: {
-				duration: 0.5,
+				duration: 0.45,
 			},
 		},
 	};
@@ -32,17 +32,15 @@ function App() {
 			<div
 				className={`${loc.pathname.split("/").includes("main") ? "flex" : ""}`}
 			>
-				<AnimatePresence mode="wait">
-					{loc.pathname.split("/").includes("main") && (
-						<motion.div
-							initial="initial"
-							animate="animate"
-							variants={sidebarPadding}
-						>
-							<Sidebar />
-						</motion.div>
-					)}
-				</AnimatePresence>
+				{loc.pathname.split("/").includes("main") && (
+					<motion.div
+						initial="initial"
+						animate="animate"
+						variants={sidebarPadding}
+					>
+						<Sidebar />
+					</motion.div>
+				)}
 				<AnimatePresence mode="wait">
 					<Routes key={loc.pathname} location={loc}>
 						<Route path="/main/dashboard" element={<Dashboard />} />
