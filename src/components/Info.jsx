@@ -12,7 +12,6 @@ const Info = () => {
 	const animate2 = useAnimation();
 	const animate3 = useAnimation();
 	useEffect(() => {
-		console.log(inView);
 		if (inView) {
 			animate.start({
 				y: 0,
