@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 
 import { Link, useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import logo from "../assets/migo.svg";
+import { IoIosArrowForward } from "react-icons/io";
 import {
 	MdSpaceDashboard,
 	MdPeople,
@@ -12,6 +13,7 @@ import {
 
 import { BiLogOut } from "react-icons/bi";
 import DarkModeButton from "./DarkModeButton";
+import { useStateContext } from "../lib/context";
 const tabs = [
 	{
 		label: "Dashboard",
@@ -43,13 +45,21 @@ const Sidebar = () => {
 		backgroundColor: "black",
 		color: "white",
 	};
-
+	const { minimized, setMinimized } = useStateContext();
 	return (
 		<motion.div
-			className={`${
-				clicked ? "w-[100px]" : "w-[300px]"
+			className={`relative ${
+				minimized ? "w-[90px]" : "w-[300px]"
 			} absolute h-full bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-500 px-5 pt-16 z-50`}
 		>
+			<div
+				onClick={() => setMinimized(!minimized)}
+				className={`absolute cursor-pointer right-[-10px] rounded-full p-0.5 bg-white shadow-sm ${
+					minimized ? "" : " scale-x-[-1]"
+				} `}
+			>
+				<IoIosArrowForward />
+			</div>
 			<div className="w-max absolute bottom-0 left-0 h-max flex items-center justify-between">
 				<DarkModeButton />
 				<Link to={"/"}>
@@ -79,15 +89,25 @@ const Sidebar = () => {
 								>
 									<div className="flex items-center gap-3 py-2 ml-3">
 										<div className="text-2xl">{e.icon}</div>
-										<p className="translate-y-[3.5%] text-xl font-semibold ">
-											{e.label}
-										</p>
+										<AnimatePresence>
+											{minimized ? null : (
+												<motion.p
+													initial={{ opacity: 0 }}
+													animate={{ opacity: 1 }}
+													exit={{ opacity: 0 }}
+													className="translate-y-[3.5%] text-xl font-semibold "
+												>
+													{e.label}
+												</motion.p>
+											)}
+										</AnimatePresence>
 									</div>
 								</NavLink>
 								{selectedTab === e ? (
 									<motion.div
-										initial={{ y: -43, borderRadius: "5px" }}
-										animate={{ y: -43, borderRadius: "5px" }}
+										initial={{ y: -43, borderRadius: "6.9px" }}
+										animate={{ y: -43, borderRadius: "6.9px" }}
+										exit={{ y: -43, borderRadius: "6.9px" }}
 										layoutId="active "
 										className="w-[95%] bg-[#EC2224] absolute h-full -z-10 "
 									></motion.div>

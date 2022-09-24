@@ -8,9 +8,23 @@ import Employees from "./routes/Employees";
 import Assess from "./routes/Assess";
 import Main from "./routes/Main";
 import Sidebar from "./components/Sidebar";
+import { useStateContext } from "./lib/context";
 function App() {
 	const loc = useLocation();
 	console.log();
+	const { minimized, setMinimized } = useStateContext();
+	const sidebarPadding = {
+		initial: {
+			opacity: 0,
+		},
+		animate: {
+			opacity: 1,
+			flexBasis: minimized ? "120px" : "300px",
+			transition: {
+				duration: 0.5,
+			},
+		},
+	};
 	return (
 		<div
 			className={`App dark:bg-[#1a1a1a] transition-colors duration-500 ease-in-out dark:text-white overflow-x-hidden`}
@@ -21,8 +35,9 @@ function App() {
 				<AnimatePresence mode="wait">
 					{loc.pathname.split("/").includes("main") && (
 						<motion.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1, flexBasis: "300px" }}
+							initial="initial"
+							animate="animate"
+							variants={sidebarPadding}
 						>
 							<Sidebar />
 						</motion.div>
