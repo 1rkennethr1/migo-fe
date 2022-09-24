@@ -23,7 +23,7 @@ const Nav = () => {
 				{navOpened ? <CgClose /> : <HiMenu />}
 			</div>
 			<div
-				className={`flex fixed top-[100px]  transition-[bottom] duration-700  bg-white md:bg-transparent dark:bg-[#1a1a1a] md:dark:bg-transparent left-0 right-0 overflow-hidden md:static flex-col md:flex-row gap-8 items-center ${
+				className={`flex fixed top-[95px]  transition-[bottom]  bg-white md:bg-transparent dark:bg-[#1a1a1a] md:dark:bg-transparent left-0 right-0 overflow-hidden md:static flex-col md:flex-row gap-8 items-center ${
 					navOpened ? "bottom-[0]" : "bottom-full"
 				}`}
 			>

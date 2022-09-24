@@ -54,9 +54,9 @@ const Sidebar = () => {
 		>
 			<div
 				onClick={() => setMinimized(!minimized)}
-				className={`absolute cursor-pointer right-[-10px] rounded-full p-0.5 bg-white shadow-sm ${
-					minimized ? "" : " scale-x-[-1]"
-				} `}
+				className={`absolute cursor-pointer  rounded-xl p-2 bg-white shadow-sm ${
+					minimized ? "right-[-20px]" : " scale-x-[-1] right-[-10px]"
+				} dark:bg-[#1a1a1a]`}
 			>
 				<IoIosArrowForward />
 			</div>
