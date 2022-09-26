@@ -6,7 +6,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Dashboard from "./routes/Dashboard";
 import Employees from "./routes/Employees";
 import Assess from "./routes/Assess";
-import Main from "./routes/Main";
+import Benefits from "./routes/Benefits";
+
 import Sidebar from "./components/Sidebar";
 import { useStateContext } from "./lib/context";
 function App() {
@@ -21,7 +22,10 @@ function App() {
 			opacity: 1,
 			flexBasis: minimized ? "90px" : "300px",
 			transition: {
-				duration: 0.45,
+				type: "spring",
+				duration: 0.55,
+				damping: 20,
+				stiffness: 110,
 			},
 		},
 	};
@@ -46,7 +50,7 @@ function App() {
 						<Route path="/main/dashboard" element={<Dashboard />} />
 						<Route path="/main/employees" element={<Employees />} />
 						<Route path="/main/assess" element={<Assess />} />
-
+						<Route path="/main/benefits" element={<Benefits />} />
 						<Route path="/" element={<Navigate to="/login" />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/homepage" element={<HomePage />} />
