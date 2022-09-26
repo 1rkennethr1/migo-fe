@@ -9,6 +9,7 @@ import {
 	MdSpaceDashboard,
 	MdPeople,
 	MdOutlineAssessment,
+	MdCardGiftcard,
 } from "react-icons/md";
 
 import { BiLogOut } from "react-icons/bi";
@@ -30,6 +31,11 @@ const tabs = [
 		icon: <MdOutlineAssessment />,
 		path: "/main/assess",
 	},
+	{
+		label: "Benefits",
+		icon: <MdCardGiftcard />,
+		path: "/main/benefits",
+	},
 ];
 const Sidebar = () => {
 	const location = useLocation();
@@ -48,13 +54,16 @@ const Sidebar = () => {
 	const { minimized, setMinimized } = useStateContext();
 	const linkBg = {
 		initial: { y: -45, borderRadius: "6.9px" },
-		animate: { y: -48, borderRadius: minimized ? "6.9px" : "8px" },
+		animate: {
+			y: minimized ? -45 : -48,
+			borderRadius: minimized ? "6.9px" : "8px",
+		},
 	};
 	return (
 		<motion.div
-			className={`relative ${
-				minimized ? "w-[90px]" : "w-[300px]"
-			} absolute h-full bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-500 px-5 pt-16 z-50`}
+			className={`  fixed top-0 h-screen bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-500 px-5 pt-16 z-50 ${
+				minimized ? "w-[90px]" : "w-[250px]"
+			} `}
 		>
 			<div
 				onClick={() => setMinimized(!minimized)}
@@ -105,7 +114,7 @@ const Sidebar = () => {
 													initial={{ opacity: 0 }}
 													animate={{ opacity: 1 }}
 													exit={{ opacity: 0 }}
-													className="translate-y-[3.5%] text-xl font-semibold "
+													className="translate-y-[3.5%] text-lg font-semibold "
 												>
 													{e.label}
 												</motion.p>
@@ -113,7 +122,17 @@ const Sidebar = () => {
 										</AnimatePresence>
 									</div>
 								</NavLink>
-								{selectedTab === e ? (
+								{minimized ? (
+									selectedTab === e ? (
+										<motion.div
+											initial="initial"
+											animate="animate"
+											variants={linkBg}
+											layoutId="active "
+											className="w-full bg-[#EC2224] absolute h-full -z-10 "
+										></motion.div>
+									) : null
+								) : selectedTab === e ? (
 									<motion.div
 										initial="initial"
 										animate="animate"

@@ -10,7 +10,7 @@ import {
 const Employees = () => {
 	return (
 		<motion.div
-			className="min-h-screen"
+			className="min-h-screen flex"
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
