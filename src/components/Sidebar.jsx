@@ -61,9 +61,9 @@ const Sidebar = () => {
 	};
 	return (
 		<motion.div
-			className={` ${
+			className={`  fixed top-0 h-screen bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-500 px-5 pt-16 z-50 ${
 				minimized ? "w-[90px]" : "w-[250px]"
-			} fixed  top-0 h-screen bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-500 px-5 pt-16 z-50`}
+			} `}
 		>
 			<div
 				onClick={() => setMinimized(!minimized)}
