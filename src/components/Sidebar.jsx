@@ -72,7 +72,9 @@ const Sidebar = () => {
 			>
 				<IoIosArrowForward />
 			</div>
-			<div className="w-full absolute bottom-0 left-0 h-max flex items-center justify-between">
+			<div
+				className={` w-full absolute bottom-0 left-0 h-max flex items-center justify-between`}
+			>
 				<div className="scale-75">
 					<DarkModeButton />
 				</div>
