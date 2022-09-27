@@ -6,7 +6,13 @@ export default function MainLayout({ children }) {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			className="basis-[-320px]"
+			transition={{
+				type: "spring",
+				duration: 0.3,
+				damping: 20,
+				stiffness: 100,
+			}}
+			className="p-10 min-h-screen   flex w-screen "
 		>
 			{children}
 		</motion.div>

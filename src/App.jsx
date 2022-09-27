@@ -1,19 +1,18 @@
 import DarkModeButton from "./components/DarkModeButton";
 import { Route, Router, Routes, useLocation, Navigate } from "react-router-dom";
+import { useStateContext } from "./lib/context";
 import HomePage from "./routes/HomePage";
 import LoginPage from "./routes/LoginPage";
 import { AnimatePresence, motion } from "framer-motion";
-import Dashboard from "./routes/Dashboard";
-import Employees from "./routes/Employees";
-import Assess from "./routes/Assess";
-import Benefits from "./routes/Benefits";
-
 import Sidebar from "./components/Sidebar";
-import { useStateContext } from "./lib/context";
+import Benefits from "./routes/main/Benefits";
+import Dashboard from "./routes/main/Dashboard";
+import Employees from "./routes/main/Employees";
+import Assess from "./routes/main/Assess";
 function App() {
 	const loc = useLocation();
 	console.log();
-	const { minimized, setMinimized } = useStateContext();
+	const { minimized } = useStateContext();
 	const sidebarPadding = {
 		initial: {
 			opacity: 0,
@@ -31,7 +30,11 @@ function App() {
 	};
 	return (
 		<div
-			className={`App dark:bg-[#1a1a1a] transition-colors duration-500 ease-in-out dark:text-white overflow-x-hidden`}
+			className={`App ${
+				loc.pathname.split("/").includes("main")
+					? "dark:bg-[#1f1f1f]"
+					: "dark:bg-[#1a1a1a]"
+			}  transition-colors duration-500 ease-in-out dark:text-white overflow-x-hidden`}
 		>
 			<div
 				className={`${loc.pathname.split("/").includes("main") ? "flex" : ""}`}

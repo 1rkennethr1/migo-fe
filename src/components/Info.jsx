@@ -75,13 +75,15 @@ const Info = () => {
 							className="bg-[#E04344] h-2 rounded w-[60%]"
 						></motion.div>
 					</motion.h1>
-					<motion.div className="text-2xl md:text-4xl text-center  md:px-[2rem] mb-[8rem] ">
+					<motion.div
+						ref={ref}
+						className="text-2xl md:text-4xl text-center  md:px-[2rem] mb-[8rem] "
+					>
 						We’re changing the corporate world by ditching the manual assessment
 						and outdated systems. That means it's fast, easy and friendly.
 					</motion.div>
 					<motion.div className="relative">
 						<motion.img
-							ref={ref}
 							animate={animate2}
 							src={pc}
 							width={850}
