@@ -16,6 +16,7 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Spinner,
+	Select,
 	Tag,
 	Tooltip,
 	useDisclosure,
@@ -35,12 +36,23 @@ const AddEmployeeForm = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const initialRef = React.useRef(null);
 	const finalRef = React.useRef(null);
+	/*
+		cn = contactNumber;
+		ct = contractType; 
+	*/
 	const [add, setAdd] = useState({
-		fn: "",
-		mn: "",
-		ln: "",
-		role: "",
-		dj: "",
+		fn: "", 
+		mn: "", 
+		ln: "", 
+		age:"", 
+		sex: "", 
+		cs:"", 
+		bday: "", 
+		cn:"", 
+		email: "", 
+		ct: "", 
+		role: "", 
+		dj: ""
 	});
 	const handleChange = (e) => {
 		const { value, name } = e.target;
@@ -51,6 +63,7 @@ const AddEmployeeForm = () => {
 	};
 	const addEmployee = async (e) => {
 		e.preventDefault();
+		// fn, mn, ln Uppercase first letter formatter
 		let fn = add.fn.split(" ").length > 1 ?
 			add.fn.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
 			add.fn[0].toUpperCase() + add.fn.slice(1, add.fn.length)
@@ -71,13 +84,16 @@ const AddEmployeeForm = () => {
 			employees.length===0 ? 
 			1 :
 			employees[employees.length - 1].id + 1
-		}&FirstName=${fn}&MiddleName=${mn}&LastName=${ln}&Role=${
+		}&FirstName=${fn}&MiddleName=${mn}&LastName=${ln}&Age=${add.age}&Sex=${add.sex}&CivilStatus=${add.cs}&Birthday=${add.bday}&ContactNumber=${add.cn}&EmailAddress=${add.email}&{ContractType=${add.ct}&Role=${
 			add.role
 		}&DateJoined=${date}`;
 		axios.post(url).then((result) => console.log(result));
 		onClose();
-		await getEmployees();
-		setAdd({ fn: "", mn: "", ln: "", role: "", dj: "" });
+		/*
+			cn = contactNumber;
+			ct = contractType; 
+		*/
+		setAdd({ fn: "", mn: "", ln: "", age:"", sex: "", cs:"", bday: "", cn:"", email: "", ct: "", role: "", dj: ""});
 		await getEmployees();
 	};
 
@@ -128,6 +144,86 @@ const AddEmployeeForm = () => {
 							/>
 						</FormControl>
 
+						<FormControl mt={4}>
+							<FormLabel>Age</FormLabel>
+							<Input
+								onChange={handleChange}
+								name="age"
+								placeholder="Age"
+							/>
+						</FormControl>
+						<FormControl mt={4}>
+							<FormLabel>Sex</FormLabel>
+							<Select 
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="sex"
+								id=""
+								>
+									<option value='Male'>Male</option>
+									<option value='Female'>Female</option>
+									<option value='Other'>Other</option>
+							</Select>
+						</FormControl>
+						<FormControl mt={4}>
+							<FormLabel>Civil Status</FormLabel>
+							<Select
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="cs"
+								id=""
+								>
+									<option default value="Single">Single</option>
+									<option value="Married">Married</option>
+									<option value="Divorced">Divorced</option>
+									<option value="Widow">Widow</option>
+							</Select>
+						</FormControl>
+						<FormControl mt={4}>
+							<FormLabel>Birthday</FormLabel>
+							<Input
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								type="date"
+								name="bday"
+								id=""
+								/>
+						</FormControl>
+						
+						<FormControl mt={4}>
+							<FormLabel>Contact Number</FormLabel>
+							<Input
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="cn"
+								id=""
+								placeholder="+639123456789"
+								/>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Email Address</FormLabel>
+							<Input
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								type='email'
+								name="email"
+								id=""
+								/>
+						</FormControl>
+						
+						<FormControl mt={4}>
+							<FormLabel>Contract Type</FormLabel>
+							<Select
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="ct"
+								id=""
+								>
+									<option value='Regular'>Regular</option>
+									<option value='Part-time'>Part-time</option>
+							</Select>
+						</FormControl>
 						<FormControl mt={4}>
 							<FormLabel>Role</FormLabel>
 							<Input onChange={handleChange} name="role" placeholder="Role" />

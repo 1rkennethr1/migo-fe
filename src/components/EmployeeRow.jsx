@@ -1,5 +1,6 @@
 import React from "react";
 import {
+	Box,
 	Button,
 	FormControl,
 	FormLabel,
@@ -11,12 +12,16 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Select,
 	useDisclosure,
 	useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
 import { useStateContext } from "../lib/context";
+import EmployeeSidebar from "./EmployeeSidebarDeets";
+import { motion } from "framer-motion";
+
 const EmployeeRow = ({ e }) => {
 	const toast = useToast();
 	const { getEmployees } = useStateContext();
@@ -27,6 +32,13 @@ const EmployeeRow = ({ e }) => {
 		fn: e.firstName,
 		mn: e.middleName,
 		ln: e.lastName,
+		age: e.age,
+		sex: e.sex,
+		cs: e.civilStatus,
+		bday: e.birthday,
+		cn: e.contactNumber,
+		email: e.emailAddress,
+		ct: e.contractType,
 		role: e.role,
 		dj: e.dateJoined,
 	});
@@ -39,8 +51,20 @@ const EmployeeRow = ({ e }) => {
 	};
 
 	const updateEmployee = async (event) => {
+		let fn = update.fn.split(" ").length > 1 ?
+			update.fn.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
+			update.fn[0].toUpperCase() + update.fn.slice(1, update.fn.length)
+		
+		let mn = update.mn.split(" ").length > 1 ?
+		update.mn.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
+		update.mn[0].toUpperCase() + update.mn.slice(1, update.mn.length)
+
+		let ln = update.ln.split(" ").length > 1 ?
+			update.ln.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
+			update.ln[0].toUpperCase() + update.ln.slice(1, update.ln.length)
+			
 		event.preventDefault();
-		const url = `https://localhost:7259/api/Employee?Id=${e.id}&FirstName=${update.fn}&MiddleName=${update.mn}&LastName=${update.ln}&Role=${update.role}&DateJoined=${update.dj}`;
+		const url = `https://localhost:7259/api/Employee?Id=${e.id}&FirstName=${fn}&MiddleName=${mn}&LastName=${ln}&Age=${update.age}&Sex=${update.sex}&CivilStatus=${update.cs}&Role=${update.role}&DateJoined=${update.dj}`;
 		axios.put(url).then((result) => console.log(result));
 		await getEmployees();
 		onClose();
@@ -99,12 +123,29 @@ const EmployeeRow = ({ e }) => {
 					{e.dateJoined}
 				</div>
 			</td>
+
+			{/* <motion.div className="top-0 right-0 absolute bg-black text-white h-screen w-[100%] z-40 overflow-hidden bg-opacity-40 cusor">
+				<div className="w-[50%] h-screen fixed top-0 right-0 bg-black p-10 ">
+					<div className="text-white text-3xl">
+						X
+					</div>
+					<FormControl display={'block'}>
+						<FormLabel>First name</FormLabel>
+						<Input
+							onChange={handleChange}
+							name="fn"
+							value={update.fn}
+							placeholder="First name"
+							/>
+					</FormControl>
+				</div>
+			</motion.div> */}
 			<Modal
 				initialFocusRef={employeeInitRef}
 				finalFocusRef={employeeFinalRef}
 				isOpen={isOpen}
 				onClose={onClose}
-			>
+				>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>Employee #{e.id}</ModalHeader>
@@ -117,7 +158,7 @@ const EmployeeRow = ({ e }) => {
 								name="fn"
 								value={update.fn}
 								placeholder="First name"
-							/>
+								/>
 						</FormControl>
 
 						<FormControl mt={4}>
@@ -127,9 +168,9 @@ const EmployeeRow = ({ e }) => {
 								name="mn"
 								value={update.mn}
 								placeholder="Middle name"
-							/>
+								/>
 						</FormControl>
-
+						
 						<FormControl mt={4}>
 							<FormLabel>Last name</FormLabel>
 							<Input
@@ -137,7 +178,98 @@ const EmployeeRow = ({ e }) => {
 								value={update.ln}
 								name="ln"
 								placeholder="Last name"
-							/>
+								/>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Age</FormLabel>
+							<Input
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="age"
+								value={update.age}
+								id=""
+								/>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Sex</FormLabel>
+							<Select 
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="sex"
+								value={update.sex}
+								id=""
+								>
+									<option value='Male'>Male</option>
+									<option value='Female'>Female</option>
+									<option value='Other'>Other</option>
+							</Select>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Civil Status</FormLabel>
+							<Select
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="cs"
+								value={update.cs}
+								id=""
+								>
+									<option value="Single">Single</option>
+									<option value="Married">Married</option>
+									<option value="Divorced">Divorced</option>
+									<option value="Widow">Widow</option>
+							</Select>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Birthday</FormLabel>
+							<Input
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								type="date"
+								name="bday"
+								value={update.bday}
+								id=""
+								/>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Contact Number</FormLabel>
+							<Input
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="cn"
+								value={update.cn}
+								id=""
+								/>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Email Address</FormLabel>
+							<Input
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								type="email"
+								name="email"
+								value={update.email}
+								id=""
+								/>
+						</FormControl>
+
+						<FormControl mt={4}>
+							<FormLabel>Contract Type</FormLabel>
+							<Select
+								onChange={handleChange}
+								className="border px-3 py-2 rounded-lg w-full"
+								name="ct"
+								value={update.ct}
+								id=""
+								>
+									<option value='Regular'>Regular</option>
+									<option value='Part-time'>Part-time</option>
+							</Select>
 						</FormControl>
 
 						<FormControl mt={4}>
@@ -147,7 +279,7 @@ const EmployeeRow = ({ e }) => {
 								value={update.role}
 								name="role"
 								placeholder="Role"
-							/>
+								/>
 						</FormControl>
 
 						<FormControl mt={4}>
@@ -159,7 +291,7 @@ const EmployeeRow = ({ e }) => {
 								name="dj"
 								value={update.dj}
 								id=""
-							/>
+								/>
 						</FormControl>
 					</ModalBody>
 
@@ -169,7 +301,7 @@ const EmployeeRow = ({ e }) => {
 							colorScheme="yellow"
 							variant="outline"
 							mr={3}
-						>
+							>
 							Update
 						</Button>
 						<Button onClick={deleteEmployee} colorScheme="red">
