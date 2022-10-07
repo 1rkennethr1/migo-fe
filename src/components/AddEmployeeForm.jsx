@@ -42,7 +42,8 @@ const AddEmployeeForm = () => {
 		role: "",
 		dj: "",
 	});
-	const handleChange = (e) => {
+	const handleChange = async (e) => {
+		await getEmployees();
 		const { value, name } = e.target;
 		setAdd({
 			...add,
@@ -50,27 +51,44 @@ const AddEmployeeForm = () => {
 		});
 	};
 	const addEmployee = async (e) => {
+		await getEmployees();
 		e.preventDefault();
-		let fn = add.fn.split(" ").length > 1 ?
-			add.fn.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
-			add.fn[0].toUpperCase() + add.fn.slice(1, add.fn.length)
-		
-		let mn = add.mn.split(" ").length > 1 ?
-		add.mn.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
-		add.mn[0].toUpperCase() + add.mn.slice(1, add.mn.length)
+		let fn =
+			add.fn.split(" ").length > 1
+				? add.fn
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: add.fn[0].toUpperCase() + add.fn.slice(1, add.fn.length);
 
-		let ln = add.ln.split(" ").length > 1 ?
-			add.ln.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
-			add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length)
-		
+		let mn =
+			add.mn.split(" ").length > 1
+				? add.mn
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: add.mn[0].toUpperCase() + add.mn.slice(1, add.mn.length);
+
+		let ln =
+			add.ln.split(" ").length > 1
+				? add.ln
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length);
+
 		// data.LastName.split("").splice(0, 1).join("").toUpperCase() +
 		// data.LastName.split("").splice(1, data.LastName.length).join("");
 
 		let date = add.dj;
 		const url = `https://localhost:7259/api/Employee?Id=${
-			employees.length===0 ? 
-			1 :
-			employees[employees.length - 1].id + 1
+			employees.length === 0 ? 1 : employees[employees.length - 1].id + 1
 		}&FirstName=${fn}&MiddleName=${mn}&LastName=${ln}&Role=${
 			add.role
 		}&DateJoined=${date}`;
