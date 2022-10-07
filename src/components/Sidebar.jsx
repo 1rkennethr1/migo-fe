@@ -94,6 +94,7 @@ const Sidebar = () => {
 					srcset=""
 					className="mb-8 self-center ml-2"
 				/>
+				<h1 className='text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap'>General</h1>
 				{tabs.map((e) => {
 					return (
 						<div className="relative dark:text-white text-black">
