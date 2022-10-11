@@ -1,4 +1,5 @@
 import React from "react";
+import "../index.css";
 import {
 	Box,
 	Button,
@@ -11,13 +12,11 @@ import {
 	DrawerCloseButton,
 	DrawerFooter,
 	DrawerHeader,
-	// Modal,
-	// ModalBody,
-	// ModalCloseButton,
-	// ModalContent,
-	// ModalFooter,
-	// ModalHeader,
-	// ModalOverlay,
+	Tabs, 
+	TabList, 
+	TabPanels, 
+	Tab, 
+	TabPanel,
 	Select,
 	useDisclosure,
 	useToast,
@@ -29,6 +28,7 @@ import { useStateContext } from "../lib/context";
 import EmployeeSidebar from "./EmployeeSidebarDeets";
 import { motion } from "framer-motion";
 import def from "../assets/default.png";
+import dhbg from "../assets/drawerheader.png";
 
 const EmployeeRow = ({ e }) => {
 	const toast = useToast();
@@ -142,168 +142,196 @@ const EmployeeRow = ({ e }) => {
 			>
 				<DrawerOverlay/>
 				<DrawerContent>
-					<DrawerCloseButton left={-5} borde bg={'white'} _hover={{bg:'#fff'}} _focus={{bg:'white'}} size='md'/>
-					<DrawerHeader className="leading-5 flex flex-row items-center gap-3">
+					<div className="-z-10">
+						<DrawerCloseButton fontSize={'.6rem'} left={-7} bg={'white'} _hover={{bg:'white'}} _focus={{bg:'white'}} size='md'/>
+					</div>
+					<DrawerHeader className="leading-4 flex flex-row items-center gap-5 mb-10" paddingTop={8}>
+						<img 
+							className="absolute -z-10 left-0"
+							src={dhbg} 
+							alt="" 
+						/>
 						<img   
 							src={"asdasd"}
 							onError={(e) => {
 								e.target.onerror = null
 								e.target.src = def
 							  }}
-							width={70}
-							>
-						</img>
+							width={90}
+							className="mb-[-1rem]"
+							/>
 						<div>
-							<h1>{update.fn} {update.ln}</h1>
-							<small className="font-light font-sans">{update.role}</small>
+							<h1 className="text-3xl">{update.fn} {update.ln}</h1>
+							<h6 className="font-light text-md">{update.role}{"\n"}</h6>
+							<small className="font-light text-sm">{update.email}</small>
 						</div>
 						
 					</DrawerHeader>
 
 					<DrawerBody>
-					<FormControl>
-							<FormLabel>First name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="fn"
-								value={update.fn}
-								placeholder="First name"
-								/>
-						</FormControl>
+							<Tabs colorScheme={'red'}>
+								<TabList className="fixed z-10 bg-white w-[100%] pt-5 -mt-3">
+									<Tab fontWeight={500}>DETAILS</Tab>
+									<Tab fontWeight={500}>PERFORMANCE</Tab>
+								</TabList>
+								<TabPanels className='pt-[4rem]'>
+									<TabPanel margin={5} padding={8} border='1px solid #aaa' display={'flex'} flexDirection={'column'} borderRadius={20}>
+										<div className="flex flex-row gap-5">
+											<FormControl>
+												<FormLabel>First name</FormLabel>
+												<Input
+													onChange={handleChange}
+													name="fn"
+													value={update.fn}
+													placeholder="First name"
+													/>
+											</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Middle name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="mn"
-								value={update.mn}
-								placeholder="Middle name"
-								/>
-						</FormControl>
-						
-						<FormControl mt={4}>
-							<FormLabel>Last name</FormLabel>
-							<Input
-								onChange={handleChange}
-								value={update.ln}
-								name="ln"
-								placeholder="Last name"
-								/>
-						</FormControl>
+											<FormControl >
+												<FormLabel>Middle name</FormLabel>
+												<Input
+													onChange={handleChange}
+													name="mn"
+													value={update.mn}
+													placeholder="Middle name"
+													/>
+											</FormControl>
+										</div>
+										
+										<div className="flex flex-row gap-5 mt-4">
+											<FormControl>
+												<FormLabel>Last name</FormLabel>
+												<Input
+													onChange={handleChange}
+													value={update.ln}
+													name="ln"
+													placeholder="Last name"
+													/>
+											</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Age</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="age"
-								value={update.age}
-								id=""
-								/>
-						</FormControl>
+											<FormControl>
+											<FormLabel>Email Address</FormLabel>
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													type="email"
+													name="email"
+													value={update.email}
+													id=""
+													/>
+											</FormControl>
+											
+										</div>
+										<div className="flex flex-row gap-5 mt-4">
+											<FormControl>
+												<FormLabel>Contact Number</FormLabel>
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="cn"
+													value={update.cn}
+													id=""
+													/>
+											</FormControl>
+							  				
+											<FormControl>
+												<FormLabel>Birthday</FormLabel>
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													type="date"
+													name="bday"
+													value={update.bday}
+													id=""
+													/>
+											</FormControl>
+											<FormControl>
+												<FormLabel>Age</FormLabel>
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="age"
+													value={update.age}
+													id=""
+													/>
+											</FormControl>
+											<FormControl>
+												<FormLabel>Sex</FormLabel>
+												<Select 
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="sex"
+													value={update.sex}
+													id=""
+													>
+														<option value='Male'>Male</option>
+														<option value='Female'>Female</option>
+														<option value='Other'>Other</option>
+												</Select>
+											</FormControl>
+										</div>
+										
+										
+							  			<div className="flex flex-row gap-5 mt-4">
+											<FormControl>
+												<FormLabel>Civil Status</FormLabel>
+												<Select
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="cs"
+													value={update.cs}
+													id=""
+													>
+														<option value="Single">Single</option>
+														<option value="Married">Married</option>
+														<option value="Divorced">Divorced</option>
+														<option value="Widow">Widow</option>
+												</Select>
+											</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Sex</FormLabel>
-							<Select 
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="sex"
-								value={update.sex}
-								id=""
-								>
-									<option value='Male'>Male</option>
-									<option value='Female'>Female</option>
-									<option value='Other'>Other</option>
-							</Select>
-						</FormControl>
+											<FormControl>
+												<FormLabel>Contract Type</FormLabel>
+												<Select
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="ct"
+													value={update.ct}
+													id=""
+													>
+														<option value='Regular'>Regular</option>
+														<option value='Part-time'>Part-time</option>
+												</Select>
+											</FormControl>
+										</div>
+										
+							  			<div className="flex flex-row gap-5 mt-4">
+										  <FormControl>
+											<FormLabel>Role</FormLabel>
+											<Input
+												onChange={handleChange}
+												value={update.role}
+												name="role"
+												placeholder="Role"
+												/>
+											</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Civil Status</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cs"
-								value={update.cs}
-								id=""
-								>
-									<option value="Single">Single</option>
-									<option value="Married">Married</option>
-									<option value="Divorced">Divorced</option>
-									<option value="Widow">Widow</option>
-							</Select>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Birthday</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="date"
-								name="bday"
-								value={update.bday}
-								id=""
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Contact Number</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cn"
-								value={update.cn}
-								id=""
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Email Address</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="email"
-								name="email"
-								value={update.email}
-								id=""
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Contract Type</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="ct"
-								value={update.ct}
-								id=""
-								>
-									<option value='Regular'>Regular</option>
-									<option value='Part-time'>Part-time</option>
-							</Select>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Role</FormLabel>
-							<Input
-								onChange={handleChange}
-								value={update.role}
-								name="role"
-								placeholder="Role"
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Date Joined</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="date"
-								name="dj"
-								value={update.dj}
-								id=""
-								disabled='true'
-								/>
-						</FormControl>
+											<FormControl>
+												<FormLabel>Date Joined</FormLabel>
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													type="date"
+													name="dj"
+													value={update.dj}
+													id=""
+													disabled='true'
+													/>
+											</FormControl>
+										</div>
+										
+									</TabPanel>
+								</TabPanels>
+							</Tabs>
 					</DrawerBody>
 
 					<DrawerFooter>
@@ -321,176 +349,6 @@ const EmployeeRow = ({ e }) => {
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
-			{/* <Modal
-				initialFocusRef={employeeInitRef}
-				finalFocusRef={employeeFinalRef}
-				isOpen={isOpen}
-				onClose={onClose}
-				>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>Employee #{e.id}</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody pb={6}>
-						<FormControl>
-							<FormLabel>First name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="fn"
-								value={update.fn}
-								placeholder="First name"
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Middle name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="mn"
-								value={update.mn}
-								placeholder="Middle name"
-								/>
-						</FormControl>
-						
-						<FormControl mt={4}>
-							<FormLabel>Last name</FormLabel>
-							<Input
-								onChange={handleChange}
-								value={update.ln}
-								name="ln"
-								placeholder="Last name"
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Age</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="age"
-								value={update.age}
-								id=""
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Sex</FormLabel>
-							<Select 
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="sex"
-								value={update.sex}
-								id=""
-								>
-									<option value='Male'>Male</option>
-									<option value='Female'>Female</option>
-									<option value='Other'>Other</option>
-							</Select>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Civil Status</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cs"
-								value={update.cs}
-								id=""
-								>
-									<option value="Single">Single</option>
-									<option value="Married">Married</option>
-									<option value="Divorced">Divorced</option>
-									<option value="Widow">Widow</option>
-							</Select>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Birthday</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="date"
-								name="bday"
-								value={update.bday}
-								id=""
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Contact Number</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cn"
-								value={update.cn}
-								id=""
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Email Address</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="email"
-								name="email"
-								value={update.email}
-								id=""
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Contract Type</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="ct"
-								value={update.ct}
-								id=""
-								>
-									<option value='Regular'>Regular</option>
-									<option value='Part-time'>Part-time</option>
-							</Select>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Role</FormLabel>
-							<Input
-								onChange={handleChange}
-								value={update.role}
-								name="role"
-								placeholder="Role"
-								/>
-						</FormControl>
-
-						<FormControl mt={4}>
-							<FormLabel>Date Joined</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="date"
-								name="dj"
-								value={update.dj}
-								id=""
-								/>
-						</FormControl>
-					</ModalBody>
-
-					<ModalFooter>
-						<Button
-							onClick={updateEmployee}
-							colorScheme="yellow"
-							variant="outline"
-							mr={3}
-							>
-							Update
-						</Button>
-						<Button onClick={deleteEmployee} colorScheme="red">
-							Delete
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal> */}
 		</tr>
 	);
 };
