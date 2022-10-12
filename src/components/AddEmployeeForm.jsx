@@ -64,6 +64,16 @@ const AddEmployeeForm = () => {
 	const handleChange = async (e) => {
 		await getEmployees();
 		const { value, name } = e.target;
+		let cnPattern = /^(09|\+639)\d{8}$/
+		let cn = cnPattern.test(add.cn) ? 
+					add.cn :
+					false
+		if(cn==false)
+			document.querySelector('#addEmployee').setAttribute('disabled', true)
+		else
+			document.querySelector('#addEmployee').removeAttribute('disabled')
+
+		
 		setAdd({
 			...add,
 			[name]: value,
@@ -121,8 +131,6 @@ const AddEmployeeForm = () => {
 						})
 						.join(" ")
 				: add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length);
-	
-		
 		// data.LastName.split("").splice(0, 1).join("").toUpperCase() +
 		// data.LastName.split("").splice(1, data.LastName.length).join("");
 
@@ -178,9 +186,10 @@ const AddEmployeeForm = () => {
 				isOpen={isOpen}
 				onClose={onClose}
 				size='5xl'
+				
 			>
 				<ModalOverlay />
-				<ModalContent>
+				<ModalContent padding={5}>
 					<ModalHeader fontSize={50}>Add Employee</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
@@ -192,10 +201,11 @@ const AddEmployeeForm = () => {
 									name="fn"
 									ref={initialRef}
 									placeholder="First name"
+									required={true}
 								/>
 							</FormControl>
 
-						<FormControl mt={4}>
+						<FormControl>
 							<FormLabel>Middle name</FormLabel>
 							<Input
 								onChange={handleChange}
@@ -204,7 +214,7 @@ const AddEmployeeForm = () => {
 							/>
 						</FormControl>
 
-						<FormControl mt={4}>
+						<FormControl>
 							<FormLabel>Last name</FormLabel>
 							<Input
 								onChange={handleChange}
@@ -214,61 +224,61 @@ const AddEmployeeForm = () => {
 						</FormControl>
 						</div>
 
-						<div className="flex flex-row gap-3">
-						<FormControl mt={4}>
-							<FormLabel>Birthdate</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="date"
-								name="bday"
-								id=""
-							/>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Age</FormLabel>
-							<Input disabled name="age" value={add.age} placeholder="Age" />
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Sex</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="sex"
-								id=""
-							>
-								<option value="Male">Male</option>
-								<option value="Female">Female</option>
-								<option value="Other">Other</option>
-							</Select>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Civil Status</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cs"
-								id=""
-							>
-								<option default value="Single">
-									Single
-								</option>
-								<option value="Married">Married</option>
-								<option value="Divorced">Divorced</option>
-								<option value="Widow">Widow</option>
-							</Select>
-						</FormControl>
+						<div className="flex flex-row gap-3 mt-4">
+							<FormControl>
+								<FormLabel>Birthdate</FormLabel>
+								<Input
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									type="date"
+									name="bday"
+									id=""
+								/>
+							</FormControl>
+							<FormControl>
+								<FormLabel>Age</FormLabel>
+								<Input disabled name="age" value={add.age} placeholder="Age" />
+							</FormControl>
+							<FormControl>
+								<FormLabel>Sex</FormLabel>
+								<Select
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									name="sex"
+									id=""
+								>
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+									<option value="Other">Other</option>
+								</Select>
+							</FormControl>
+							<FormControl>
+								<FormLabel>Civil Status</FormLabel>
+								<Select
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									name="cs"
+									id=""
+								>
+									<option default value="Single">
+										Single
+									</option>
+									<option value="Married">Married</option>
+									<option value="Divorced">Divorced</option>
+									<option value="Widow">Widow</option>
+								</Select>
+							</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Contact Number</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cn"
-								id=""
-								placeholder="+639123456789"
-							/>
-						</FormControl>
+							<FormControl>
+								<FormLabel>Contact Number</FormLabel>
+								<Input
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									name="cn"
+									id=""
+									placeholder="+639123456789"
+								/>
+							</FormControl>
 						</div>
 						<div className="flex flex-row gap-3 mt-4">
 							<FormControl>
@@ -316,10 +326,10 @@ const AddEmployeeForm = () => {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button onClick={addEmployee} colorScheme="green" mr={3}>
+						<Button id={'addEmployee'} onClick={addEmployee} colorScheme="green" mr={3}>
 							Add
 						</Button>
-						<Button onClick={onClose}>Cancel</Button>
+						<Button id={'cancel'} onClick={onClose}>Cancel</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
