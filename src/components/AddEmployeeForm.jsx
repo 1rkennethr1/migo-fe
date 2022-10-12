@@ -56,7 +56,7 @@ const AddEmployeeForm = () => {
     fn: "",
     mn: "",
     ln: "",
-
+    ca: "",
     ccn: "", // city contact number
     pa: "", // provincial address
     pcn: "", //provincial contact number
@@ -102,7 +102,7 @@ const AddEmployeeForm = () => {
       ...add,
       [name]: value,
     });
-    if (name == "bday") {
+    if (name == "bdate") {
       setAdd({ ...add, [name]: value, age: calculateAge() });
     }
     if (name == "email") {
@@ -110,7 +110,7 @@ const AddEmployeeForm = () => {
     }
   };
   function calculateAge() {
-    let birthDate = new Date(add.bday);
+    let birthDate = new Date(add.bdate);
     let today = new Date();
 
     var years = today.getFullYear() - birthDate.getFullYear();
@@ -126,6 +126,7 @@ const AddEmployeeForm = () => {
     return years;
   }
   const addEmployee = async (e) => {
+    console.log(add);
     e.preventDefault();
     await getEmployees();
     // fn, mn, ln Uppercase first letter formatter
@@ -174,7 +175,7 @@ const AddEmployeeForm = () => {
         provincialAddress: add.pa,
         provincialContactNumber: add.pcn,
         numberOfDependents: add.nod,
-        civicClubAffliation: add.cca,
+        civicClubAffiliation: add.cca,
         religion: add.rel,
         bloodType: add.bt,
         age: add.age,
@@ -186,8 +187,8 @@ const AddEmployeeForm = () => {
         emailAddress: add.email,
         yearsOfExperience: add.yoe,
         contractType: add.ct,
-        positionApplied: add.pa,
-        positionCode: add.pc,
+        positionApplied: add.posApp,
+        positionCode: add.posCode,
         dateJoined: add.dj,
         emergencyName: add.en,
         emergencyAddress: add.ea,
@@ -220,8 +221,8 @@ const AddEmployeeForm = () => {
       email: "", //email
       yoe: "", //year of experience
       ct: "Regular", //contract type
-      pa: "",
-      pc: "",
+      posApp: "",
+      posCode: "",
       dj: "", //date joined
       en: "", //emergency name
       ea: "", //emergency address
@@ -377,7 +378,6 @@ const AddEmployeeForm = () => {
                 <Input
                   onChange={handleChange}
                   name="ca"
-                  ref={initialRef}
                   placeholder="Unit 1, Brgy. 2, City, Province"
                 />
               </FormControl>
@@ -405,7 +405,6 @@ const AddEmployeeForm = () => {
                 <Input
                   onChange={handleChange}
                   name="pa"
-                  ref={initialRef}
                   placeholder="Unit 1, Brgy. 2, City, Province"
                 />
               </FormControl>
