@@ -55,15 +55,31 @@ const AddEmployeeForm = () => {
 		fn: "",
 		mn: "",
 		ln: "",
-		age: "",
-		sex: "Male",
-		cs: "Single",
-		bday: "",
-		cn: "",
-		email: "",
-		ct: "Regular",
-		role: "",
-		dj: "",
+		city: "", //city address
+		ccn: "", // city contact number
+		pa: "", // provincial address
+		pcn: "", //provincial contact number
+		nod: "", //number of dependents
+		cca: "", //civic club affiliation
+		rel: "", //religion
+		bt: "", //bloodtype
+		sex: "Male", //
+		cs: "Single", //civil status
+		bdate: "", //birthdate
+		prof: "", //profession
+		cn: "", // contact number
+		email: "", //email
+		yoe:"", //year of experience
+		ct: "Regular", //contract type
+		pa: "",
+		pc: "",
+		dj: "", //date joined
+		en:"", //emergency name
+		ea:"", //emergency address
+		ercn: "", //emergency Residential contact number
+		eocn: "", //emergency office contact number
+		ecn: "", //emergency contact number
+		er: "", //emergency relationship
 	});
 	const validateEmail = (email) => {
 		return String(email)
@@ -75,10 +91,9 @@ const AddEmployeeForm = () => {
 	const handleChange = async (e) => {
 		await getEmployees();
 		const { value, name } = e.target;
-		let cnPattern = /^(09|\+639)\d{8}$/;
+		let cnPattern = /\d{9}$/;
 		let cn = cnPattern.test(add.cn) ? add.cn : false;
-		if (cn == false)
-			document.querySelector("#addEmployee").setAttribute("disabled", true);
+		if (cn == false) document.querySelector("#addEmployee").setAttribute("disabled", true);
 		else document.querySelector("#addEmployee").removeAttribute("disabled");
 
 		setAdd({
@@ -152,15 +167,32 @@ const AddEmployeeForm = () => {
 				firstName: fn,
 				middleName: mn,
 				lastName: ln,
+				cityAddress: add.ca,
+				cityContactNumber: add.ccn,
+				provincialAddress: add.pa,
+				provincialContactNumber: add.pcn,
+				numberOfDependents: add.nod,
+				civicClubAffliation: add.cca,
+				religion: add.rel,
+				bloodType: add.bt,
 				age: add.age,
 				sex: add.sex,
 				civilStatus: add.cs,
-				birthday: add.bday,
+				birthdate: add.bdate,
+				profession: add.prof,
 				contactNumber: add.cn,
 				emailAddress: add.email,
+				yearsOfExperience: add.yoe,
 				contractType: add.ct,
-				role: add.role,
+				positionApplied: add.pa,
+				positionCode: add.pc,
 				dateJoined: add.dj,
+				emergencyName: add.en,
+				emergencyAddress: add.ea,
+				emergencyResidentialContactNumber: add.ercn,
+				emergencyOfficeContactNumber: add.eocn,
+				emergencyContactNumber: add.ecn,
+				emergencyRelationship: add.er
 			},
 		});
 		await getEmployees();
@@ -170,15 +202,31 @@ const AddEmployeeForm = () => {
 			fn: "",
 			mn: "",
 			ln: "",
-			age: "",
-			sex: "Male",
-			cs: "",
-			bday: "",
-			cn: "",
-			email: "",
-			ct: "",
-			role: "",
-			dj: "",
+			city: "", //city address
+			ccn: "", // city contact number
+			pa: "", // provincial address
+			pcn: "", //provincial contact number
+			nod: "", //number of dependents
+			cca: "", //civic club affiliation
+			rel: "", //religion
+			bt: "", //bloodtype
+			sex: "Male", //
+			cs: "Single", //civil status
+			bdate: "", //birthdate
+			prof: "", //profession
+			cn: "", // contact number
+			email: "", //email
+			yoe:"", //year of experience
+			ct: "Regular", //contract type
+			pa: "",
+			pc: "",
+			dj: "", //date joined
+			en:"", //emergency name
+			ea:"", //emergency address
+			ercn: "", //emergency Residential contact number
+			eocn: "", //emergency office contact number
+			ecn: "", //emergency contact number
+			er: "", //emergency relationship
 		});
 		await getEmployees();
 	};
@@ -203,6 +251,7 @@ const AddEmployeeForm = () => {
 					<ModalHeader fontSize={50}>Add Employee</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
+						{/* name */}
 						<div className="flex flex-row gap-3">
 							<FormControl>
 								<FormLabel>First name</FormLabel>
@@ -233,7 +282,7 @@ const AddEmployeeForm = () => {
 								/>
 							</FormControl>
 						</div>
-
+					
 						<div className="flex flex-row gap-3 mt-4">
 							<FormControl>
 								<FormLabel>Birthdate</FormLabel>
@@ -249,7 +298,7 @@ const AddEmployeeForm = () => {
 								<FormLabel>Age</FormLabel>
 								<Input disabled name="age" value={add.age} placeholder="Age" />
 							</FormControl>
-							<FormControl>
+							<FormControl w={500}>
 								<FormLabel>Sex</FormLabel>
 								<Select
 									onChange={handleChange}
@@ -263,7 +312,7 @@ const AddEmployeeForm = () => {
 								</Select>
 							</FormControl>
 
-							<FormControl>
+							<FormControl w={600}>
 								<FormLabel>Civil Status</FormLabel>
 								<Select
 									onChange={handleChange}
@@ -296,6 +345,63 @@ const AddEmployeeForm = () => {
 								</InputGroup>
 							</FormControl>
 						</div>
+
+						<div className="flex flex-row gap-3 mt-4">
+							<FormControl>
+								<FormLabel>City Address</FormLabel>
+								<Input
+									onChange={handleChange}
+									name="ca"
+									ref={initialRef}
+									placeholder="Unit 1, Brgy. 2, City, Province"
+								/>
+							</FormControl>
+							
+							<FormControl>
+								<FormLabel>City Contact Number</FormLabel>
+
+								<InputGroup>
+									<InputLeftAddon children="+63" />
+									<Input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="ccn"
+										id=""
+										type="tel"
+										placeholder="9341563456"
+									/>
+								</InputGroup>
+							</FormControl>
+						</div>
+						
+						<div className="flex flex-row gap-3 mt-4">
+							<FormControl>
+								<FormLabel>Provincial Address</FormLabel>
+								<Input
+									onChange={handleChange}
+									name="pa"
+									ref={initialRef}
+									placeholder="Unit 1, Brgy. 2, City, Province"
+								/>
+							</FormControl>
+							
+							<FormControl>
+								<FormLabel>Provincial Contact Number</FormLabel>
+
+								<InputGroup>
+									<InputLeftAddon children="+63" />
+									<Input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="pcn"
+										id=""
+										type="tel"
+										placeholder="9341563456"
+									/>
+								</InputGroup>
+							</FormControl>
+						</div>
+
 						<div className="flex flex-row gap-3 mt-4">
 							<FormControl>
 								<FormLabel>Email Address</FormLabel>
@@ -361,6 +467,7 @@ const AddEmployeeForm = () => {
 								/>
 							</FormControl>
 						</div>
+						
 					</ModalBody>
 
 					<ModalFooter>
