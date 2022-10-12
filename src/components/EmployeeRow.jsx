@@ -9,6 +9,7 @@ import {
 	InputGroup,
 	InputLeftAddon,
 	InputRightAddon,
+	InputRightElement,
 	Drawer,
 	DrawerBody,
 	DrawerContent,
@@ -28,7 +29,8 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useStateContext } from "../lib/context";
-
+import { MdClose } from "react-icons/md";
+import { BsCheck } from "react-icons/bs";
 import { motion } from "framer-motion";
 import def from "../assets/default.png";
 import dhbg from "../assets/drawerheader.png";
@@ -39,13 +41,14 @@ const EmployeeRow = ({ e }) => {
 	// const employeeInitRef = React.useRef(null);
 	// const employeeFinalRef = React.useRef(null);
 	const btnRef = React.useRef();
+	const [isEmailValid, setIsEmailValid] = useState();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [update, setUpdate] = useState({
 		fn: e.firstName,
 		mn: e.middleName,
 		ln: e.lastName,
 		age: e.age,
-		city: e.cityAddress, //city address
+		ca: e.cityAddress, //city address
 		ccn: e.cityContactNumber, // city contact number
 		pa: e.provincialAddress, // provincial address
 		pcn: e.provincialContactNumber, //provincial contact number
@@ -61,8 +64,8 @@ const EmployeeRow = ({ e }) => {
 		email: e.emailAddress, //email
 		yoe: e.yearsOfExperience, //years of experience
 		ct: e.contractType, //contract type
-		pa: e.positionApplied,
-		pc: e.positionCode,
+		posApp: e.positionApplied,
+		posCode: e.positionCode,
 		dj: e.dateJoined, //date joined
 		en: e.emergencyName, //emergency name
 		ea: e.emergencyAddress, //emergency address
@@ -71,12 +74,22 @@ const EmployeeRow = ({ e }) => {
 		ecn: e.emergencyContactNumber, //emergency contact number
 		er: e.emergencyRelationship, //emergency relationship
 	});
+	const validateEmail = (email) => {
+		return String(email)
+		  .toLowerCase()
+		  .match(
+			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		  );
+	  };
 	const handleChange = (e) => {
 		const { value, name } = e.target;
 		setUpdate({
 			...update,
 			[name]: value,
 		});
+		if (name == "email") {
+			validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
+		}
 	};
 
 	const updateEmployee = async (event) => {
@@ -226,7 +239,7 @@ const EmployeeRow = ({ e }) => {
 						/>
 					</div>
 					<DrawerHeader
-						className="leading-4 flex flex-row items-center gap-5 mb-10"
+						className="leading-4 flex flex-row items-center gap-5 mb-10 z-20"
 						paddingTop={8}
 					>
 						<img className="absolute -z-10 left-0" src={dhbg} alt="" />
@@ -253,7 +266,7 @@ const EmployeeRow = ({ e }) => {
 
 					<DrawerBody>
 						<Tabs colorScheme={"red"}>
-							<TabList className="fixed z-10 bg-white w-[100%] pt-5 -mt-3">
+							<TabList className="fixed z-10 bg-white w-[92%] pt-5 -mt-3">
 								<Tab fontWeight={500}>DETAILS</Tab>
 								<Tab fontWeight={500}>PERFORMANCE</Tab>
 							</TabList>
@@ -301,14 +314,36 @@ const EmployeeRow = ({ e }) => {
 
 										<FormControl>
 											<FormLabel>Email Address</FormLabel>
+
+											<InputGroup>
 											<Input
+												focusBorderColor={isEmailValid ? "green.500" : "red.300"}
+												isInvalid={isEmailValid ? false : true}
+												errorBorderColor="red.300"
 												onChange={handleChange}
 												className="border px-3 py-2 rounded-lg w-full"
 												type="email"
 												name="email"
-												value={update.email}
 												id=""
+												value={update.email}
 											/>
+											<InputRightElement
+												children={
+												isEmailValid ? (
+													<div className="text-2xl text-green-500">
+													<BsCheck />
+													</div>
+												) : (
+													<div className="text-2xl text-red-500">
+													<MdClose />
+													</div>
+												)
+												}
+											/>
+											</InputGroup>
+											{isEmailValid ? null : (
+											<p className="text-red-500 text-xs pt-3">Invalid E-mail</p>
+											)}
 										</FormControl>
 									</div>
 
@@ -324,6 +359,7 @@ const EmployeeRow = ({ e }) => {
 													id=""
 													type="tel"
 													placeholder="9123456789"
+													value={update.cn}
 												/>
 											</InputGroup>
 										</FormControl>
@@ -335,7 +371,7 @@ const EmployeeRow = ({ e }) => {
 												className="border px-3 py-2 rounded-lg w-full"
 												type="date"
 												name="bday"
-												value={update.bday}
+												value={update.bdate}
 												id=""
 											/>
 										</FormControl>
@@ -514,7 +550,7 @@ const EmployeeRow = ({ e }) => {
 										onChange={handleChange}
 										name="posApp"
 										placeholder="Web Developer"
-										value={update.pa}
+										value={update.posApp}
 										/>
 									</FormControl>
 									<FormControl>
@@ -523,7 +559,7 @@ const EmployeeRow = ({ e }) => {
 										onChange={handleChange}
 										name="posCode"
 										placeholder="I-69"
-										value={update.pc}
+										value={update.posCode}
 										/>
 									</FormControl>
 									<FormControl>
