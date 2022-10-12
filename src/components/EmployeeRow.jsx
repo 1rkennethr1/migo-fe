@@ -6,6 +6,8 @@ import {
 	FormControl,
 	FormLabel,
 	Input,
+	InputGroup,
+	InputLeftAddon,
 	Drawer,
 	DrawerBody,
 	DrawerContent,
@@ -42,14 +44,31 @@ const EmployeeRow = ({ e }) => {
 		mn: e.middleName,
 		ln: e.lastName,
 		age: e.age,
-		sex: e.sex,
-		cs: e.civilStatus,
-		bday: e.birthday,
-		cn: e.contactNumber,
-		email: e.emailAddress,
-		ct: e.contractType,
-		role: e.role,
-		dj: e.dateJoined,
+		city: e.cityAddress, //city address
+		ccn: e.cityContactNumber, // city contact number
+		pa: e.provincialAddress, // provincial address
+		pcn: e.provincialContactNumber, //provincial contact number
+		nod: e.numberOfDependents, //number of dependents
+		cca: e.civicClubAffiliation, //civic club affiliation
+		rel: e.religion, //religion
+		bt: e.bloodType, //bloodtype
+		sex: e.sex, //
+		cs: e.civilStatus, //civil status
+		bdate: e.birthdate, //birthdate
+		prof: e.profession, //profession
+		cn: e.contactNumber,// contact number
+		email: e.emailAddress, //email
+		yoe: e.yearsOfExperience, //years of experience
+		ct: e.contractType, //contract type
+		pa: e.positionApplied,
+		pc: e.positionCode,
+		dj: e.dateJoined, //date joined
+		en: e.emergencyName, //emergency name
+		ea: e.emergencyAddress, //emergency address
+		ercn: e.emergencyResidentialContactNumber, //emergency Residential contact number
+		eocn: e.emergencyOfficeContactNumber, //emergency office contact number
+		ecn: e.emergencyContactNumber, //emergency contact number
+		er: e.emergencyRelationship, //emergency relationship
 	});
 	const handleChange = (e) => {
 		const { value, name } = e.target;
@@ -100,15 +119,32 @@ const EmployeeRow = ({ e }) => {
 				firstName: fn,
 				middleName: mn,
 				lastName: ln,
+				cityAddress: update.ca,
+				cityContactNumber: update.ccn,
+				provincialAddress: update.pa,
+				provincialContactNumber: update.pcn,
+				numberOfDependents: update.nod,
+				civicClubAffliation: update.cca,
+				religion: update.rel,
+				bloodType: update.bt,
 				age: update.age,
 				sex: update.sex,
 				civilStatus: update.cs,
-				birthday: update.bday,
+				birthdate: update.bdate,
+				profession: update.prof,
 				contactNumber: update.cn,
 				emailAddress: update.email,
+				yearsOfExperience: update.yoe,
 				contractType: update.ct,
-				role: update.role,
+				positionApplied: update.pa,
+				positionCode: update.pc,
 				dateJoined: update.dj,
+				emergencyName: update.en,
+				emergencyAddress: update.ea,
+				emergencyResidentialContactNumber: update.ercn,
+				emergencyOfficeContactNumber: update.eocn,
+				emergencyContactNumber: update.ecn,
+				emergencyRelationship: update.er
 			},
 		});
 		await getEmployees();
@@ -274,16 +310,21 @@ const EmployeeRow = ({ e }) => {
 											/>
 										</FormControl>
 									</div>
+
 									<div className="flex flex-row gap-5 mt-4">
 										<FormControl>
 											<FormLabel>Contact Number</FormLabel>
-											<Input
-												onChange={handleChange}
-												className="border px-3 py-2 rounded-lg w-full"
-												name="cn"
-												value={update.cn}
-												id=""
-											/>
+											<InputGroup>
+												<InputLeftAddon children="+63" />
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="cn"
+													id=""
+													type="tel"
+													placeholder="9123456789"
+												/>
+											</InputGroup>
 										</FormControl>
 
 										<FormControl>
@@ -297,7 +338,8 @@ const EmployeeRow = ({ e }) => {
 												id=""
 											/>
 										</FormControl>
-										<FormControl>
+
+										<FormControl w={300}>
 											<FormLabel>Age</FormLabel>
 											<Input
 												onChange={handleChange}
@@ -321,6 +363,116 @@ const EmployeeRow = ({ e }) => {
 												<option value="Female">Female</option>
 												<option value="Other">Other</option>
 											</Select>
+										</FormControl>
+									</div>
+
+									<div className="flex flex-row gap-5 mt-4">
+										<FormControl>
+											<FormLabel>City Address</FormLabel>
+											<Input
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												name="ca"
+												value={update.ca}
+												placeholder="Unit 1, Brgy. 2, City, Province"
+												id=""
+											>
+											</Input>
+										</FormControl>
+
+										<FormControl>
+											<FormLabel>City Contact Number</FormLabel>
+											<InputGroup>
+												<InputLeftAddon children="+63" />
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="ccn"
+													id=""
+													value={update.ccn}
+													type="tel"
+													placeholder="9123456789"
+												/>
+											</InputGroup>
+										</FormControl>
+									</div>
+
+									<div className="flex flex-row gap-5 mt-4">
+										<FormControl>
+											<FormLabel>Provincial Address</FormLabel>
+											<Input
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												name="pa"
+												value={update.pa}
+												placeholder="Unit 1, Brgy. 2, City, Province"
+												id=""
+											>
+											</Input>
+										</FormControl>
+
+										<FormControl>
+											<FormLabel>Provincial Contact Number</FormLabel>
+											<InputGroup>
+												<InputLeftAddon children="+63" />
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="pcn"
+													id=""
+													value={update.pcn}
+													type="tel"
+													placeholder="9123456789"
+												/>
+											</InputGroup>
+										</FormControl>
+									</div>
+
+									<div className="flex flex-row items-end gap-5 mt-4">
+										<FormControl>
+											<FormLabel>Number of Dependents</FormLabel>
+											<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="nod"
+													id=""
+													value={update.nod}
+													type="text"
+												/>
+										</FormControl>
+										<FormControl>
+											<FormLabel>Civic Club Affiliation</FormLabel>
+											<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="cca"
+													id=""
+													value={update.cca}
+													type="text"
+												/>
+										</FormControl>
+										<FormControl>
+											<FormLabel>Religion</FormLabel>
+											<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="rel"
+													id=""
+													value={update.rel}
+													placeholder="Roman Catholic"
+												/>
+										</FormControl>
+										<FormControl>
+											<FormLabel>Number of Dependents</FormLabel>
+											<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="nod"
+													id=""
+													value={update.nod}
+													type="tel"
+													placeholder="9123456789"
+												/>
 										</FormControl>
 									</div>
 
