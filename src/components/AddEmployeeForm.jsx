@@ -56,7 +56,7 @@ const AddEmployeeForm = () => {
     fn: "",
     mn: "",
     ln: "",
-    city: "", //city address
+
     ccn: "", // city contact number
     pa: "", // provincial address
     pcn: "", //provincial contact number
@@ -297,7 +297,7 @@ const AddEmployeeForm = () => {
                   onChange={handleChange}
                   className="border px-3 py-2 rounded-lg w-full"
                   type="date"
-                  name="bday"
+                  name="bdate"
                   id=""
                 />
               </FormControl>
@@ -335,24 +335,42 @@ const AddEmployeeForm = () => {
                   <option value="Widow">Widow</option>
                 </Select>
               </FormControl>
-
-              <FormControl>
-                <FormLabel>Contact Number</FormLabel>
-
-                <InputGroup>
-                  <InputLeftAddon children="+63" />
-                  <Input
-                    onChange={handleChange}
-                    className="border px-3 py-2 rounded-lg w-full"
-                    name="cn"
-                    id=""
-                    type="tel"
-                    placeholder="9123456789"
-                  />
-                </InputGroup>
+              <FormControl width={"60%"}>
+                <FormLabel>Blood Type</FormLabel>
+                <Select
+                  onChange={handleChange}
+                  className="border px-3  rounded-lg w-full"
+                  name="bt"
+                  id=""
+                >
+                  <option selected value="A+">
+                    A+
+                  </option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </Select>
               </FormControl>
             </div>
+            <FormControl mt={4} width={"50%"}>
+              <FormLabel>Contact Number</FormLabel>
 
+              <InputGroup>
+                <InputLeftAddon children="+63" />
+                <Input
+                  onChange={handleChange}
+                  className="border px-3 py-2 rounded-lg w-full"
+                  name="cn"
+                  id=""
+                  type="number"
+                  placeholder="9341563456"
+                />
+              </InputGroup>
+            </FormControl>
             <div className="flex flex-row gap-3 mt-4">
               <FormControl>
                 <FormLabel>City Address</FormLabel>
@@ -501,27 +519,15 @@ const AddEmployeeForm = () => {
               </FormControl>
             </div>
             <div className="flex flex-row gap-3 mt-4">
-              <FormControl width={"20%"}>
-                <FormLabel>Blood Type</FormLabel>
-                <Select
+              <FormControl width={"40%"}>
+                <FormLabel>Profession</FormLabel>
+                <Input
                   onChange={handleChange}
-                  className="border px-3  rounded-lg w-full"
-                  name="bt"
-                  id=""
-                >
-                  <option selected value="A+">
-                    A+
-                  </option>
-                  <option value="A-">A-</option>
-                  <option value="B+">B+</option>
-                  <option value="B-">B-</option>
-                  <option value="O+">O+</option>
-                  <option value="O-">O-</option>
-                  <option value="AB+">AB+</option>
-                  <option value="AB-">AB-</option>
-                </Select>
+                  name="prof"
+                  placeholder="Information Technology"
+                />
               </FormControl>
-              <FormControl width={"20%"}>
+              <FormControl width={"30%"}>
                 <FormLabel>Years of Experience</FormLabel>
                 <InputGroup>
                   <Input onChange={handleChange} name="yoe" placeholder="3" />
