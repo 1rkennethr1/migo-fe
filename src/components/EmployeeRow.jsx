@@ -305,6 +305,7 @@ const EmployeeRow = ({ e }) => {
 												name="age"
 												value={update.age}
 												id=""
+												disabled={true}
 											/>
 										</FormControl>
 										<FormControl>
@@ -375,7 +376,6 @@ const EmployeeRow = ({ e }) => {
 												name="dj"
 												value={update.dj}
 												id=""
-												disabled="true"
 											/>
 										</FormControl>
 									</div>

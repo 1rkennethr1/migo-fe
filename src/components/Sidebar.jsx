@@ -91,7 +91,7 @@ const Sidebar = () => {
 					width={120}
 					height={120}
 					alt=""
-					srcset=""
+					srcSet=""
 					className="mb-8 self-center ml-2"
 				/>
 				<h1 className="text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap">
@@ -99,7 +99,7 @@ const Sidebar = () => {
 				</h1>
 				{tabs.map((e) => {
 					return (
-						<div className="relative dark:text-white text-black">
+						<div key={e.label} className="relative dark:text-white text-black">
 							<div
 								className={`transition duration-300 ${
 									e === selectedTab
