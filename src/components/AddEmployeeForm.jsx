@@ -186,6 +186,7 @@ const AddEmployeeForm = () => {
 							<FormLabel>First name</FormLabel>
 							<Input
 								onChange={handleChange}
+								value={add.fn}
 								name="fn"
 								ref={initialRef}
 								placeholder="First name"
@@ -196,6 +197,7 @@ const AddEmployeeForm = () => {
 							<FormLabel>Middle name</FormLabel>
 							<Input
 								onChange={handleChange}
+								value={add.mn}
 								name="mn"
 								placeholder="Middle name"
 							/>
@@ -204,6 +206,7 @@ const AddEmployeeForm = () => {
 						<FormControl mt={4}>
 							<FormLabel>Last name</FormLabel>
 							<Input
+								value={add.ln}
 								onChange={handleChange}
 								name="ln"
 								placeholder="Last name"
