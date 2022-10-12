@@ -92,11 +92,11 @@ const AddEmployeeForm = () => {
   const handleChange = async (e) => {
     await getEmployees();
     const { value, name } = e.target;
-    let cnPattern = /\d{9}$/;
-    let cn = cnPattern.test(add.cn) ? add.cn : false;
-    if (cn == false)
-      document.querySelector("#addEmployee").setAttribute("disabled", true);
-    else document.querySelector("#addEmployee").removeAttribute("disabled");
+    // let cnPattern = /\d{10}$/;
+    // let cn = cnPattern.test(add.cn) ? add.cn : false;
+    // if (cn == false)
+    //   document.querySelector("#addEmployee").setAttribute("disabled", true);
+    // else document.querySelector("#addEmployee").removeAttribute("disabled");
 
     setAdd({
       ...add,
@@ -561,6 +561,86 @@ const AddEmployeeForm = () => {
               Emergency Contact
             </h2>
             <hr className=" pb-6" />
+            <div className="flex flex-row gap-3 mt-4">
+              <FormControl>
+                <FormLabel>Emergency Name</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  className="border px-3 py-2 rounded-lg w-full"
+                  name="en"
+                  id=""
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Emergency Address</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  className="border px-3 py-2 rounded-lg w-full"
+                  name="ea"
+                  id=""
+                  placeholder="Unit 1, Brgy. 2, City, Province"
+                />
+              </FormControl>
+            </div>
+            <div className="flex flex-row gap-3 mt-4">
+              <FormControl>
+                <FormLabel>Emergency Residential Contact Number</FormLabel>
+
+                <InputGroup>
+                  <InputLeftAddon children="+63" />
+                  <Input
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    name="ercn"
+                    id=""
+                    type="tel"
+                    placeholder="9123456789"
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Emergency Residential Office Number</FormLabel>
+
+                <InputGroup>
+                  <InputLeftAddon children="+63" />
+                  <Input
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    name="eocn"
+                    id=""
+                    type="tel"
+                    placeholder="9123456789"
+                  />
+                </InputGroup>
+              </FormControl>
+            </div>
+            <div className="flex flex-row gap-3 mt-4">
+              <FormControl>
+                <FormLabel>Emergency Contact Number</FormLabel>
+
+                <InputGroup>
+                  <InputLeftAddon children="+63" />
+                  <Input
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg w-full"
+                    name="ecn"
+                    id=""
+                    type="tel"
+                    placeholder="9123456789"
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Emergency Relationship</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  className="border px-3 py-2 rounded-lg w-full"
+                  name="er"
+                  id=""
+                  placeholder="Wife"
+                />
+              </FormControl>
+            </div>
           </ModalBody>
 
           <ModalFooter>
