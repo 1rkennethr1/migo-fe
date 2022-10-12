@@ -124,7 +124,7 @@ const EmployeeRow = ({ e }) => {
 	};
 	const deleteEmployee = async (event) => {
 		event.preventDefault();
-		const url = `https://localhost:7259/api/Employee/${e.id}`;
+		const url = `https://localhost:7241/Employee/${e.id}`;
 		const res = await fetch(url, {
 			method: "DELETE",
 		});
