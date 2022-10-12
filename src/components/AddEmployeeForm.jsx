@@ -102,7 +102,7 @@ const AddEmployeeForm = () => {
       ...add,
       [name]: value,
     });
-    if (name == "bday") {
+    if (name == "bdate") {
       setAdd({ ...add, [name]: value, age: calculateAge() });
     }
     if (name == "email") {
@@ -110,7 +110,7 @@ const AddEmployeeForm = () => {
     }
   };
   function calculateAge() {
-    let birthDate = new Date(add.bday);
+    let birthDate = new Date(add.bdate);
     let today = new Date();
 
     var years = today.getFullYear() - birthDate.getFullYear();
@@ -378,7 +378,6 @@ const AddEmployeeForm = () => {
                 <Input
                   onChange={handleChange}
                   name="ca"
-                  ref={initialRef}
                   placeholder="Unit 1, Brgy. 2, City, Province"
                 />
               </FormControl>
@@ -406,7 +405,6 @@ const AddEmployeeForm = () => {
                 <Input
                   onChange={handleChange}
                   name="pa"
-                  ref={initialRef}
                   placeholder="Unit 1, Brgy. 2, City, Province"
                 />
               </FormControl>
