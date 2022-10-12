@@ -137,8 +137,8 @@ const EmployeeRow = ({ e }) => {
 				emailAddress: update.email,
 				yearsOfExperience: update.yoe,
 				contractType: update.ct,
-				positionApplied: update.pa,
-				positionCode: update.pc,
+				positionApplied: update.posApp,
+				positionCode: update.posCode,
 				dateJoined: update.dj,
 				emergencyName: update.en,
 				emergencyAddress: update.ea,
@@ -198,7 +198,7 @@ const EmployeeRow = ({ e }) => {
 			</td>
 			<td className="p-2 whitespace-nowrap">
 				<div className="text-left transition duration-500 text-black dark:text-white ">
-					{e.role}
+					{e.positionApplied}
 				</div>
 			</td>
 			<td className="p-2 whitespace-nowrap">
@@ -244,7 +244,7 @@ const EmployeeRow = ({ e }) => {
 								{update.fn} {update.ln}
 							</h1>
 							<h6 className="font-light text-md">
-								{update.role}
+								{update.pa}
 								{"\n"}
 							</h6>
 							<small className="font-light text-sm">{update.email}</small>
@@ -571,12 +571,12 @@ const EmployeeRow = ({ e }) => {
 
 										<div className="flex flex-row gap-5 mt-4">
 											<FormControl>
-												<FormLabel>Role</FormLabel>
+												<FormLabel>Profession</FormLabel>
 												<Input
 													onChange={handleChange}
-													value={update.role}
-													name="role"
-													placeholder="Role"
+													value={update.prof}
+													name="prof"
+													placeholder="Profession"
 												/>
 											</FormControl>
 
@@ -595,7 +595,92 @@ const EmployeeRow = ({ e }) => {
 										<h2 className=" pt-10 pb-4 text-2xl font-semibold text-[#383838]">
 											Emergency Contact
 										</h2>
-										
+										<div className="flex flex-row gap-3 mt-4">
+											<FormControl>
+												<FormLabel>Emergency Name</FormLabel>
+												<Input
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												name="en"
+												id=""
+												value={update.en}
+												/>
+											</FormControl>
+											<FormControl>
+												<FormLabel>Emergency Address</FormLabel>
+												<Input
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												name="ea"
+												id=""
+												placeholder="Unit 1, Brgy. 2, City, Province"
+												value={update.ea}
+												/>
+											</FormControl>
+											</div>
+											<div className="flex flex-row gap-3 mt-4">
+											<FormControl>
+												<FormLabel>Emergency Residential Contact Number</FormLabel>
+
+												<InputGroup>
+												<InputLeftAddon children="+63" />
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="ercn"
+													id=""
+													type="tel"
+													placeholder="9123456789"
+													value={update.ercn}
+												/>
+												</InputGroup>
+											</FormControl>
+											<FormControl>
+												<FormLabel>Emergency Residential Office Number</FormLabel>
+
+												<InputGroup>
+												<InputLeftAddon children="+63" />
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="eocn"
+													id=""
+													type="tel"
+													placeholder="9123456789"
+													value={update.eocn}
+												/>
+												</InputGroup>
+											</FormControl>
+											</div>
+											<div className="flex flex-row gap-3 mt-4">
+											<FormControl>
+												<FormLabel>Emergency Contact Number</FormLabel>
+
+												<InputGroup>
+												<InputLeftAddon children="+63" />
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="ecn"
+													id=""
+													type="tel"
+													placeholder="9123456789"
+													value={update.ecn}
+												/>
+												</InputGroup>
+											</FormControl>
+											<FormControl>
+												<FormLabel>Emergency Relationship</FormLabel>
+												<Input
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												name="er"
+												id=""
+												placeholder="Wife"
+												value={update.er}
+												/>
+											</FormControl>
+											</div>
 									<hr className=" pb-6" />
 								</TabPanel>
 							</TabPanels>
