@@ -8,6 +8,9 @@ import {
 	FormControl,
 	FormLabel,
 	Input,
+	InputGroup,
+	InputLeftAddon,
+	InputRightElement,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
@@ -22,7 +25,8 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import { useStateContext } from "../lib/context";
-
+import { MdClose } from "react-icons/md";
+import { BsCheck } from "react-icons/bs";
 const AddEmployeeForm = () => {
 	const month = new Date().getMonth();
 	const day = new Date().getDay();
@@ -71,16 +75,12 @@ const AddEmployeeForm = () => {
 	const handleChange = async (e) => {
 		await getEmployees();
 		const { value, name } = e.target;
-		let cnPattern = /^(09|\+639)\d{8}$/
-		let cn = cnPattern.test(add.cn) ? 
-					add.cn :
-					false
-		if(cn==false)
-			document.querySelector('#addEmployee').setAttribute('disabled', true)
-		else
-			document.querySelector('#addEmployee').removeAttribute('disabled')
+		let cnPattern = /^(09|\+639)\d{8}$/;
+		let cn = cnPattern.test(add.cn) ? add.cn : false;
+		if (cn == false)
+			document.querySelector("#addEmployee").setAttribute("disabled", true);
+		else document.querySelector("#addEmployee").removeAttribute("disabled");
 
-		
 		setAdd({
 			...add,
 			[name]: value,
@@ -196,9 +196,7 @@ const AddEmployeeForm = () => {
 				finalFocusRef={finalRef}
 				isOpen={isOpen}
 				onClose={onClose}
-				size='5xl'
-				
-
+				size="5xl"
 			>
 				<ModalOverlay />
 				<ModalContent padding={5}>
@@ -217,29 +215,27 @@ const AddEmployeeForm = () => {
 								/>
 							</FormControl>
 
+							<FormControl>
+								<FormLabel>Middle name</FormLabel>
+								<Input
+									onChange={handleChange}
+									name="mn"
+									placeholder="Middle name"
+								/>
+							</FormControl>
 
-						<FormControl>
-							<FormLabel>Middle name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="mn"
-								placeholder="Middle name"
-							/>
-						</FormControl>
-
-						<FormControl>
-							<FormLabel>Last name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="ln"
-								placeholder="Last name"
-							/>
-						</FormControl>
+							<FormControl>
+								<FormLabel>Last name</FormLabel>
+								<Input
+									onChange={handleChange}
+									name="ln"
+									placeholder="Last name"
+								/>
+							</FormControl>
 						</div>
 
 						<div className="flex flex-row gap-3 mt-4">
 							<FormControl>
-
 								<FormLabel>Birthdate</FormLabel>
 								<Input
 									onChange={handleChange}
@@ -249,13 +245,11 @@ const AddEmployeeForm = () => {
 									id=""
 								/>
 							</FormControl>
-
 							<FormControl>
 								<FormLabel>Age</FormLabel>
 								<Input disabled name="age" value={add.age} placeholder="Age" />
 							</FormControl>
 							<FormControl>
-
 								<FormLabel>Sex</FormLabel>
 								<Select
 									onChange={handleChange}
@@ -270,7 +264,6 @@ const AddEmployeeForm = () => {
 							</FormControl>
 
 							<FormControl>
-
 								<FormLabel>Civil Status</FormLabel>
 								<Select
 									onChange={handleChange}
@@ -287,33 +280,51 @@ const AddEmployeeForm = () => {
 								</Select>
 							</FormControl>
 
-
 							<FormControl>
-
 								<FormLabel>Contact Number</FormLabel>
-								<Input
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									name="cn"
-									id=""
-									placeholder="+639123456789"
-								/>
+
+								<InputGroup>
+									<InputLeftAddon children="+63" />
+									<Input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="cn"
+										id=""
+										type="tel"
+										placeholder="9123456789"
+									/>
+								</InputGroup>
 							</FormControl>
 						</div>
 						<div className="flex flex-row gap-3 mt-4">
 							<FormControl>
 								<FormLabel>Email Address</FormLabel>
 
-								<Input
-									focusBorderColor={isEmailValid ? "green.500" : "red.300"}
-									isInvalid={isEmailValid ? false : true}
-									errorBorderColor="red.300"
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									type="email"
-									name="email"
-									id=""
-								/>
+								<InputGroup>
+									<Input
+										focusBorderColor={isEmailValid ? "green.500" : "red.300"}
+										isInvalid={isEmailValid ? false : true}
+										errorBorderColor="red.300"
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										type="email"
+										name="email"
+										id=""
+									/>
+									<InputRightElement
+										children={
+											isEmailValid ? (
+												<div className="text-2xl text-green-500">
+													<BsCheck />
+												</div>
+											) : (
+												<div className="text-2xl text-red-500">
+													<MdClose />
+												</div>
+											)
+										}
+									/>
+								</InputGroup>
 								{isEmailValid ? null : (
 									<p className="text-red-500 text-xs pt-3">Invalid E-mail</p>
 								)}
@@ -353,10 +364,17 @@ const AddEmployeeForm = () => {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button id={'addEmployee'} onClick={addEmployee} colorScheme="green" mr={3}>
+						<Button
+							id={"addEmployee"}
+							onClick={addEmployee}
+							colorScheme="green"
+							mr={3}
+						>
 							Add
 						</Button>
-						<Button id={'cancel'} onClick={onClose}>Cancel</Button>
+						<Button id={"cancel"} onClick={onClose}>
+							Cancel
+						</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
