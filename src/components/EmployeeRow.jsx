@@ -8,6 +8,7 @@ import {
 	Input,
 	InputGroup,
 	InputLeftAddon,
+	InputRightAddon,
 	Drawer,
 	DrawerBody,
 	DrawerContent,
@@ -430,7 +431,7 @@ const EmployeeRow = ({ e }) => {
 
 									<div className="flex flex-row items-end gap-5 mt-4">
 										<FormControl>
-											<FormLabel>Number of Dependents</FormLabel>
+											<FormLabel>No. of Dependents</FormLabel>
 											<Input
 													onChange={handleChange}
 													className="border px-3 py-2 rounded-lg w-full"
@@ -453,84 +454,149 @@ const EmployeeRow = ({ e }) => {
 										</FormControl>
 										<FormControl>
 											<FormLabel>Religion</FormLabel>
-											<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="rel"
-													id=""
-													value={update.rel}
-													placeholder="Roman Catholic"
-												/>
-										</FormControl>
-										<FormControl>
-											<FormLabel>Number of Dependents</FormLabel>
-											<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="nod"
-													id=""
-													value={update.nod}
-													type="tel"
-													placeholder="9123456789"
-												/>
-										</FormControl>
-									</div>
-
-									<div className="flex flex-row gap-5 mt-4">
-										<FormControl>
-											<FormLabel>Civil Status</FormLabel>
 											<Select
 												onChange={handleChange}
-												className="border px-3 py-2 rounded-lg w-full"
-												name="cs"
-												value={update.cs}
+												className="border px-3  rounded-lg w-full"
+												name="rel"
 												id=""
-											>
-												<option value="Single">Single</option>
-												<option value="Married">Married</option>
-												<option value="Divorced">Divorced</option>
-												<option value="Widow">Widow</option>
-											</Select>
-										</FormControl>
-
-										<FormControl>
-											<FormLabel>Contract Type</FormLabel>
-											<Select
-												onChange={handleChange}
-												className="border px-3 py-2 rounded-lg w-full"
-												name="ct"
-												value={update.ct}
-												id=""
-											>
-												<option value="Regular">Regular</option>
-												<option value="Part-time">Part-time</option>
+												value={update.rel}
+												>
+												<option selected value="Roman Catholic">
+													Roman Catholic
+												</option>
+												<option value="Muslim">Muslim</option>
+												<option value="Iglesia Ni Cristo">Iglesia Ni Cristo</option>
+												<option value="Protestant">Protestant</option>
+												<option value="Jehova's Witness">Jehova's Witness</option>
+												<option value="Buddhist">Buddhist</option>
+												<option value="Agnostic">Agnostic</option>
+												<option value="Atheist">Atheist</option>
 											</Select>
 										</FormControl>
 									</div>
-
+									
 									<div className="flex flex-row gap-5 mt-4">
-										<FormControl>
-											<FormLabel>Role</FormLabel>
-											<Input
+										<FormControl width={"30%"}>
+											<FormLabel>Blood Type</FormLabel>
+											<Select
 												onChange={handleChange}
-												value={update.role}
-												name="role"
-												placeholder="Role"
-											/>
-										</FormControl>
-
-										<FormControl>
-											<FormLabel>Date Joined</FormLabel>
-											<Input
-												onChange={handleChange}
-												className="border px-3 py-2 rounded-lg w-full"
-												type="date"
-												name="dj"
-												value={update.dj}
+												className="border px-3  rounded-lg w-full"
+												name="bt"
 												id=""
-											/>
+												>
+												<option selected value="A+">
+													A+
+												</option>
+												<option value="A-">A-</option>
+												<option value="B+">B+</option>
+												<option value="B-">B-</option>
+												<option value="O+">O+</option>
+												<option value="O-">O-</option>
+												<option value="AB+">AB+</option>
+												<option value="AB-">AB-</option>
+											</Select>
 										</FormControl>
+										<FormControl width={"30%"}>
+											<FormLabel>Years of Experience</FormLabel>
+											<InputGroup>
+											<Input onChange={handleChange} name="yoe" value={update.yoe} placeholder="3" />
+											<InputRightAddon children="years" />
+											</InputGroup>
+										</FormControl>	
 									</div>
+									
+									<div className="flex flex-row gap-3 mt-4">
+									<FormControl>
+										<FormLabel>Position Applied</FormLabel>
+										<Input
+										onChange={handleChange}
+										name="posApp"
+										placeholder="Web Developer"
+										value={update.pa}
+										/>
+									</FormControl>
+									<FormControl>
+										<FormLabel>Position Code</FormLabel>
+										<Input
+										onChange={handleChange}
+										name="posCode"
+										placeholder="I-69"
+										value={update.pc}
+										/>
+									</FormControl>
+									<FormControl>
+										<FormLabel>Date Joined</FormLabel>
+										<input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										type="date"
+										name="dj"
+										id=""
+										value={update.dj}
+										/>
+									</FormControl>
+									</div>
+
+										<div className="flex flex-row gap-5 mt-4">
+											<FormControl>
+												<FormLabel>Civil Status</FormLabel>
+												<Select
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="cs"
+													value={update.cs}
+													id=""
+												>
+													<option value="Single">Single</option>
+													<option value="Married">Married</option>
+													<option value="Divorced">Divorced</option>
+													<option value="Widow">Widow</option>
+												</Select>
+											</FormControl>
+
+											<FormControl>
+												<FormLabel>Contract Type</FormLabel>
+												<Select
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													name="ct"
+													value={update.ct}
+													id=""
+												>
+													<option value="Regular">Regular</option>
+													<option value="Part-time">Part-time</option>
+												</Select>
+											</FormControl>
+										</div>
+
+										<div className="flex flex-row gap-5 mt-4">
+											<FormControl>
+												<FormLabel>Role</FormLabel>
+												<Input
+													onChange={handleChange}
+													value={update.role}
+													name="role"
+													placeholder="Role"
+												/>
+											</FormControl>
+
+											<FormControl>
+												<FormLabel>Date Joined</FormLabel>
+												<Input
+													onChange={handleChange}
+													className="border px-3 py-2 rounded-lg w-full"
+													type="date"
+													name="dj"
+													value={update.dj}
+													id=""
+												/>
+											</FormControl>
+										</div>
+										<h2 className=" pt-10 pb-4 text-2xl font-semibold text-[#383838]">
+											Emergency Contact
+										</h2>
+										
+									<hr className=" pb-6" />
 								</TabPanel>
 							</TabPanels>
 						</Tabs>
