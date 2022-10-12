@@ -28,7 +28,7 @@ const AddEmployeeForm = () => {
 	const day = new Date().getDay();
 	const year = new Date().getFullYear();
 	console.log(month, day, year);
-
+	const [isEmailValid, setIsEmailValid] = useState();
 	const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
 		<div
 			className="hover:opacity-60 transition-opacity duration-300"
@@ -61,6 +61,13 @@ const AddEmployeeForm = () => {
 		role: "",
 		dj: "",
 	});
+	const validateEmail = (email) => {
+		return String(email)
+			.toLowerCase()
+			.match(
+				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+			);
+	};
 	const handleChange = async (e) => {
 		await getEmployees();
 		const { value, name } = e.target;
@@ -70,6 +77,9 @@ const AddEmployeeForm = () => {
 		});
 		if (name == "bday") {
 			setAdd({ ...add, [name]: value, age: calculateAge() });
+		}
+		if (name == "email") {
+			validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
 		}
 	};
 	function calculateAge() {
@@ -121,8 +131,7 @@ const AddEmployeeForm = () => {
 						})
 						.join(" ")
 				: add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length);
-	
-		
+
 		// data.LastName.split("").splice(0, 1).join("").toUpperCase() +
 		// data.LastName.split("").splice(1, data.LastName.length).join("");
 
@@ -177,7 +186,7 @@ const AddEmployeeForm = () => {
 				finalFocusRef={finalRef}
 				isOpen={isOpen}
 				onClose={onClose}
-				size='5xl'
+				size="5xl"
 			>
 				<ModalOverlay />
 				<ModalContent>
@@ -195,91 +204,98 @@ const AddEmployeeForm = () => {
 								/>
 							</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Middle name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="mn"
-								placeholder="Middle name"
-							/>
-						</FormControl>
+							<FormControl>
+								<FormLabel>Middle name</FormLabel>
+								<Input
+									onChange={handleChange}
+									name="mn"
+									placeholder="Middle name"
+								/>
+							</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Last name</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="ln"
-								placeholder="Last name"
-							/>
-						</FormControl>
+							<FormControl>
+								<FormLabel>Last name</FormLabel>
+								<Input
+									onChange={handleChange}
+									name="ln"
+									placeholder="Last name"
+								/>
+							</FormControl>
 						</div>
 
 						<div className="flex flex-row gap-3">
-						<FormControl mt={4}>
-							<FormLabel>Birthdate</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="date"
-								name="bday"
-								id=""
-							/>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Age</FormLabel>
-							<Input disabled name="age" value={add.age} placeholder="Age" />
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Sex</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="sex"
-								id=""
-							>
-								<option value="Male">Male</option>
-								<option value="Female">Female</option>
-								<option value="Other">Other</option>
-							</Select>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Civil Status</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cs"
-								id=""
-							>
-								<option default value="Single">
-									Single
-								</option>
-								<option value="Married">Married</option>
-								<option value="Divorced">Divorced</option>
-								<option value="Widow">Widow</option>
-							</Select>
-						</FormControl>
+							<FormControl mt={4}>
+								<FormLabel>Birthdate</FormLabel>
+								<Input
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									type="date"
+									name="bday"
+									id=""
+								/>
+							</FormControl>
+							<FormControl mt={4}>
+								<FormLabel>Age</FormLabel>
+								<Input disabled name="age" value={add.age} placeholder="Age" />
+							</FormControl>
+							<FormControl mt={4}>
+								<FormLabel>Sex</FormLabel>
+								<Select
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									name="sex"
+									id=""
+								>
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+									<option value="Other">Other</option>
+								</Select>
+							</FormControl>
+							<FormControl mt={4}>
+								<FormLabel>Civil Status</FormLabel>
+								<Select
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									name="cs"
+									id=""
+								>
+									<option default value="Single">
+										Single
+									</option>
+									<option value="Married">Married</option>
+									<option value="Divorced">Divorced</option>
+									<option value="Widow">Widow</option>
+								</Select>
+							</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Contact Number</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cn"
-								id=""
-								placeholder="+639123456789"
-							/>
-						</FormControl>
+							<FormControl mt={4}>
+								<FormLabel>Contact Number</FormLabel>
+								<Input
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									name="cn"
+									id=""
+									placeholder="+639123456789"
+								/>
+							</FormControl>
 						</div>
 						<div className="flex flex-row gap-3 mt-4">
 							<FormControl>
 								<FormLabel>Email Address</FormLabel>
+
 								<Input
+									focusBorderColor={isEmailValid ? "green.500" : "red.300"}
+									isInvalid={isEmailValid ? false : true}
+									errorBorderColor="red.300"
 									onChange={handleChange}
 									className="border px-3 py-2 rounded-lg w-full"
 									type="email"
 									name="email"
 									id=""
 								/>
+								{isEmailValid ? null : (
+									<p className="text-red-500 text-xs pt-3">Invalid E-mail</p>
+								)}
 							</FormControl>
 
 							<FormControl>
@@ -311,7 +327,7 @@ const AddEmployeeForm = () => {
 									name="dj"
 									id=""
 								/>
-						</FormControl>
+							</FormControl>
 						</div>
 					</ModalBody>
 
