@@ -121,7 +121,8 @@ const AddEmployeeForm = () => {
 						})
 						.join(" ")
 				: add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length);
-
+	
+		
 		// data.LastName.split("").splice(0, 1).join("").toUpperCase() +
 		// data.LastName.split("").splice(1, data.LastName.length).join("");
 
@@ -176,28 +177,28 @@ const AddEmployeeForm = () => {
 				finalFocusRef={finalRef}
 				isOpen={isOpen}
 				onClose={onClose}
+				size='5xl'
 			>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Add Employee</ModalHeader>
+					<ModalHeader fontSize={50}>Add Employee</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
-						<FormControl>
-							<FormLabel>First name</FormLabel>
-							<Input
-								onChange={handleChange}
-								value={add.fn}
-								name="fn"
-								ref={initialRef}
-								placeholder="First name"
-							/>
-						</FormControl>
+						<div className="flex flex-row gap-3">
+							<FormControl>
+								<FormLabel>First name</FormLabel>
+								<Input
+									onChange={handleChange}
+									name="fn"
+									ref={initialRef}
+									placeholder="First name"
+								/>
+							</FormControl>
 
 						<FormControl mt={4}>
 							<FormLabel>Middle name</FormLabel>
 							<Input
 								onChange={handleChange}
-								value={add.mn}
 								name="mn"
 								placeholder="Middle name"
 							/>
@@ -206,12 +207,14 @@ const AddEmployeeForm = () => {
 						<FormControl mt={4}>
 							<FormLabel>Last name</FormLabel>
 							<Input
-								value={add.ln}
 								onChange={handleChange}
 								name="ln"
 								placeholder="Last name"
 							/>
 						</FormControl>
+						</div>
+
+						<div className="flex flex-row gap-3">
 						<FormControl mt={4}>
 							<FormLabel>Birthdate</FormLabel>
 							<Input
@@ -266,45 +269,50 @@ const AddEmployeeForm = () => {
 								placeholder="+639123456789"
 							/>
 						</FormControl>
+						</div>
+						<div className="flex flex-row gap-3 mt-4">
+							<FormControl>
+								<FormLabel>Email Address</FormLabel>
+								<Input
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									type="email"
+									name="email"
+									id=""
+								/>
+							</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Email Address</FormLabel>
-							<Input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="email"
-								name="email"
-								id=""
-							/>
-						</FormControl>
+							<FormControl>
+								<FormLabel>Contract Type</FormLabel>
+								<Select
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									name="ct"
+									id=""
+								>
+									<option value="Regular">Regular</option>
+									<option value="Part-time">Part-time</option>
+								</Select>
+							</FormControl>
+						</div>
 
-						<FormControl mt={4}>
-							<FormLabel>Contract Type</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="ct"
-								id=""
-							>
-								<option value="Regular">Regular</option>
-								<option value="Part-time">Part-time</option>
-							</Select>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Role</FormLabel>
-							<Input onChange={handleChange} name="role" placeholder="Role" />
-						</FormControl>
+						<div className="flex flex-row gap-3 mt-4">
+							<FormControl>
+								<FormLabel>Role</FormLabel>
+								<Input onChange={handleChange} name="role" placeholder="Role" />
+							</FormControl>
 
-						<FormControl mt={4}>
-							<FormLabel>Date Joined</FormLabel>
-							<input
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								type="date"
-								name="dj"
-								id=""
-							/>
+							<FormControl>
+								<FormLabel>Date Joined</FormLabel>
+								<input
+									onChange={handleChange}
+									className="border px-3 py-2 rounded-lg w-full"
+									type="date"
+									name="dj"
+									id=""
+								/>
 						</FormControl>
+						</div>
 					</ModalBody>
 
 					<ModalFooter>
