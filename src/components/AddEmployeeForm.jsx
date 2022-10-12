@@ -71,6 +71,16 @@ const AddEmployeeForm = () => {
 	const handleChange = async (e) => {
 		await getEmployees();
 		const { value, name } = e.target;
+		let cnPattern = /^(09|\+639)\d{8}$/
+		let cn = cnPattern.test(add.cn) ? 
+					add.cn :
+					false
+		if(cn==false)
+			document.querySelector('#addEmployee').setAttribute('disabled', true)
+		else
+			document.querySelector('#addEmployee').removeAttribute('disabled')
+
+		
 		setAdd({
 			...add,
 			[name]: value,
@@ -186,10 +196,12 @@ const AddEmployeeForm = () => {
 				finalFocusRef={finalRef}
 				isOpen={isOpen}
 				onClose={onClose}
-				size="5xl"
+				size='5xl'
+				
+
 			>
 				<ModalOverlay />
-				<ModalContent>
+				<ModalContent padding={5}>
 					<ModalHeader fontSize={50}>Add Employee</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
@@ -201,30 +213,33 @@ const AddEmployeeForm = () => {
 									name="fn"
 									ref={initialRef}
 									placeholder="First name"
+									required={true}
 								/>
 							</FormControl>
 
-							<FormControl>
-								<FormLabel>Middle name</FormLabel>
-								<Input
-									onChange={handleChange}
-									name="mn"
-									placeholder="Middle name"
-								/>
-							</FormControl>
 
-							<FormControl>
-								<FormLabel>Last name</FormLabel>
-								<Input
-									onChange={handleChange}
-									name="ln"
-									placeholder="Last name"
-								/>
-							</FormControl>
+						<FormControl>
+							<FormLabel>Middle name</FormLabel>
+							<Input
+								onChange={handleChange}
+								name="mn"
+								placeholder="Middle name"
+							/>
+						</FormControl>
+
+						<FormControl>
+							<FormLabel>Last name</FormLabel>
+							<Input
+								onChange={handleChange}
+								name="ln"
+								placeholder="Last name"
+							/>
+						</FormControl>
 						</div>
 
-						<div className="flex flex-row gap-3">
-							<FormControl mt={4}>
+						<div className="flex flex-row gap-3 mt-4">
+							<FormControl>
+
 								<FormLabel>Birthdate</FormLabel>
 								<Input
 									onChange={handleChange}
@@ -234,11 +249,13 @@ const AddEmployeeForm = () => {
 									id=""
 								/>
 							</FormControl>
-							<FormControl mt={4}>
+
+							<FormControl>
 								<FormLabel>Age</FormLabel>
 								<Input disabled name="age" value={add.age} placeholder="Age" />
 							</FormControl>
-							<FormControl mt={4}>
+							<FormControl>
+
 								<FormLabel>Sex</FormLabel>
 								<Select
 									onChange={handleChange}
@@ -251,7 +268,9 @@ const AddEmployeeForm = () => {
 									<option value="Other">Other</option>
 								</Select>
 							</FormControl>
-							<FormControl mt={4}>
+
+							<FormControl>
+
 								<FormLabel>Civil Status</FormLabel>
 								<Select
 									onChange={handleChange}
@@ -268,7 +287,9 @@ const AddEmployeeForm = () => {
 								</Select>
 							</FormControl>
 
-							<FormControl mt={4}>
+
+							<FormControl>
+
 								<FormLabel>Contact Number</FormLabel>
 								<Input
 									onChange={handleChange}
@@ -332,10 +353,10 @@ const AddEmployeeForm = () => {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button onClick={addEmployee} colorScheme="green" mr={3}>
+						<Button id={'addEmployee'} onClick={addEmployee} colorScheme="green" mr={3}>
 							Add
 						</Button>
-						<Button onClick={onClose}>Cancel</Button>
+						<Button id={'cancel'} onClick={onClose}>Cancel</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
