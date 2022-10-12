@@ -126,6 +126,7 @@ const AddEmployeeForm = () => {
     return years;
   }
   const addEmployee = async (e) => {
+    console.log(add);
     e.preventDefault();
     await getEmployees();
     // fn, mn, ln Uppercase first letter formatter
@@ -186,8 +187,8 @@ const AddEmployeeForm = () => {
         emailAddress: add.email,
         yearsOfExperience: add.yoe,
         contractType: add.ct,
-        positionApplied: add.pa,
-        positionCode: add.pc,
+        positionApplied: add.posApp,
+        positionCode: add.posCode,
         dateJoined: add.dj,
         emergencyName: add.en,
         emergencyAddress: add.ea,
@@ -220,8 +221,8 @@ const AddEmployeeForm = () => {
       email: "", //email
       yoe: "", //year of experience
       ct: "Regular", //contract type
-      pa: "",
-      pc: "",
+      posApp: "",
+      posCode: "",
       dj: "", //date joined
       en: "", //emergency name
       ea: "", //emergency address
