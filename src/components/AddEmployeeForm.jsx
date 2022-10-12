@@ -46,17 +46,18 @@ const AddEmployeeForm = () => {
 		cn = contactNumber;
 		ct = contractType; 
 	*/
+
 	const [add, setAdd] = useState({
 		fn: "",
 		mn: "",
 		ln: "",
 		age: "",
-		sex: "",
-		cs: "",
+		sex: "Male",
+		cs: "Single",
 		bday: "",
 		cn: "",
 		email: "",
-		ct: "",
+		ct: "Regular",
 		role: "",
 		dj: "",
 	});
@@ -67,6 +68,9 @@ const AddEmployeeForm = () => {
 			...add,
 			[name]: value,
 		});
+		if (name == "bday") {
+			setAdd({ ...add, [name]: value, age: calculateAge() });
+		}
 	};
 	function calculateAge() {
 		let birthDate = new Date(add.bday);
@@ -147,7 +151,7 @@ const AddEmployeeForm = () => {
 			mn: "",
 			ln: "",
 			age: "",
-			sex: "",
+			sex: "Male",
 			cs: "",
 			bday: "",
 			cn: "",
@@ -156,6 +160,7 @@ const AddEmployeeForm = () => {
 			role: "",
 			dj: "",
 		});
+		await getEmployees();
 	};
 
 	return (
@@ -216,20 +221,13 @@ const AddEmployeeForm = () => {
 						</FormControl>
 						<FormControl mt={4}>
 							<FormLabel>Age</FormLabel>
-							<Input
-								disabled
-								value={
-									isNaN(calculateAge()) ? "Enter birthdate" : calculateAge()
-								}
-								name="age"
-								placeholder="Age"
-							/>
+							<Input disabled name="age" value={add.age} placeholder="Age" />
 						</FormControl>
 						<FormControl mt={4}>
 							<FormLabel>Sex</FormLabel>
 							<Select
 								onChange={handleChange}
-								className="border px-3  rounded-lg w-full"
+								className="border px-3 py-2 rounded-lg w-full"
 								name="sex"
 								id=""
 							>
@@ -242,7 +240,7 @@ const AddEmployeeForm = () => {
 							<FormLabel>Civil Status</FormLabel>
 							<Select
 								onChange={handleChange}
-								className="border px-3  rounded-lg w-full"
+								className="border px-3 py-2 rounded-lg w-full"
 								name="cs"
 								id=""
 							>
