@@ -56,7 +56,7 @@ const AddEmployeeForm = () => {
     fn: "",
     mn: "",
     ln: "",
-
+    ca: "",
     ccn: "", // city contact number
     pa: "", // provincial address
     pcn: "", //provincial contact number
@@ -175,7 +175,7 @@ const AddEmployeeForm = () => {
         provincialAddress: add.pa,
         provincialContactNumber: add.pcn,
         numberOfDependents: add.nod,
-        civicClubAffliation: add.cca,
+        civicClubAffiliation: add.cca,
         religion: add.rel,
         bloodType: add.bt,
         age: add.age,
