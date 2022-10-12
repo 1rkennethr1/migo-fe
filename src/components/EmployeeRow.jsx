@@ -41,7 +41,7 @@ const EmployeeRow = ({ e }) => {
 	// const employeeInitRef = React.useRef(null);
 	// const employeeFinalRef = React.useRef(null);
 	const btnRef = React.useRef();
-	const [isEmailValid, setIsEmailValid] = useState();
+	const [isEmailValid, setIsEmailValid] = useState(true);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [update, setUpdate] = useState({
 		fn: e.firstName,
