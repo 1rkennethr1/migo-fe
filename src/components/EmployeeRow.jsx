@@ -359,6 +359,7 @@ const EmployeeRow = ({ e }) => {
 												name="sex"
 												value={update.sex}
 												id=""
+
 											>
 												<option value="Male">Male</option>
 												<option value="Female">Female</option>
@@ -461,7 +462,7 @@ const EmployeeRow = ({ e }) => {
 												id=""
 												value={update.rel}
 												>
-												<option selected value="Roman Catholic">
+												<option value="Roman Catholic">
 													Roman Catholic
 												</option>
 												<option value="Muslim">Muslim</option>
@@ -483,8 +484,9 @@ const EmployeeRow = ({ e }) => {
 												className="border px-3  rounded-lg w-full"
 												name="bt"
 												id=""
+												value={update.bt}
 												>
-												<option selected value="A+">
+												<option value="A+">
 													A+
 												</option>
 												<option value="A-">A-</option>
