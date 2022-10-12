@@ -39,7 +39,7 @@ const tabs = [
 ];
 const Sidebar = () => {
 	const location = useLocation();
-	console.log(location.pathname);
+
 	const [selectedTab, setSelectedTab] = useState(
 		tabs.find((e) => e.path === location.pathname)
 	);
@@ -94,7 +94,9 @@ const Sidebar = () => {
 					srcset=""
 					className="mb-8 self-center ml-2"
 				/>
-				<h1 className='text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap'>General</h1>
+				<h1 className="text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap">
+					General
+				</h1>
 				{tabs.map((e) => {
 					return (
 						<div className="relative dark:text-white text-black">

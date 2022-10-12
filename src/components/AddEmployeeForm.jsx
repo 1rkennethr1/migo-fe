@@ -22,7 +22,13 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import { useStateContext } from "../lib/context";
+
 const AddEmployeeForm = () => {
+	const month = new Date().getMonth();
+	const day = new Date().getDay();
+	const year = new Date().getFullYear();
+	console.log(month, day, year);
+
 	const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
 		<div
 			className="hover:opacity-60 transition-opacity duration-300"
@@ -41,60 +47,115 @@ const AddEmployeeForm = () => {
 		ct = contractType; 
 	*/
 	const [add, setAdd] = useState({
-		fn: "", 
-		mn: "", 
-		ln: "", 
-		age:"", 
-		sex: "", 
-		cs:"", 
-		bday: "", 
-		cn:"", 
-		email: "", 
-		ct: "", 
-		role: "", 
-		dj: ""
+		fn: "",
+		mn: "",
+		ln: "",
+		age: "",
+		sex: "",
+		cs: "",
+		bday: "",
+		cn: "",
+		email: "",
+		ct: "",
+		role: "",
+		dj: "",
 	});
-	const handleChange = (e) => {
+	const handleChange = async (e) => {
+		await getEmployees();
 		const { value, name } = e.target;
 		setAdd({
 			...add,
 			[name]: value,
 		});
 	};
+	function calculateAge() {
+		let birthDate = new Date(add.bday);
+		let today = new Date();
+
+		var years = today.getFullYear() - birthDate.getFullYear();
+
+		if (
+			today.getMonth() < birthDate.getMonth() ||
+			(today.getMonth() == birthDate.getMonth() &&
+				today.getDate() < birthDate.getDate())
+		) {
+			years--;
+		}
+
+		return years;
+	}
 	const addEmployee = async (e) => {
 		e.preventDefault();
+		await getEmployees();
 		// fn, mn, ln Uppercase first letter formatter
-		let fn = add.fn.split(" ").length > 1 ?
-			add.fn.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
-			add.fn[0].toUpperCase() + add.fn.slice(1, add.fn.length)
-		
-		let mn = add.mn.split(" ").length > 1 ?
-		add.mn.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
-		add.mn[0].toUpperCase() + add.mn.slice(1, add.mn.length)
+		let fn =
+			add.fn.split(" ").length > 1
+				? add.fn
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: add.fn[0].toUpperCase() + add.fn.slice(1, add.fn.length);
 
-		let ln = add.ln.split(" ").length > 1 ?
-			add.ln.split(" ").map(e => {return `${e[0].toUpperCase()}${e.slice(1, e.length)}`}).join(" ") :
-			add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length)
-		
+		let mn =
+			add.mn.split(" ").length > 1
+				? add.mn
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: add.mn[0].toUpperCase() + add.mn.slice(1, add.mn.length);
+
+		let ln =
+			add.ln.split(" ").length > 1
+				? add.ln
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length);
+
 		// data.LastName.split("").splice(0, 1).join("").toUpperCase() +
 		// data.LastName.split("").splice(1, data.LastName.length).join("");
 
-		let date = add.dj;
-		const url = `https://localhost:7259/api/Employee?Id=${
-			employees.length===0 ? 
-			1 :
-			employees[employees.length - 1].id + 1
-		}&FirstName=${fn}&MiddleName=${mn}&LastName=${ln}&Age=${add.age}&Sex=${add.sex}&CivilStatus=${add.cs}&Birthday=${add.bday}&ContactNumber=${add.cn}&EmailAddress=${add.email}&{ContractType=${add.ct}&Role=${
-			add.role
-		}&DateJoined=${date}`;
-		axios.post(url).then((result) => console.log(result));
-		onClose();
-		/*
-			cn = contactNumber;
-			ct = contractType; 
-		*/
-		setAdd({ fn: "", mn: "", ln: "", age:"", sex: "", cs:"", bday: "", cn:"", email: "", ct: "", role: "", dj: ""});
+		axios({
+			method: "post",
+			url: "https://localhost:7241/Employee",
+			data: {
+				firstName: fn,
+				middleName: mn,
+				lastName: ln,
+				age: add.age,
+				sex: add.sex,
+				civilStatus: add.cs,
+				birthday: add.bday,
+				contactNumber: add.cn,
+				emailAddress: add.email,
+				contractType: add.ct,
+				role: add.role,
+				dateJoined: add.dj,
+			},
+		});
 		await getEmployees();
+		onClose();
+		await getEmployees();
+		setAdd({
+			fn: "",
+			mn: "",
+			ln: "",
+			age: "",
+			sex: "",
+			cs: "",
+			bday: "",
+			cn: "",
+			email: "",
+			ct: "",
+			role: "",
+			dj: "",
+		});
 	};
 
 	return (
@@ -143,53 +204,57 @@ const AddEmployeeForm = () => {
 								placeholder="Last name"
 							/>
 						</FormControl>
-
 						<FormControl mt={4}>
-							<FormLabel>Age</FormLabel>
-							<Input
-								onChange={handleChange}
-								name="age"
-								placeholder="Age"
-							/>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Sex</FormLabel>
-							<Select 
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="sex"
-								id=""
-								>
-									<option value='Male'>Male</option>
-									<option value='Female'>Female</option>
-									<option value='Other'>Other</option>
-							</Select>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Civil Status</FormLabel>
-							<Select
-								onChange={handleChange}
-								className="border px-3 py-2 rounded-lg w-full"
-								name="cs"
-								id=""
-								>
-									<option default value="Single">Single</option>
-									<option value="Married">Married</option>
-									<option value="Divorced">Divorced</option>
-									<option value="Widow">Widow</option>
-							</Select>
-						</FormControl>
-						<FormControl mt={4}>
-							<FormLabel>Birthday</FormLabel>
+							<FormLabel>Birthdate</FormLabel>
 							<Input
 								onChange={handleChange}
 								className="border px-3 py-2 rounded-lg w-full"
 								type="date"
 								name="bday"
 								id=""
-								/>
+							/>
 						</FormControl>
-						
+						<FormControl mt={4}>
+							<FormLabel>Age</FormLabel>
+							<Input
+								disabled
+								value={
+									isNaN(calculateAge()) ? "Enter birthdate" : calculateAge()
+								}
+								name="age"
+								placeholder="Age"
+							/>
+						</FormControl>
+						<FormControl mt={4}>
+							<FormLabel>Sex</FormLabel>
+							<Select
+								onChange={handleChange}
+								className="border px-3  rounded-lg w-full"
+								name="sex"
+								id=""
+							>
+								<option value="Male">Male</option>
+								<option value="Female">Female</option>
+								<option value="Other">Other</option>
+							</Select>
+						</FormControl>
+						<FormControl mt={4}>
+							<FormLabel>Civil Status</FormLabel>
+							<Select
+								onChange={handleChange}
+								className="border px-3  rounded-lg w-full"
+								name="cs"
+								id=""
+							>
+								<option default value="Single">
+									Single
+								</option>
+								<option value="Married">Married</option>
+								<option value="Divorced">Divorced</option>
+								<option value="Widow">Widow</option>
+							</Select>
+						</FormControl>
+
 						<FormControl mt={4}>
 							<FormLabel>Contact Number</FormLabel>
 							<Input
@@ -198,7 +263,7 @@ const AddEmployeeForm = () => {
 								name="cn"
 								id=""
 								placeholder="+639123456789"
-								/>
+							/>
 						</FormControl>
 
 						<FormControl mt={4}>
@@ -206,12 +271,12 @@ const AddEmployeeForm = () => {
 							<Input
 								onChange={handleChange}
 								className="border px-3 py-2 rounded-lg w-full"
-								type='email'
+								type="email"
 								name="email"
 								id=""
-								/>
+							/>
 						</FormControl>
-						
+
 						<FormControl mt={4}>
 							<FormLabel>Contract Type</FormLabel>
 							<Select
@@ -219,9 +284,9 @@ const AddEmployeeForm = () => {
 								className="border px-3 py-2 rounded-lg w-full"
 								name="ct"
 								id=""
-								>
-									<option value='Regular'>Regular</option>
-									<option value='Part-time'>Part-time</option>
+							>
+								<option value="Regular">Regular</option>
+								<option value="Part-time">Part-time</option>
 							</Select>
 						</FormControl>
 						<FormControl mt={4}>

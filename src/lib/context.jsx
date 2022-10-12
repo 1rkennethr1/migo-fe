@@ -7,7 +7,7 @@ export default function StateContext({ children }) {
 	const [employees, setEmployees] = useState({});
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
 	const getEmployees = async () => {
-		const res = await fetch("https://localhost:7259/api/employee");
+		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
 		setEmployees(data);
 	};
