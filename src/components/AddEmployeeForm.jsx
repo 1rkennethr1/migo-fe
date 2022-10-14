@@ -33,7 +33,8 @@ const AddEmployeeForm = () => {
   const day = new Date().getDay();
   const year = new Date().getFullYear();
   console.log(month, day, year);
-  const [isEmailValid, setIsEmailValid] = useState();
+  const [isEmailValid, setIsEmailValid] = useState(null);
+  const [isPhoneValid, setIsPhoneValid] = useState(null);
   const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
     <div
       className="hover:opacity-60 transition-opacity duration-300"
@@ -43,7 +44,17 @@ const AddEmployeeForm = () => {
       {children}
     </div>
   ));
+  const [phone, setPhone] = useState({ p: "" });
+  const handleChangeTest = (e) => {
+    const { value, name } = e.target;
+
+    setPhone({ ...phone, [name]: value });
+  };
+  const [isAdded, setIsAdded] = useState(false);
   const { getEmployees, employees } = useStateContext();
+  useEffect(() => {
+    getEmployees();
+  }, [isAdded]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
@@ -89,8 +100,11 @@ const AddEmployeeForm = () => {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
+  const validatePhone = (phone) => {
+    return String(phone).match(/9\d{9}$/);
+  };
+
   const handleChange = async (e) => {
-    await getEmployees();
     const { value, name } = e.target;
     // let cnPattern = /\d{10}$/;
     // let cn = cnPattern.test(add.cn) ? add.cn : false;
@@ -107,6 +121,19 @@ const AddEmployeeForm = () => {
     }
     if (name == "email") {
       validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
+    }
+    if (
+      name == "ccn" ||
+      name == "cn" ||
+      name == "pcn" ||
+      name == "ercn" ||
+      name == "eocn" ||
+      name == "ecn"
+    ) {
+      let phone = value.slice(0, 10);
+      setAdd({ ...add, [name]: phone });
+      validatePhone(phone) ? setIsPhoneValid(true) : setIsPhoneValid(false);
+      console.log(validatePhone(phone));
     }
   };
   function calculateAge() {
@@ -126,7 +153,6 @@ const AddEmployeeForm = () => {
     return years;
   }
   const addEmployee = async (e) => {
-    console.log(add);
     e.preventDefault();
     await getEmployees();
     // fn, mn, ln Uppercase first letter formatter
@@ -198,7 +224,7 @@ const AddEmployeeForm = () => {
         emergencyRelationship: add.er,
       },
     });
-    await getEmployees();
+    setIsAdded(!isAdded);
     onClose();
     await getEmployees();
     setAdd({
@@ -231,7 +257,6 @@ const AddEmployeeForm = () => {
       ecn: "", //emergency contact number
       er: "", //emergency relationship
     });
-    await getEmployees();
   };
 
   return (
@@ -344,9 +369,7 @@ const AddEmployeeForm = () => {
                   name="bt"
                   id=""
                 >
-                  <option selected value="A+">
-                    A+
-                  </option>
+                  <option value="A+">A+</option>
                   <option value="A-">A-</option>
                   <option value="B+">B+</option>
                   <option value="B-">B-</option>
@@ -367,6 +390,8 @@ const AddEmployeeForm = () => {
                   className="border px-3 py-2 rounded-lg w-full"
                   name="cn"
                   id=""
+                  maxLength={10}
+                  value={add.cn}
                   type="number"
                   placeholder="9341563456"
                 />
@@ -392,6 +417,8 @@ const AddEmployeeForm = () => {
                     className="border px-3 py-2 rounded-lg w-full"
                     name="ccn"
                     id=""
+                    maxLength={10}
+                    value={add.ccn}
                     type="number"
                     placeholder="9341563456"
                   />
@@ -419,6 +446,8 @@ const AddEmployeeForm = () => {
                     className="border px-3 py-2 rounded-lg w-full"
                     name="pcn"
                     id=""
+                    maxLength={10}
+                    value={add.pcn}
                     type="number"
                     placeholder="9341563456"
                   />
@@ -432,31 +461,62 @@ const AddEmployeeForm = () => {
 
                 <InputGroup>
                   <Input
-                    focusBorderColor={isEmailValid ? "green.500" : "red.300"}
-                    isInvalid={isEmailValid ? false : true}
+                    focusBorderColor={
+                      isEmailValid === null
+                        ? ""
+                        : isEmailValid === true || isEmailValid === false
+                        ? isEmailValid
+                          ? "green.500"
+                          : "red.500"
+                        : ""
+                    }
+                    isInvalid={
+                      isEmailValid === null
+                        ? ""
+                        : isEmailValid === true || isEmailValid === false
+                        ? isEmailValid
+                          ? "green.500"
+                          : "red.500"
+                        : ""
+                    }
                     errorBorderColor="red.300"
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     type="email"
                     name="email"
                     id=""
+                    placeholder="john.doe@gmail.com"
                   />
                   <InputRightElement
                     children={
-                      isEmailValid ? (
-                        <div className="text-2xl text-green-500">
-                          <BsCheck />
-                        </div>
+                      isEmailValid === null ? (
+                        ""
+                      ) : isEmailValid === true || isEmailValid === false ? (
+                        isEmailValid ? (
+                          <div className="text-2xl text-green-500">
+                            <BsCheck />
+                          </div>
+                        ) : (
+                          <div className="text-2xl text-red-500">
+                            <MdClose />
+                          </div>
+                        )
                       ) : (
-                        <div className="text-2xl text-red-500">
-                          <MdClose />
-                        </div>
+                        ""
                       )
                     }
                   />
                 </InputGroup>
-                {isEmailValid ? null : (
-                  <p className="text-red-500 text-xs pt-3">Invalid E-mail</p>
+                {isEmailValid === null ? (
+                  ""
+                ) : isEmailValid === true || isEmailValid === false ? (
+                  isEmailValid ? (
+                    ""
+                  ) : (
+                    <p className="text-red-500 text-xs pt-3">Invalid E-mail</p>
+                  )
+                ) : (
+                  ""
                 )}
               </FormControl>
 
@@ -504,9 +564,7 @@ const AddEmployeeForm = () => {
                   name="rel"
                   id=""
                 >
-                  <option selected value="Roman Catholic">
-                    Roman Catholic
-                  </option>
+                  <option value="Roman Catholic">Roman Catholic</option>
                   <option value="Muslim">Muslim</option>
                   <option value="Iglesia Ni Cristo">Iglesia Ni Cristo</option>
                   <option value="Protestant">Protestant</option>
@@ -529,7 +587,12 @@ const AddEmployeeForm = () => {
               <FormControl width={"30%"}>
                 <FormLabel>Years of Experience</FormLabel>
                 <InputGroup>
-                  <Input onChange={handleChange} name="yoe" placeholder="3" />
+                  <Input
+                    type="number"
+                    onChange={handleChange}
+                    name="yoe"
+                    placeholder="3"
+                  />
                   <InputRightAddon children="years" />
                 </InputGroup>
               </FormControl>
@@ -570,6 +633,7 @@ const AddEmployeeForm = () => {
               <FormControl>
                 <FormLabel>Emergency Name</FormLabel>
                 <Input
+                  type="number"
                   onChange={handleChange}
                   className="border px-3 py-2 rounded-lg w-full"
                   name="en"
@@ -594,11 +658,13 @@ const AddEmployeeForm = () => {
                 <InputGroup>
                   <InputLeftAddon children="+63" />
                   <Input
+                    type="number"
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     name="ercn"
+                    maxLength={10}
+                    value={add.ercn}
                     id=""
-                    type="tel"
                     placeholder="9123456789"
                   />
                 </InputGroup>
@@ -609,11 +675,13 @@ const AddEmployeeForm = () => {
                 <InputGroup>
                   <InputLeftAddon children="+63" />
                   <Input
+                    type="number"
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     name="eocn"
+                    maxLength={10}
+                    value={add.eocn}
                     id=""
-                    type="tel"
                     placeholder="9123456789"
                   />
                 </InputGroup>
@@ -629,8 +697,10 @@ const AddEmployeeForm = () => {
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     name="ecn"
+                    maxLength={10}
+                    value={add.ecn}
                     id=""
-                    type="tel"
+                    type="number"
                     placeholder="9123456789"
                   />
                 </InputGroup>
