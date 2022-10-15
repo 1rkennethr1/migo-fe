@@ -28,13 +28,21 @@ import {
 import { useStateContext } from "../lib/context";
 import { MdClose } from "react-icons/md";
 import { BsCheck } from "react-icons/bs";
+import { useRef } from "react";
 const AddEmployeeForm = () => {
   const month = new Date().getMonth();
   const day = new Date().getDay();
   const year = new Date().getFullYear();
   console.log(month, day, year);
   const [isEmailValid, setIsEmailValid] = useState(null);
-  const [isPhoneValid, setIsPhoneValid] = useState(null);
+  const [isPhoneValid, setIsPhoneValid] = useState({
+    cn: null,
+    ccn: null,
+    pcn: null,
+    ecn: null,
+    eocn: null,
+    ercn: null,
+  });
   const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
     <div
       className="hover:opacity-60 transition-opacity duration-300"
@@ -120,7 +128,11 @@ const AddEmployeeForm = () => {
       setAdd({ ...add, [name]: value, age: calculateAge() });
     }
     if (name == "email") {
-      validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
+      if (value.length > 0) {
+        validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
+      } else {
+        setIsEmailValid(null);
+      }
     }
     if (
       name == "ccn" ||
@@ -132,7 +144,13 @@ const AddEmployeeForm = () => {
     ) {
       let phone = value.slice(0, 10);
       setAdd({ ...add, [name]: phone });
-      validatePhone(phone) ? setIsPhoneValid(true) : setIsPhoneValid(false);
+      if (value.length > 0) {
+        validatePhone(phone)
+          ? setIsPhoneValid({ ...isPhoneValid, [name]: true })
+          : setIsPhoneValid({ ...isPhoneValid, [name]: false });
+      } else {
+        setIsPhoneValid({ ...isPhoneValid, [name]: null });
+      }
       console.log(validatePhone(phone));
     }
   };
@@ -152,8 +170,37 @@ const AddEmployeeForm = () => {
 
     return years;
   }
+
+  const validate = useRef();
+  const [isFormValid, setIsFormValid] = useState(false);
+  useEffect(() => {
+    let allPhone = [];
+    let allPhoneValid = false;
+    let allFields = [];
+    let allFieldsFilled = false;
+    for (const [key, value] of Object.entries(isPhoneValid)) {
+      allPhone.push(value);
+    }
+    for (const [key, value] of Object.entries(add)) {
+      allFields.push(value ? true : false);
+    }
+    allPhone.every((e) => e === true)
+      ? (allPhoneValid = true)
+      : (allPhone = []);
+
+    allFields.every((e) => e === true)
+      ? (allFieldsFilled = true)
+      : (allFields = []);
+    allPhoneValid && isEmailValid && allFieldsFilled
+      ? setIsFormValid(true)
+      : setIsFormValid(false);
+    console.log(allPhoneValid);
+    console.log(isEmailValid);
+    console.log(allFieldsFilled);
+  }, [isPhoneValid, add, isEmailValid]);
   const addEmployee = async (e) => {
     e.preventDefault();
+
     await getEmployees();
     // fn, mn, ln Uppercase first letter formatter
     let fn =
@@ -257,8 +304,16 @@ const AddEmployeeForm = () => {
       ecn: "", //emergency contact number
       er: "", //emergency relationship
     });
+    setIsPhoneValid({
+      cn: null,
+      ccn: null,
+      pcn: null,
+      ecn: null,
+      eocn: null,
+      ercn: null,
+    });
+    setIsEmailValid(null);
   };
-
   return (
     <div className="text-3xl cursor-pointer">
       <Tooltip placement="right" label="Add Employee">
@@ -323,6 +378,7 @@ const AddEmployeeForm = () => {
                   onChange={handleChange}
                   className="border px-3 py-2 rounded-lg w-full"
                   type="date"
+                  max={new Date().setFullYear(2022 - 18)}
                   name="bdate"
                   id=""
                 />
@@ -386,6 +442,25 @@ const AddEmployeeForm = () => {
               <InputGroup>
                 <InputLeftAddon children="+63" />
                 <Input
+                  focusBorderColor={
+                    isPhoneValid.cn === null
+                      ? ""
+                      : isPhoneValid.cn === true || isPhoneValid.cn === false
+                      ? isPhoneValid.cn
+                        ? "green.300"
+                        : "red.300"
+                      : ""
+                  }
+                  isInvalid={isPhoneValid.cn === null ? false : true}
+                  errorBorderColor={
+                    isPhoneValid.cn === null
+                      ? ""
+                      : isPhoneValid.cn === true || isPhoneValid.cn === false
+                      ? isPhoneValid.cn
+                        ? "green.300"
+                        : "red.300"
+                      : ""
+                  }
                   onChange={handleChange}
                   className="border px-3 py-2 rounded-lg w-full"
                   name="cn"
@@ -395,7 +470,44 @@ const AddEmployeeForm = () => {
                   type="number"
                   placeholder="9341563456"
                 />
+                <InputRightElement
+                  children={
+                    isPhoneValid.cn === null ? (
+                      ""
+                    ) : isPhoneValid.cn === true ||
+                      isPhoneValid.cn === false ? (
+                      isPhoneValid.cn ? (
+                        <div className="text-2xl text-green-500">
+                          <BsCheck />
+                        </div>
+                      ) : (
+                        <div className="text-2xl text-red-500">
+                          <MdClose />
+                        </div>
+                      )
+                    ) : (
+                      ""
+                    )
+                  }
+                />
               </InputGroup>
+              {isPhoneValid.cn === null ? (
+                ""
+              ) : isPhoneValid.cn === true || isPhoneValid.cn === false ? (
+                isPhoneValid.cn ? (
+                  ""
+                ) : add.cn[0] === "9" ? (
+                  <p className="text-red-500 text-xs pt-3">
+                    Invalid phone number!
+                  </p>
+                ) : (
+                  <p className="text-red-500 text-xs pt-3">
+                    Invalid phone number! (should start with 9)
+                  </p>
+                )
+              ) : (
+                ""
+              )}
             </FormControl>
             <div className="flex flex-row gap-3 mt-4">
               <FormControl>
@@ -413,6 +525,27 @@ const AddEmployeeForm = () => {
                 <InputGroup>
                   <InputLeftAddon children="+63" />
                   <Input
+                    focusBorderColor={
+                      isPhoneValid.ccn === null
+                        ? ""
+                        : isPhoneValid.ccn === true ||
+                          isPhoneValid.ccn === false
+                        ? isPhoneValid.ccn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
+                    isInvalid={isPhoneValid.ccn === null ? false : true}
+                    errorBorderColor={
+                      isPhoneValid.ccn === null
+                        ? ""
+                        : isPhoneValid.ccn === true ||
+                          isPhoneValid.ccn === false
+                        ? isPhoneValid.ccn === true
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     name="ccn"
@@ -422,7 +555,44 @@ const AddEmployeeForm = () => {
                     type="number"
                     placeholder="9341563456"
                   />
+                  <InputRightElement
+                    children={
+                      isPhoneValid.ccn === null ? (
+                        ""
+                      ) : isPhoneValid.ccn === true ||
+                        isPhoneValid.ccn === false ? (
+                        isPhoneValid.ccn ? (
+                          <div className="text-2xl text-green-500">
+                            <BsCheck />
+                          </div>
+                        ) : (
+                          <div className="text-2xl text-red-500">
+                            <MdClose />
+                          </div>
+                        )
+                      ) : (
+                        ""
+                      )
+                    }
+                  />
                 </InputGroup>
+                {isPhoneValid.ccn === null ? (
+                  ""
+                ) : isPhoneValid.ccn === true || isPhoneValid.ccn === false ? (
+                  isPhoneValid.ccn ? (
+                    ""
+                  ) : add.ccn[0] === "9" ? (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number!
+                    </p>
+                  ) : (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number! (should start with 9)
+                    </p>
+                  )
+                ) : (
+                  ""
+                )}
               </FormControl>
             </div>
 
@@ -442,6 +612,27 @@ const AddEmployeeForm = () => {
                 <InputGroup>
                   <InputLeftAddon children="+63" />
                   <Input
+                    focusBorderColor={
+                      isPhoneValid.pcn === null
+                        ? ""
+                        : isPhoneValid.pcn === true ||
+                          isPhoneValid.pcn === false
+                        ? isPhoneValid.pcn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
+                    isInvalid={isPhoneValid.pcn === null ? false : true}
+                    errorBorderColor={
+                      isPhoneValid.pcn === null
+                        ? ""
+                        : isPhoneValid.pcn === true ||
+                          isPhoneValid.pcn === false
+                        ? isPhoneValid.pcn === true
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     name="pcn"
@@ -451,7 +642,44 @@ const AddEmployeeForm = () => {
                     type="number"
                     placeholder="9341563456"
                   />
+                  <InputRightElement
+                    children={
+                      isPhoneValid.pcn === null ? (
+                        ""
+                      ) : isPhoneValid.pcn === true ||
+                        isPhoneValid.pcn === false ? (
+                        isPhoneValid.pcn ? (
+                          <div className="text-2xl text-green-500">
+                            <BsCheck />
+                          </div>
+                        ) : (
+                          <div className="text-2xl text-red-500">
+                            <MdClose />
+                          </div>
+                        )
+                      ) : (
+                        ""
+                      )
+                    }
+                  />
                 </InputGroup>
+                {isPhoneValid.pcn === null ? (
+                  ""
+                ) : isPhoneValid.pcn === true || isPhoneValid.pcn === false ? (
+                  isPhoneValid.pcn ? (
+                    ""
+                  ) : add.pcn[0] === "9" ? (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number!
+                    </p>
+                  ) : (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number! (should start with 9)
+                    </p>
+                  )
+                ) : (
+                  ""
+                )}
               </FormControl>
             </div>
 
@@ -466,20 +694,20 @@ const AddEmployeeForm = () => {
                         ? ""
                         : isEmailValid === true || isEmailValid === false
                         ? isEmailValid
-                          ? "green.500"
-                          : "red.500"
+                          ? "green.300"
+                          : "red.300"
                         : ""
                     }
-                    isInvalid={
+                    isInvalid={isEmailValid === null ? false : true}
+                    errorBorderColor={
                       isEmailValid === null
                         ? ""
                         : isEmailValid === true || isEmailValid === false
                         ? isEmailValid
-                          ? "green.500"
-                          : "red.500"
+                          ? "green.300"
+                          : "red.300"
                         : ""
                     }
-                    errorBorderColor="red.300"
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     type="email"
@@ -633,7 +861,6 @@ const AddEmployeeForm = () => {
               <FormControl>
                 <FormLabel>Emergency Name</FormLabel>
                 <Input
-                  type="number"
                   onChange={handleChange}
                   className="border px-3 py-2 rounded-lg w-full"
                   name="en"
@@ -658,6 +885,27 @@ const AddEmployeeForm = () => {
                 <InputGroup>
                   <InputLeftAddon children="+63" />
                   <Input
+                    focusBorderColor={
+                      isPhoneValid.ercn === null
+                        ? ""
+                        : isPhoneValid.ercn === true ||
+                          isPhoneValid.ercn === false
+                        ? isPhoneValid.ercn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
+                    isInvalid={isPhoneValid.ercn === null ? false : true}
+                    errorBorderColor={
+                      isPhoneValid.ercn === null
+                        ? ""
+                        : isPhoneValid.ercn === true ||
+                          isPhoneValid.ercn === false
+                        ? isPhoneValid.ercn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
                     type="number"
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
@@ -667,6 +915,26 @@ const AddEmployeeForm = () => {
                     id=""
                     placeholder="9123456789"
                   />
+                  <InputRightElement
+                    children={
+                      isPhoneValid.ercn === null ? (
+                        ""
+                      ) : isPhoneValid.ercn === true ||
+                        isPhoneValid.ercn === false ? (
+                        isPhoneValid.ercn ? (
+                          <div className="text-2xl text-green-500">
+                            <BsCheck />
+                          </div>
+                        ) : (
+                          <div className="text-2xl text-red-500">
+                            <MdClose />
+                          </div>
+                        )
+                      ) : (
+                        ""
+                      )
+                    }
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -675,6 +943,27 @@ const AddEmployeeForm = () => {
                 <InputGroup>
                   <InputLeftAddon children="+63" />
                   <Input
+                    focusBorderColor={
+                      isPhoneValid.eocn === null
+                        ? ""
+                        : isPhoneValid.eocn === true ||
+                          isPhoneValid.eocn === false
+                        ? isPhoneValid.eocn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
+                    isInvalid={isPhoneValid.eocn === null ? false : true}
+                    errorBorderColor={
+                      isPhoneValid.eocn === null
+                        ? ""
+                        : isPhoneValid.eocn === true ||
+                          isPhoneValid.eocn === false
+                        ? isPhoneValid.eocn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
                     type="number"
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
@@ -684,7 +973,45 @@ const AddEmployeeForm = () => {
                     id=""
                     placeholder="9123456789"
                   />
+                  <InputRightElement
+                    children={
+                      isPhoneValid.eocn === null ? (
+                        ""
+                      ) : isPhoneValid.eocn === true ||
+                        isPhoneValid.eocn === false ? (
+                        isPhoneValid.eocn ? (
+                          <div className="text-2xl text-green-500">
+                            <BsCheck />
+                          </div>
+                        ) : (
+                          <div className="text-2xl text-red-500">
+                            <MdClose />
+                          </div>
+                        )
+                      ) : (
+                        ""
+                      )
+                    }
+                  />
                 </InputGroup>
+                {isPhoneValid.eocn === null ? (
+                  ""
+                ) : isPhoneValid.eocn === true ||
+                  isPhoneValid.eocn === false ? (
+                  isPhoneValid.eocn ? (
+                    ""
+                  ) : add.eocn[0] === "9" ? (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number!
+                    </p>
+                  ) : (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number! (should start with 9)
+                    </p>
+                  )
+                ) : (
+                  ""
+                )}
               </FormControl>
             </div>
             <div className="flex flex-row gap-3 mt-4">
@@ -694,6 +1021,27 @@ const AddEmployeeForm = () => {
                 <InputGroup>
                   <InputLeftAddon children="+63" />
                   <Input
+                    focusBorderColor={
+                      isPhoneValid.ecn === null
+                        ? ""
+                        : isPhoneValid.ecn === true ||
+                          isPhoneValid.ecn === false
+                        ? isPhoneValid.ecn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
+                    isInvalid={isPhoneValid.ecn === null ? false : true}
+                    errorBorderColor={
+                      isPhoneValid.ecn === null
+                        ? ""
+                        : isPhoneValid.ecn === true ||
+                          isPhoneValid.ecn === false
+                        ? isPhoneValid.ecn
+                          ? "green.300"
+                          : "red.300"
+                        : ""
+                    }
                     onChange={handleChange}
                     className="border px-3 py-2 rounded-lg w-full"
                     name="ecn"
@@ -703,7 +1051,44 @@ const AddEmployeeForm = () => {
                     type="number"
                     placeholder="9123456789"
                   />
+                  <InputRightElement
+                    children={
+                      isPhoneValid.ecn === null ? (
+                        ""
+                      ) : isPhoneValid.ecn === true ||
+                        isPhoneValid.ecn === false ? (
+                        isPhoneValid.ecn ? (
+                          <div className="text-2xl text-green-500">
+                            <BsCheck />
+                          </div>
+                        ) : (
+                          <div className="text-2xl text-red-500">
+                            <MdClose />
+                          </div>
+                        )
+                      ) : (
+                        ""
+                      )
+                    }
+                  />
                 </InputGroup>
+                {isPhoneValid.ecn === null ? (
+                  ""
+                ) : isPhoneValid.ecn === true || isPhoneValid.ecn === false ? (
+                  isPhoneValid.ecn ? (
+                    ""
+                  ) : add.ecn[0] === "9" ? (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number!
+                    </p>
+                  ) : (
+                    <p className="text-red-500 text-xs pt-3">
+                      Invalid phone number! (should start with 9)
+                    </p>
+                  )
+                ) : (
+                  ""
+                )}
               </FormControl>
               <FormControl>
                 <FormLabel>Emergency Relationship</FormLabel>
@@ -719,14 +1104,20 @@ const AddEmployeeForm = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button
+            <button
+              className={`font-semibold px-5 mr-3 py-2 rounded-lg transition-all duration-300 ${
+                isFormValid
+                  ? "bg-green-400 hover:opacity-80  text-[#353535] "
+                  : "bg-neutral-100 cursor-default text-[#949494]"
+              }`}
               id={"addEmployee"}
-              onClick={addEmployee}
-              colorScheme="green"
+              onClick={isFormValid ? addEmployee : null}
+              colorScheme=""
               mr={3}
+              ref={validate}
             >
               Add
-            </Button>
+            </button>
             <Button id={"cancel"} onClick={onClose}>
               Cancel
             </Button>
