@@ -35,6 +35,9 @@ import { motion } from "framer-motion";
 import def from "../assets/default.png";
 import dhbg from "../assets/drawerheader.png";
 import { useEffect } from "react";
+import { position } from "../../utils/position";
+import ContactNumber from "./ContactNumber";
+import EmailInput from "./EmailInput";
 
 const EmployeeRow = ({ e }) => {
 	const [isUpdated, setIsUpdated] = useState(false);
@@ -47,7 +50,7 @@ const EmployeeRow = ({ e }) => {
 		getEmployees();
 	}, [isUpdated]);
 	const btnRef = React.useRef();
-	const [isEmailValid, setIsEmailValid] = useState(true);
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [update, setUpdate] = useState({
 		fn: e.firstName,
@@ -56,10 +59,8 @@ const EmployeeRow = ({ e }) => {
 		age: e.age,
 		ca: e.cityAddress, //city address
 		ccn: e.cityContactNumber, // city contact number
-		pa: e.provincialAddress, // provincial address
-		pcn: e.provincialContactNumber, //provincial contact number
 		nod: e.numberOfDependents, //number of dependents
-		cca: e.civicClubAffiliation, //civic club affiliation
+		cca: e.civicClubAffiliation ? e.civicClubAffiliation : "", //civic club affiliation
 		rel: e.religion, //religion
 		bt: e.bloodType, //bloodtype
 		sex: e.sex, //
@@ -75,11 +76,11 @@ const EmployeeRow = ({ e }) => {
 		dj: e.dateJoined, //date joined
 		en: e.emergencyName, //emergency name
 		ea: e.emergencyAddress, //emergency address
-		ercn: e.emergencyResidentialContactNumber, //emergency Residential contact number
-		eocn: e.emergencyOfficeContactNumber, //emergency office contact number
+
 		ecn: e.emergencyContactNumber, //emergency contact number
 		er: e.emergencyRelationship, //emergency relationship
 	});
+
 	const validateEmail = (email) => {
 		return String(email)
 			.toLowerCase()
@@ -87,17 +88,95 @@ const EmployeeRow = ({ e }) => {
 				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			);
 	};
+	const validatePhone = (phone) => {
+		return String(phone).match(/9\d{9}$/);
+	};
+	const [isEmailValid, setIsEmailValid] = useState(
+		validateEmail(e.emailAddress) ? true : false
+	);
+
+	let poscode;
+	useEffect(() => {
+		poscode = position.find((e) => e.name === update.posApp);
+
+		setUpdate({ ...update, posCode: poscode ? poscode.code : "" });
+	}, [update.posApp]);
 	const handleChange = (e) => {
 		const { value, name } = e.target;
 		setUpdate({
 			...update,
 			[name]: value,
 		});
+		if (name == "ccn" || name == "cn" || name == "ecn") {
+			let phone = value.slice(0, 10);
+			setUpdate({ ...update, [name]: phone });
+			if (value.length > 0) {
+				validatePhone(phone)
+					? setIsPhoneValid({ ...isPhoneValid, [name]: true })
+					: setIsPhoneValid({ ...isPhoneValid, [name]: false });
+			} else {
+				setIsPhoneValid({ ...isPhoneValid, [name]: null });
+			}
+			console.log(validatePhone(phone));
+		}
+		if (name == "bdate") {
+			setUpdate({ ...update, [name]: value, age: calculateAge() });
+		}
 		if (name == "email") {
-			validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
+			if (value.length > 0) {
+				validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
+			} else {
+				setIsEmailValid(null);
+			}
 		}
 	};
+	function calculateAge() {
+		let birthDate = new Date(update.bdate);
+		let today = new Date();
 
+		var years = today.getFullYear() - birthDate.getFullYear();
+
+		if (
+			today.getMonth() < birthDate.getMonth() ||
+			(today.getMonth() == birthDate.getMonth() &&
+				today.getDate() < birthDate.getDate())
+		) {
+			years--;
+		}
+
+		return years;
+	}
+
+	const [isPhoneValid, setIsPhoneValid] = useState({
+		cn: true,
+		ccn: true,
+		ecn: true,
+	});
+
+	const [isFormValid, setIsFormValid] = useState(false);
+	useEffect(() => {
+		let allPhone = [];
+		let allPhoneValid = false;
+		let allFields = [];
+		let allFieldsFilled = false;
+		for (const [key, value] of Object.entries(isPhoneValid)) {
+			allPhone.push(value);
+		}
+		for (const [key, value] of Object.entries(update)) {
+			allFields.push(value ? true : key == "cca" && value == "" ? true : false);
+		}
+
+		allPhone.every((e) => e === true)
+			? (allPhoneValid = true)
+			: (allPhone = []);
+
+		allFields.every((e) => e === true)
+			? (allFieldsFilled = true)
+			: (allFields = []);
+		allPhoneValid && isEmailValid && allFieldsFilled && validateAge()
+			? setIsFormValid(true)
+			: setIsFormValid(false);
+	}, [isPhoneValid, update, isEmailValid]);
 	const updateEmployee = async (event) => {
 		let fn =
 			update.fn.split(" ").length > 1
@@ -141,8 +220,6 @@ const EmployeeRow = ({ e }) => {
 				lastName: ln,
 				cityAddress: update.ca,
 				cityContactNumber: update.ccn,
-				provincialAddress: update.pa,
-				provincialContactNumber: update.pcn,
 				numberOfDependents: update.nod,
 				civicClubAffliation: update.cca,
 				religion: update.rel,
@@ -161,8 +238,6 @@ const EmployeeRow = ({ e }) => {
 				dateJoined: update.dj,
 				emergencyName: update.en,
 				emergencyAddress: update.ea,
-				emergencyResidentialContactNumber: update.ercn,
-				emergencyOfficeContactNumber: update.eocn,
 				emergencyContactNumber: update.ecn,
 				emergencyRelationship: update.er,
 			},
@@ -171,9 +246,9 @@ const EmployeeRow = ({ e }) => {
 		setIsUpdated(!isUpdated);
 		toast({
 			title: `Employee #${e.id}`,
-			description: "Successfully updated",
+			description: `${update.fn} ${update.ln} Successfully updated"`,
 			status: "success",
-			duration: 1000,
+			duration: 2000,
 			isClosable: true,
 		});
 		onClose();
@@ -196,7 +271,16 @@ const EmployeeRow = ({ e }) => {
 		});
 		await getEmployees();
 	};
+	var curr = new Date();
+	curr.setFullYear(curr.getFullYear() - 22);
+	var date = curr.toISOString().substring(0, 10);
 
+	const validateAge = () => {
+		var bd = new Date(update.bdate).getFullYear();
+		return bd < curr.getFullYear() - 80 || bd > curr.getFullYear()
+			? false
+			: true;
+	};
 	return (
 		<tr
 			onClick={onOpen}
@@ -260,13 +344,13 @@ const EmployeeRow = ({ e }) => {
 						/>
 						<div>
 							<h1 className="text-3xl">
-								{update.fn} {update.ln}
+								{e.firstName} {e.lastName}
 							</h1>
 							<h6 className="font-light text-md">
-								{update.pa}
+								{e.posApp}
 								{"\n"}
 							</h6>
-							<small className="font-light text-sm">{update.email}</small>
+							<small className="font-light text-sm">{e.emailAddress}</small>
 						</div>
 					</DrawerHeader>
 
@@ -274,6 +358,7 @@ const EmployeeRow = ({ e }) => {
 						<Tabs colorScheme={"red"}>
 							<TabList className="fixed z-10 bg-white w-[92%] pt-5 -mt-3">
 								<Tab fontWeight={500}>DETAILS</Tab>
+								<Tab fontWeight={500}>PROJECTS</Tab>
 								<Tab fontWeight={500}>PERFORMANCE</Tab>
 							</TabList>
 							<TabPanels className="pt-[4rem]">
@@ -318,69 +403,30 @@ const EmployeeRow = ({ e }) => {
 											/>
 										</FormControl>
 
-										<FormControl>
-											<FormLabel>Email Address</FormLabel>
-
-											<InputGroup>
-												<Input
-													focusBorderColor={
-														isEmailValid ? "green.500" : "red.300"
-													}
-													isInvalid={isEmailValid ? false : true}
-													errorBorderColor="red.300"
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													type="email"
-													name="email"
-													id=""
-													value={update.email}
-												/>
-												<InputRightElement
-													children={
-														isEmailValid ? (
-															<div className="text-2xl text-green-500">
-																<BsCheck />
-															</div>
-														) : (
-															<div className="text-2xl text-red-500">
-																<MdClose />
-															</div>
-														)
-													}
-												/>
-											</InputGroup>
-											{isEmailValid ? null : (
-												<p className="text-red-500 text-xs pt-3">
-													Invalid E-mail
-												</p>
-											)}
-										</FormControl>
+										<EmailInput
+											isEmailValid={isEmailValid}
+											handleChange={handleChange}
+											value={update.email}
+										/>
 									</div>
 
-									<div className="flex flex-row gap-5 mt-4">
+									<div className="flex flex-row gap-5 mt-4 items-center">
+										<ContactNumber
+											label={"Contact Number"}
+											w={"100%"}
+											addname={"cn"}
+											handleChange={handleChange}
+											val={update.cn}
+											isPhoneValid={isPhoneValid.cn}
+										/>
 										<FormControl>
-											<FormLabel>Contact Number</FormLabel>
-											<InputGroup>
-												<InputLeftAddon children="+63" />
-												<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="cn"
-													id=""
-													type="tel"
-													placeholder="9123456789"
-													value={update.cn}
-												/>
-											</InputGroup>
-										</FormControl>
-
-										<FormControl>
-											<FormLabel>Birthday</FormLabel>
+											<FormLabel>Birthdate</FormLabel>
 											<Input
 												onChange={handleChange}
 												className="border px-3 py-2 rounded-lg w-full"
 												type="date"
-												name="bday"
+												max={date}
+												name="bdate"
 												value={update.bdate}
 												id=""
 											/>
@@ -388,31 +434,38 @@ const EmployeeRow = ({ e }) => {
 
 										<FormControl w={300}>
 											<FormLabel>Age</FormLabel>
-											<Input
+											<input
 												onChange={handleChange}
-												className="border px-3 py-2 rounded-lg w-full"
+												className={`border px-3 transition-all duration-300 py-2 rounded-lg w-full ${
+													validateAge()
+														? "text-neutral-400 "
+														: "border-red-500 border-2 text-neutral-400  "
+												}`}
 												name="age"
-												value={update.age}
+												value={
+													validateAge()
+														? calculateAge(update.bdate)
+														: "Invalid Date"
+												}
 												id=""
 												disabled={true}
 											/>
 										</FormControl>
-										<FormControl>
-											<FormLabel>Sex</FormLabel>
-											<Select
-												onChange={handleChange}
-												className="border px-3 py-2 rounded-lg w-full"
-												name="sex"
-												value={update.sex}
-												id=""
-											>
-												<option value="Male">Male</option>
-												<option value="Female">Female</option>
-												<option value="Other">Other</option>
-											</Select>
-										</FormControl>
 									</div>
-
+									<FormControl mt={4}>
+										<FormLabel>Sex</FormLabel>
+										<Select
+											onChange={handleChange}
+											className="border px-3 py-2 rounded-lg w-full"
+											name="sex"
+											value={update.sex}
+											id=""
+										>
+											<option value="Male">Male</option>
+											<option value="Female">Female</option>
+											<option value="Other">Other</option>
+										</Select>
+									</FormControl>
 									<div className="flex flex-row gap-5 mt-4">
 										<FormControl>
 											<FormLabel>City Address</FormLabel>
@@ -426,51 +479,14 @@ const EmployeeRow = ({ e }) => {
 											></Input>
 										</FormControl>
 
-										<FormControl>
-											<FormLabel>City Contact Number</FormLabel>
-											<InputGroup>
-												<InputLeftAddon children="+63" />
-												<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="ccn"
-													id=""
-													value={update.ccn}
-													type="tel"
-													placeholder="9123456789"
-												/>
-											</InputGroup>
-										</FormControl>
-									</div>
-
-									<div className="flex flex-row gap-5 mt-4">
-										<FormControl>
-											<FormLabel>Provincial Address</FormLabel>
-											<Input
-												onChange={handleChange}
-												className="border px-3 py-2 rounded-lg w-full"
-												name="pa"
-												value={update.pa}
-												placeholder="Unit 1, Brgy. 2, City, Province"
-												id=""
-											></Input>
-										</FormControl>
-
-										<FormControl>
-											<FormLabel>Provincial Contact Number</FormLabel>
-											<InputGroup>
-												<InputLeftAddon children="+63" />
-												<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="pcn"
-													id=""
-													value={update.pcn}
-													type="tel"
-													placeholder="9123456789"
-												/>
-											</InputGroup>
-										</FormControl>
+										<ContactNumber
+											label={"City Contact Number"}
+											w={"100%"}
+											addname={"ccn"}
+											handleChange={handleChange}
+											val={update.ccn}
+											isPhoneValid={isPhoneValid.ccn}
+										/>
 									</div>
 
 									<div className="flex flex-row items-end gap-5 mt-4">
@@ -517,6 +533,7 @@ const EmployeeRow = ({ e }) => {
 												<option value="Buddhist">Buddhist</option>
 												<option value="Agnostic">Agnostic</option>
 												<option value="Atheist">Atheist</option>
+												<option value="Other">Prefer not to say</option>
 											</Select>
 										</FormControl>
 									</div>
@@ -558,31 +575,41 @@ const EmployeeRow = ({ e }) => {
 									<div className="flex flex-row gap-3 mt-4">
 										<FormControl>
 											<FormLabel>Position Applied</FormLabel>
-											<Input
+											<Select
 												onChange={handleChange}
+												className="border px-3  rounded-lg w-full"
 												name="posApp"
-												placeholder="Web Developer"
+												id=""
 												value={update.posApp}
-											/>
+											>
+												{position.map((e, i) => {
+													return (
+														<option key={i} value={e.name}>
+															{e.name}
+														</option>
+													);
+												})}
+											</Select>
 										</FormControl>
 										<FormControl>
 											<FormLabel>Position Code</FormLabel>
 											<Input
 												onChange={handleChange}
 												name="posCode"
-												placeholder="I-69"
+												placeholder=""
+												disabled
 												value={update.posCode}
 											/>
 										</FormControl>
 										<FormControl>
 											<FormLabel>Date Joined</FormLabel>
 											<input
+												value={update.dj}
 												onChange={handleChange}
 												className="border px-3 py-2 rounded-lg w-full"
 												type="date"
 												name="dj"
 												id=""
-												value={update.dj}
 											/>
 										</FormControl>
 									</div>
@@ -668,59 +695,16 @@ const EmployeeRow = ({ e }) => {
 											/>
 										</FormControl>
 									</div>
+
 									<div className="flex flex-row gap-3 mt-4">
-										<FormControl>
-											<FormLabel>
-												Emergency Residential Contact Number
-											</FormLabel>
-
-											<InputGroup>
-												<InputLeftAddon children="+63" />
-												<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="ercn"
-													id=""
-													type="tel"
-													placeholder="9123456789"
-													value={update.ercn}
-												/>
-											</InputGroup>
-										</FormControl>
-										<FormControl>
-											<FormLabel>Emergency Residential Office Number</FormLabel>
-
-											<InputGroup>
-												<InputLeftAddon children="+63" />
-												<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="eocn"
-													id=""
-													type="tel"
-													placeholder="9123456789"
-													value={update.eocn}
-												/>
-											</InputGroup>
-										</FormControl>
-									</div>
-									<div className="flex flex-row gap-3 mt-4">
-										<FormControl>
-											<FormLabel>Emergency Contact Number</FormLabel>
-
-											<InputGroup>
-												<InputLeftAddon children="+63" />
-												<Input
-													onChange={handleChange}
-													className="border px-3 py-2 rounded-lg w-full"
-													name="ecn"
-													id=""
-													type="tel"
-													placeholder="9123456789"
-													value={update.ecn}
-												/>
-											</InputGroup>
-										</FormControl>
+										<ContactNumber
+											label={"Emergency Contact Number"}
+											w={"100%"}
+											addname={"ecn"}
+											handleChange={handleChange}
+											val={update.ecn}
+											isPhoneValid={isPhoneValid.ecn}
+										/>
 										<FormControl>
 											<FormLabel>Emergency Relationship</FormLabel>
 											<Input
@@ -735,19 +719,33 @@ const EmployeeRow = ({ e }) => {
 									</div>
 									<hr className=" pb-6" />
 								</TabPanel>
+								<TabPanel>
+									{e.assignedProjects
+										? e.assignedProjects.map((e) => (
+												<div className="px-5 py-5 shadow-md w-[50%] mb-8 rounded-lg text-2xl font-semibold">
+													<p>{e.name}</p>
+												</div>
+										  ))
+										: ""}
+								</TabPanel>
 							</TabPanels>
 						</Tabs>
 					</DrawerBody>
 
 					<DrawerFooter>
-						<Button
-							onClick={updateEmployee}
-							colorScheme="yellow"
-							variant="outline"
+						<button
+							className={`font-semibold px-5 mr-3 py-2 rounded-lg transition-all duration-300 ${
+								isFormValid
+									? "bg-yellow-400 hover:opacity-80  text-[#353535] "
+									: "bg-neutral-100 cursor-default text-[#949494]"
+							}`}
+							id={"addEmployee"}
+							onClick={isFormValid ? updateEmployee : null}
+							colorScheme=""
 							mr={3}
 						>
 							Update
-						</Button>
+						</button>
 						<Button onClick={deleteEmployee} colorScheme="red">
 							Delete
 						</Button>
