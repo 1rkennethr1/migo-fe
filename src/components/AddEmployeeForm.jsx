@@ -41,8 +41,6 @@ const AddEmployeeForm = () => {
 		ccn: null,
 		pcn: null,
 		ecn: null,
-		eocn: null,
-		ercn: null,
 	});
 	const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
 		<div
@@ -185,10 +183,9 @@ const AddEmployeeForm = () => {
 			allPhone.push(value);
 		}
 		for (const [key, value] of Object.entries(add)) {
-			allFields.push(
-				value ? true : key == "ca" && value == null ? true : false
-			);
+			allFields.push(value ? true : key == "cca" && value == "" ? true : false);
 		}
+		console.log(allFields);
 		allPhone.every((e) => e === true)
 			? (allPhoneValid = true)
 			: (allPhone = []);
