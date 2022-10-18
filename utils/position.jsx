@@ -1,11 +1,11 @@
 export const position = [
 	{
 		name: "Senior Back-end Developer",
-		code: "B1-0–A1-50",
+		code: "A1",
 	},
 	{
 		name: "Junior Back-end Developer",
-		code: "B2-0-A2-50",
+		code: "A2",
 	},
 	{
 		name: "Cloud/Software Architect",
