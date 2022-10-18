@@ -30,18 +30,21 @@ import { MdClose } from "react-icons/md";
 import { BsCheck } from "react-icons/bs";
 import { useRef } from "react";
 import toast from "react-hot-toast";
+import { position } from "../../utils/position";
+
 const AddEmployeeForm = () => {
 	const month = new Date().getMonth();
 	const day = new Date().getDay();
 	const year = new Date().getFullYear();
-	console.log(month, day, year);
+
 	const [isEmailValid, setIsEmailValid] = useState(null);
 	const [isPhoneValid, setIsPhoneValid] = useState({
 		cn: null,
 		ccn: null,
-		pcn: null,
+
 		ecn: null,
 	});
+
 	const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
 		<div
 			className="hover:opacity-60 transition-opacity duration-300"
@@ -51,24 +54,19 @@ const AddEmployeeForm = () => {
 			{children}
 		</div>
 	));
-	const [phone, setPhone] = useState({ p: "" });
-	const handleChangeTest = (e) => {
-		const { value, name } = e.target;
 
-		setPhone({ ...phone, [name]: value });
-	};
 	const [isAdded, setIsAdded] = useState(false);
+	const [selectedPosition, setSelectedPosition] = useState(position[0]);
 	const { getEmployees, employees } = useStateContext();
 	useEffect(() => {
 		getEmployees();
 	}, [isAdded]);
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
+
 	const initialRef = React.useRef(null);
 	const finalRef = React.useRef(null);
-	/*
-		cn = contactNumber;
-		ct = contractType; 
-	*/
+	let poscode;
 	var curr = new Date();
 	curr.setFullYear(curr.getFullYear() - 22);
 	var date = curr.toISOString().substring(0, 10);
@@ -78,27 +76,24 @@ const AddEmployeeForm = () => {
 		ln: "",
 		ca: "",
 		ccn: "", // city contact number
-
-		pcn: "", //provincial contact number
 		nod: "", //number of dependents
 		cca: "", //civic club affiliation
 		rel: "Roman Catholic", //religion
 		bt: "A+", //bloodtype
 		sex: "Male", //
 		cs: "Single", //civil status
-		age: 18,
+		age: 22,
 		bdate: date, //birthdate
 		prof: "Information Technology", //profession
 		cn: "", // contact number
 		email: "", //email
 		yoe: "", //year of experience
 		ct: "Regular", //contract type
-		posApp: "",
+		posApp: "Senior Back-end Developer",
 		posCode: "",
 		dj: "", //date joined
 		en: "", //emergency name
 		ea: "", //emergency address
-
 		ecn: "", //emergency contact number
 		er: "", //emergency relationship
 	});
@@ -112,14 +107,13 @@ const AddEmployeeForm = () => {
 	const validatePhone = (phone) => {
 		return String(phone).match(/9\d{9}$/);
 	};
+	useEffect(() => {
+		poscode = position.find((e) => e.name === add.posApp);
 
+		setAdd({ ...add, posCode: poscode ? poscode.code : "" });
+	}, [add.posApp]);
 	const handleChange = async (e) => {
 		const { value, name } = e.target;
-		// let cnPattern = /\d{10}$/;
-		// let cn = cnPattern.test(add.cn) ? add.cn : false;
-		// if (cn == false)
-		//   document.querySelector("#addEmployee").setAttribute("disabled", true);
-		// else document.querySelector("#addEmployee").removeAttribute("disabled");
 
 		setAdd({
 			...add,
@@ -128,6 +122,7 @@ const AddEmployeeForm = () => {
 		if (name == "bdate") {
 			setAdd({ ...add, [name]: value, age: calculateAge() });
 		}
+
 		if (name == "email") {
 			if (value.length > 0) {
 				validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
@@ -185,7 +180,7 @@ const AddEmployeeForm = () => {
 		for (const [key, value] of Object.entries(add)) {
 			allFields.push(value ? true : key == "cca" && value == "" ? true : false);
 		}
-		console.log(allFields);
+
 		allPhone.every((e) => e === true)
 			? (allPhoneValid = true)
 			: (allPhone = []);
@@ -196,9 +191,6 @@ const AddEmployeeForm = () => {
 		allPhoneValid && isEmailValid && allFieldsFilled
 			? setIsFormValid(true)
 			: setIsFormValid(false);
-		console.log(allPhoneValid);
-		console.log(isEmailValid);
-		console.log(allFieldsFilled);
 	}, [isPhoneValid, add, isEmailValid]);
 	const addEmployee = async (e) => {
 		e.preventDefault();
@@ -247,8 +239,7 @@ const AddEmployeeForm = () => {
 				lastName: ln,
 				cityAddress: add.ca,
 				cityContactNumber: add.ccn,
-				provincialAddress: add.pa,
-				provincialContactNumber: add.pcn,
+
 				numberOfDependents: add.nod,
 				civicClubAffiliation: add.cca,
 				religion: add.rel,
@@ -267,8 +258,7 @@ const AddEmployeeForm = () => {
 				dateJoined: add.dj,
 				emergencyName: add.en,
 				emergencyAddress: add.ea,
-				emergencyResidentialContactNumber: add.ercn,
-				emergencyOfficeContactNumber: add.eocn,
+
 				emergencyContactNumber: add.ecn,
 				emergencyRelationship: add.er,
 			},
@@ -461,7 +451,7 @@ const AddEmployeeForm = () => {
 							</FormControl>
 						</div>
 						<div className="flex gap-3 mt-4">
-							<FormControl>
+							<FormControl width={"49.5%"}>
 								<FormLabel>Contact Number</FormLabel>
 								<InputGroup>
 									<InputLeftAddon children="+63" />
@@ -521,81 +511,6 @@ const AddEmployeeForm = () => {
 									isPhoneValid.cn ? (
 										""
 									) : add.cn[0] === "9" ? (
-										<p className="text-red-500 text-xs pt-3">
-											Invalid phone number!
-										</p>
-									) : (
-										<p className="text-red-500 text-xs pt-3">
-											Invalid phone number! (should start with 9)
-										</p>
-									)
-								) : (
-									""
-								)}
-							</FormControl>
-							<FormControl>
-								<FormLabel>Provincial Contact Number</FormLabel>
-
-								<InputGroup>
-									<InputLeftAddon children="+63" />
-									<Input
-										focusBorderColor={
-											isPhoneValid.pcn === null
-												? ""
-												: isPhoneValid.pcn === true ||
-												  isPhoneValid.pcn === false
-												? isPhoneValid.pcn
-													? "green.300"
-													: "red.300"
-												: ""
-										}
-										isInvalid={isPhoneValid.pcn === null ? false : true}
-										errorBorderColor={
-											isPhoneValid.pcn === null
-												? ""
-												: isPhoneValid.pcn === true ||
-												  isPhoneValid.pcn === false
-												? isPhoneValid.pcn === true
-													? "green.300"
-													: "red.300"
-												: ""
-										}
-										onChange={handleChange}
-										className="border px-3 py-2 rounded-lg w-full"
-										name="pcn"
-										id=""
-										maxLength={10}
-										value={add.pcn}
-										type="number"
-										placeholder="9341563456"
-									/>
-									<InputRightElement
-										children={
-											isPhoneValid.pcn === null ? (
-												""
-											) : isPhoneValid.pcn === true ||
-											  isPhoneValid.pcn === false ? (
-												isPhoneValid.pcn ? (
-													<div className="text-2xl text-green-500">
-														<BsCheck />
-													</div>
-												) : (
-													<div className="text-2xl text-red-500">
-														<MdClose />
-													</div>
-												)
-											) : (
-												""
-											)
-										}
-									/>
-								</InputGroup>
-								{isPhoneValid.pcn === null ? (
-									""
-								) : isPhoneValid.pcn === true || isPhoneValid.pcn === false ? (
-									isPhoneValid.pcn ? (
-										""
-									) : add.pcn[0] === "9" ? (
 										<p className="text-red-500 text-xs pt-3">
 											Invalid phone number!
 										</p>
@@ -850,18 +765,30 @@ const AddEmployeeForm = () => {
 						<div className="flex flex-row gap-3 mt-4">
 							<FormControl>
 								<FormLabel>Position Applied</FormLabel>
-								<Input
+								<Select
 									onChange={handleChange}
+									className="border px-3  rounded-lg w-full"
 									name="posApp"
-									placeholder="Web Developer"
-								/>
+									id=""
+									value={add.posApp}
+								>
+									{position.map((e, i) => {
+										return (
+											<option key={i} value={e.name}>
+												{e.name}
+											</option>
+										);
+									})}
+								</Select>
 							</FormControl>
 							<FormControl>
 								<FormLabel>Position Code</FormLabel>
 								<Input
 									onChange={handleChange}
 									name="posCode"
-									placeholder="I-69"
+									placeholder=""
+									disabled
+									value={add.posCode}
 								/>
 							</FormControl>
 							<FormControl>
@@ -883,6 +810,7 @@ const AddEmployeeForm = () => {
 							<FormControl>
 								<FormLabel>Emergency Name</FormLabel>
 								<Input
+									placeholder="John S. Doe"
 									onChange={handleChange}
 									className="border px-3 py-2 rounded-lg w-full"
 									name="en"
