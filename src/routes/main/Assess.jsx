@@ -1,5 +1,7 @@
 import React, {useState} from "react";
+import { useStateContext } from "../../lib/context";
 import Papa from "papaparse";
+import { motion } from "framer-motion";
 import MainLayout from "../../components/MainLayout";
 import { 
 	Select,
@@ -10,6 +12,7 @@ import {
 
 
 const Assess = () => {
+	const { minimized, employees, isFetchingEmployees } = useStateContext();
 	const [selectedFile, setSelectedFile] = useState();
 	const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -29,7 +32,14 @@ const Assess = () => {
 					}
 				}
 				);
+				document.querySelector('.table-data').classList.remove('hidden')
+				document.querySelector('.table-data').classList.add('flex')
 			}
+		else{
+			document.querySelector('.table-data').classList.remove('flex')
+			document.querySelector('.table-data').classList.add('hidden')
+		}
+		
 		}
 	const changeHandler = (e) => {
 		setSelectedFile(e.target.files[0]);
@@ -74,8 +84,90 @@ const Assess = () => {
 						</button>
 					</div>
 				</div>
-				<b>Parsed CSV File:</b> {JSON.stringify(CSVData,undefined,4)}
+				{/* <b>Parsed CSV File:</b> {JSON.stringify(CSVData,undefined,4)} */}
+				<motion.div
+					className="table-data hidden justify-center"
+					initial={{ opacity: 0, y: 50 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0 }}
+					transition={{
+						duration: 0.5,
+						type: "spring",
+						damping: 20,
+						stiffness: 90,
+						}}
+					>
+						<div
+							className={`w-screen transition-all duration-500 ${
+								minimized ? "max-w-[75rem]" : "2xl:max-w-[90rem] max-w-5xl"
+							} ml-20 h-[80vh] overflow-y-scroll mt-10  bg-white dark:bg-[#171717] shadow-lg rounded-xl border border-gray-200 dark:border-neutral-600`}
+						>
+							<header className="px-5 py-4 w-[275%] border-b border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d] flex justify-between items-center sticky top-0 bg-white">
+								<h2 className="font-semibold text-gray-800 py-3 text-xl dark:text-white transition duration-500 ">
+									Alliance Software Inc. Employees
+								</h2>
+							</header>
+							<div className="">
+								<div className="">
+									<table className="table-auto w-full">
+										<thead className="text-xs sticky transition duration-500 top-[85px] w-full font-semibold uppercase dark:bg-[#1f1f1f] text-gray-700 dark:text-white bg-gray-200  ">
+											<tr>
+												{CSVData!=undefined && isFilePicked ? (
+													Object.keys(CSVData[0]).map(event=>{
+														return event != 'employee_id' ?(
+														<th className="pl-24 whitespace-nowrap">
+															<div className="font-semibold text-center">
+																{event}
+															</div>
+														</th>
+													):(
+														<th className="whitespace-nowrap">
+															<div className="font-semibold text-left pl-10 py-2">Employee ID</div>
+														</th>
+													)
+													})) : (
+													<p>No file selected</p>
+												)}
+												{/* */}
+												
+											</tr>
+										</thead>
+											{/* {employees.map((e) => {
+												return <EmployeeRow key={e.id} e={e} />;
+											})} */}
+										<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700">
+											{CSVData != undefined && isFilePicked ?(
+												CSVData.map((e) => {
+													
+													return (<tr> {Object.keys(e).map(event => {
+															return (
+																event == 'employee_id' ?
+																(
+																<td className="whitespace-nowrap">
+																	<div className="font-semibold text-left pl-10 py-2">{e[event]}</div>
+																</td>	
+																):
+																(
+																<td className="pl-24 whitespace-nowrap">
+																	<div className="font-semibold text-left pl-10 py-2">{e[event]}</div>
+																</td>	
+																)															
+															)
+														}) }
+													</tr>)
+												})
+											)
+												
+												:<p>No </p>
+											}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</motion.div>
 			</div>
+						
 		</MainLayout>
 	);
 };
