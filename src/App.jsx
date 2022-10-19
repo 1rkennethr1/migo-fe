@@ -9,10 +9,11 @@ import Benefits from "./routes/main/Benefits";
 import Dashboard from "./routes/main/Dashboard";
 import Employees from "./routes/main/Employees";
 import Assess from "./routes/main/Assess";
+import { useState } from "react";
 function App() {
 	const loc = useLocation();
 	console.log();
-	const { minimized } = useStateContext();
+	const { minimized, jwt } = useStateContext();
 	const sidebarPadding = {
 		initial: {
 			opacity: 0,
@@ -50,10 +51,22 @@ function App() {
 				)}
 				<AnimatePresence mode="wait">
 					<Routes key={loc.pathname} location={loc}>
-						<Route path="/main/dashboard" element={<Dashboard />} />
-						<Route path="/main/employees" element={<Employees />} />
-						<Route path="/main/assess" element={<Assess />} />
-						<Route path="/main/benefits" element={<Benefits />} />
+						<Route
+							path="/main/dashboard"
+							element={jwt ? <Dashboard /> : <Navigate to="/login" />}
+						/>
+						<Route
+							path="/main/employees"
+							element={jwt ? <Employees /> : <Navigate to="/login" />}
+						/>
+						<Route
+							path="/main/assess"
+							element={jwt ? <Assess /> : <Navigate to="/login" />}
+						/>
+						<Route
+							path="/main/benefits"
+							element={jwt ? <Benefits /> : <Navigate to="/login" />}
+						/>
 						<Route path="/" element={<Navigate to="/login" />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/homepage" element={<HomePage />} />

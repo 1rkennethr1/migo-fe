@@ -6,6 +6,7 @@ export default function StateContext({ children }) {
 	const [minimized, setMinimized] = useState(false);
 	const [employees, setEmployees] = useState([]);
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
+	const [jwt, setJwt] = useState("");
 	const getEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
@@ -24,6 +25,8 @@ export default function StateContext({ children }) {
 				employees,
 				isFetchingEmployees,
 				getEmployees,
+				jwt,
+				setJwt,
 			}}
 		>
 			{children}

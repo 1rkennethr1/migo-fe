@@ -1,12 +1,19 @@
+import axios from "axios";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { BiArrowToRight } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import login from "../assets/login.jpeg";
 import migo from "../assets/migo.svg";
 import DarkModeButton from "../components/DarkModeButton";
+import { useStateContext } from "../lib/context";
 export default function LoginPage() {
 	const [wrf, setWrf] = useState(false);
+	const [user, setUser] = useState({ username: "", password: "" });
+	const [response, setResponse] = useState("");
+	const { jwt, setJwt } = useStateContext();
+
+	const navigate = useNavigate();
 	const fade = {
 		initial: { opacity: 0 },
 		animate: {
@@ -32,6 +39,29 @@ export default function LoginPage() {
 			},
 		},
 	};
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setUser({ ...user, [name]: value });
+	};
+	const handleLogin = async () => {
+		axios({
+			url: "https://localhost:7241/api/Auth/login",
+			method: "post",
+			data: {
+				username: user.username,
+				password: user.password,
+			},
+		})
+			.then((e) => {
+				setResponse("");
+				setJwt(e.data);
+				navigate("/main/dashboard");
+			})
+			.catch((e) => {
+				setResponse(e.response.data);
+				setJwt("");
+			});
+	};
 	return (
 		<motion.div
 			variants={wrf ? fade2 : fade}
@@ -54,21 +84,44 @@ export default function LoginPage() {
 					onSubmit={(e) => e.preventDefault()}
 					className="flex flex-col gap-4 w-full"
 				>
+					{response ? (
+						response == "User not found" ? (
+							<p className="text-red-500 text-sm ml-3">User not found</p>
+						) : response == "Wrong password." ? (
+							<p className="text-red-500 text-sm ml-3">Invalid password!</p>
+						) : (
+							""
+						)
+					) : (
+						""
+					)}
 					<input
-						placeholder="Enter your email"
-						className="border border-black h-[4rem] rounded-lg px-5"
-						type="email"
-						name=""
+						placeholder="Enter username"
+						className={`border outline-none focus:border-2 transition-all  text-black  h-[4rem] rounded-lg px-5 ${
+							response === "User not found"
+								? "border-2 border-red-500"
+								: "border-black"
+						}`}
+						type="text"
+						name="username"
 						id=""
+						value={user.username}
+						onChange={handleChange}
 					/>
 					<input
 						placeholder="Password"
-						className="border border-black h-[4rem] rounded-lg px-5"
+						className={`border outline-none focus:border-2 transition-all  text-black  h-[4rem] rounded-lg px-5 ${
+							response === "Wrong password."
+								? "border-2 border-red-500"
+								: "border-black"
+						}`}
 						type="password"
-						name=""
+						name="password"
+						value={user.password}
+						onChange={handleChange}
 						id=""
 					/>
-					<div className="flex justify-between">
+					{/* <div className="flex justify-between">
 						<div className="flex gap-2 items-center">
 							<input type="checkbox" name="asd" id="" className="" />
 							<p>Remember Password</p>
@@ -76,15 +129,15 @@ export default function LoginPage() {
 						<div className="">
 							<a href="">Forgot Password?</a>
 						</div>
-					</div>
-					<Link to="/main/dashboard">
-						<button
-							onMouseEnter={() => setWrf(true)}
-							className="px-[5rem] my-[1.5rem] w-full  h-[4rem] rounded-lg font-semibold text-white bg-[#ec2224]"
-						>
-							Login
-						</button>
-					</Link>
+					</div> */}
+
+					<button
+						onClick={handleLogin}
+						onMouseEnter={() => setWrf(true)}
+						className="px-[5rem] my-[1.5rem] w-full  h-[4rem] rounded-lg font-semibold text-white bg-[#ec2224]"
+					>
+						Login
+					</button>
 				</form>
 				<div className="w-full flex justify-end">
 					<Link to="/homepage">
