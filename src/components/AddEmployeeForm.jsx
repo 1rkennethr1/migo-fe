@@ -70,6 +70,8 @@ const AddEmployeeForm = () => {
 	var curr = new Date();
 	curr.setFullYear(curr.getFullYear() - 22);
 	var date = curr.toISOString().substring(0, 10);
+	var now = new Date();
+	var nowString = now.toISOString().substring(0, 10);
 	const [add, setAdd] = useState({
 		fn: "",
 		mn: "",
@@ -610,6 +612,7 @@ const AddEmployeeForm = () => {
 									type="date"
 									name="dj"
 									id=""
+									max={nowString}
 								/>
 							</FormControl>
 						</div>
