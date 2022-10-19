@@ -55,6 +55,7 @@ export default function LoginPage() {
 			.then((e) => {
 				setResponse("");
 				setJwt(e.data);
+				localStorage.setItem("jwt", JSON.stringify(e.data));
 				navigate("/main/dashboard");
 			})
 			.catch((e) => {

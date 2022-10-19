@@ -26,6 +26,17 @@ import {
 	useToast,
 	DrawerOverlay,
 } from "@chakra-ui/react";
+import {
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	PopoverHeader,
+	PopoverBody,
+	PopoverFooter,
+	PopoverArrow,
+	PopoverCloseButton,
+	PopoverAnchor,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
 import { useStateContext } from "../lib/context";
@@ -746,9 +757,29 @@ const EmployeeRow = ({ e }) => {
 						>
 							Update
 						</button>
-						<Button onClick={deleteEmployee} colorScheme="red">
-							Delete
-						</Button>
+						<Popover closeOnBlur={false} placement="left">
+							{({ isOpen, onClose }) => (
+								<>
+									<PopoverTrigger>
+										<Button colorScheme="red">Delete</Button>
+									</PopoverTrigger>
+									<PopoverContent>
+										<PopoverArrow />
+										<PopoverCloseButton />
+										<PopoverHeader>Confirmation!</PopoverHeader>
+										<PopoverBody>
+											Are you sure you want to delete this employee?
+										</PopoverBody>
+										<div className="flex justify-end pb-5 pr-5 pt-5 gap-3">
+											<Button onClick={deleteEmployee} colorScheme="red">
+												Delete please!
+											</Button>
+											<Button onClick={onClose}>No, Thanks!</Button>
+										</div>
+									</PopoverContent>
+								</>
+							)}
+						</Popover>
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
