@@ -87,7 +87,7 @@ const EmployeeRow = ({ e }) => {
 		dj: e.dateJoined, //date joined
 		en: e.emergencyName, //emergency name
 		ea: e.emergencyAddress, //emergency address
-
+		assignedProjects: e.assignedProjects,
 		ecn: e.emergencyContactNumber, //emergency contact number
 		er: e.emergencyRelationship, //emergency relationship
 	});
@@ -220,39 +220,45 @@ const EmployeeRow = ({ e }) => {
 				: update.ln[0].toUpperCase() + update.ln.slice(1, update.ln.length);
 
 		event.preventDefault();
+		const url = `https://localhost:7241/Employee/${e.id}`;
+		try {
+			const res = await fetch(url, {
+				method: "put",
+				headers: { "Content-Type": "application/json-patch+json" },
+				body: JSON.stringify({
+					id: e.id,
+					firstName: fn,
+					middleName: mn,
+					lastName: ln,
+					cityAddress: update.ca,
+					cityContactNumber: update.ccn,
+					numberOfDependents: update.nod,
+					civicClubAffliation: update.cca,
+					religion: update.rel,
+					bloodType: update.bt,
+					age: update.age,
+					sex: update.sex,
+					civilStatus: update.cs,
+					birthdate: update.bdate,
+					profession: update.prof,
+					contactNumber: update.cn,
+					emailAddress: update.email,
+					yearsOfExperience: update.yoe,
+					contractType: update.ct,
+					positionApplied: update.posApp,
+					positionCode: update.posCode,
+					dateJoined: update.dj,
+					emergencyName: update.en,
+					emergencyAddress: update.ea,
+					emergencyContactNumber: update.ecn,
+					emergencyRelationship: update.er,
+					assignedProjects: update.assignedProjects,
+				}),
+			});
+		} catch (error) {
+			console.log(error);
+		}
 
-		axios({
-			method: "put",
-			url: `https://localhost:7241/Employee/${e.id}`,
-			data: {
-				id: e.id,
-				firstName: fn,
-				middleName: mn,
-				lastName: ln,
-				cityAddress: update.ca,
-				cityContactNumber: update.ccn,
-				numberOfDependents: update.nod,
-				civicClubAffliation: update.cca,
-				religion: update.rel,
-				bloodType: update.bt,
-				age: update.age,
-				sex: update.sex,
-				civilStatus: update.cs,
-				birthdate: update.bdate,
-				profession: update.prof,
-				contactNumber: update.cn,
-				emailAddress: update.email,
-				yearsOfExperience: update.yoe,
-				contractType: update.ct,
-				positionApplied: update.posApp,
-				positionCode: update.posCode,
-				dateJoined: update.dj,
-				emergencyName: update.en,
-				emergencyAddress: update.ea,
-				emergencyContactNumber: update.ecn,
-				emergencyRelationship: update.er,
-			},
-		});
 		await getEmployees();
 		setIsUpdated(!isUpdated);
 		toast({

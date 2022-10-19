@@ -228,17 +228,16 @@ const AddEmployeeForm = () => {
 
 		// data.LastName.split("").splice(0, 1).join("").toUpperCase() +
 		// data.LastName.split("").splice(1, data.LastName.length).join("");
-
-		axios({
+		const url = "https://localhost:7241/Employee";
+		const res = await fetch(url, {
 			method: "post",
-			url: "https://localhost:7241/Employee",
-			data: {
+			headers: { "Content-Type": "application/json-patch+json" },
+			body: JSON.stringify({
 				firstName: fn,
 				middleName: mn,
 				lastName: ln,
 				cityAddress: add.ca,
 				cityContactNumber: add.ccn,
-
 				numberOfDependents: add.nod,
 				civicClubAffiliation: add.cca,
 				religion: add.rel,
@@ -260,8 +259,10 @@ const AddEmployeeForm = () => {
 
 				emergencyContactNumber: add.ecn,
 				emergencyRelationship: add.er,
-			},
+			}),
 		});
+		const data = await res.json();
+		console.log(data);
 		setIsAdded(!isAdded);
 		onClose();
 
