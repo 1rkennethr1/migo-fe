@@ -67,7 +67,7 @@ const Assess = () => {
 							</div>
 							<div className="flex gap-10 items-center">
 								<FormControl className="flex flex-row gap-10 h-10 items-center">
-									<FormLabel htmlFor="fileInput" className="rounded-md dark:bg-[#1f1f1f] dark:text-white hover:cursor-pointer bg-gray-100 text-black p-[.6rem] mt-2">Upload File</FormLabel>
+									<FormLabel htmlFor="fileInput" className="rounded-md dark:bg-[#1f1f1f] dark:text-white hover:cursor-pointer bg-gray-100 text-black p-[.6rem] mt-2 transition-all duration-300">Upload File</FormLabel>
 									<Input id="fileInput" className="p-1 hidden" type="file" accept="text/csv" name="file" onChange={changeHandler} />
 									{selectedFile!=undefined && isFilePicked ? (
 										<div>
@@ -114,7 +114,7 @@ const Assess = () => {
 											<tr>
 												{CSVData!=undefined && isFilePicked ? (
 													Object.keys(CSVData[0]).map(event=>{
-														return event != 'employee_id' ?(
+														return event.toLowerCase() != 'employee_id' ?(
 														<th className="pl-24 whitespace-nowrap">
 															<div className="font-semibold text-center">
 																{event}
@@ -141,7 +141,7 @@ const Assess = () => {
 													
 													return (<tr> {Object.keys(e).map(event => {
 															return (
-																event == 'employee_id' ?
+																event.toLowerCase() == 'employee_id' ?
 																(
 																<td className="whitespace-nowrap">
 																	<div className="font-semibold text-left pl-10 py-2">{e[event]}</div>

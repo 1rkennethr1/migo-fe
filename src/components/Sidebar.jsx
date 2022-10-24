@@ -8,7 +8,7 @@ import {
 	MdSpaceDashboard,
 	MdPeople,
 	MdOutlineAssessment,
-	MdCardGiftcard,
+	MdAvTimer,
 } from "react-icons/md";
 
 import { BiLogOut } from "react-icons/bi";
@@ -31,8 +31,8 @@ const tabs = [
 		path: "/main/assess",
 	},
 	{
-		label: "Benefits",
-		icon: <MdCardGiftcard />,
+		label: "Time Logs",
+		icon: <MdAvTimer />,
 		path: "/main/benefits",
 	},
 ];
@@ -104,7 +104,7 @@ const Sidebar = () => {
 									e === selectedTab
 										? ""
 										: "hover:bg-[#ededed] dark:hover:bg-[#282828]"
-								} rounded-lg py-1`}
+								} rounded-lg py-1 overflow-hidden text-ellipsis whitespace-nowrap`}
 							>
 								<NavLink
 									to={e.path}

@@ -5,16 +5,27 @@ const MigoContext = createContext();
 export default function StateContext({ children }) {
 	const [minimized, setMinimized] = useState(false);
 	const [employees, setEmployees] = useState([]);
+	const [timelogs, setTimeLogs] = useState([]);
+	const [isFetchingTimeLogs, setIsFetchingTimeLogs] = useState(true);
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
 	const [jwt, setJwt] = useState(JSON.parse(localStorage.getItem("jwt")));
+	
 	const getEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
 		setEmployees(data);
 	};
+	const getTimeLogs = async () => {
+		const res = await fetch("https://localhost:7241/api/EmployeeTimeLog");
+		const data = await res.json();
+		setTimeLogs(data);
+	};
 	useEffect(() => {
 		getEmployees();
 		setIsFetchingEmployees(false);
+		
+		getTimeLogs();
+		setIsFetchingTimeLogs(false);
 	}, []);
 
 	return (
@@ -25,6 +36,9 @@ export default function StateContext({ children }) {
 				employees,
 				isFetchingEmployees,
 				getEmployees,
+				timelogs,
+				isFetchingTimeLogs,
+				getTimeLogs,
 				jwt,
 				setJwt,
 			}}

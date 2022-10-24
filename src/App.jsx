@@ -5,7 +5,7 @@ import HomePage from "./routes/HomePage";
 import LoginPage from "./routes/LoginPage";
 import { AnimatePresence, motion } from "framer-motion";
 import Sidebar from "./components/Sidebar";
-import Benefits from "./routes/main/Benefits";
+import TimeLogs from "./routes/main/TimeLogs";
 import Dashboard from "./routes/main/Dashboard";
 import Employees from "./routes/main/Employees";
 import Assess from "./routes/main/Assess";
@@ -65,7 +65,7 @@ function App() {
 						/>
 						<Route
 							path="/main/benefits"
-							element={jwt ? <Benefits /> : <Navigate to="/login" />}
+							element={jwt ? <TimeLogs /> : <Navigate to="/login" />}
 						/>
 						<Route path="/" element={<Navigate to="/login" />} />
 						<Route path="/login" element={<LoginPage />} />
