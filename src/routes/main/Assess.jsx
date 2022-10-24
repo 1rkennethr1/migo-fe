@@ -54,11 +54,21 @@ const Assess = () => {
 							</div>
 							<div className="flex gap-10 items-center">
 								<FormControl className="flex flex-row gap-10 h-10 items-center">
-
-									<FormLabel htmlFor="fileInput" className="rounded-md dark:bg-[#1f1f1f] dark:text-white hover:cursor-pointer bg-gray-100 text-black p-[.6rem] mt-2 transition-all duration-300">Upload File</FormLabel>
-									<Input id="fileInput" className="p-1 hidden" type="file" accept="text/csv" name="file" onChange={changeHandler} />
-									{selectedFile!=undefined && isFilePicked ? (
-
+									<FormLabel
+										htmlFor="fileInput"
+										className="rounded-md dark:bg-[#1f1f1f] dark:text-white hover:cursor-pointer bg-gray-100 text-black p-[.6rem] mt-2 transition-all duration-300"
+									>
+										Upload File
+									</FormLabel>
+									<Input
+										id="fileInput"
+										className="p-1 hidden"
+										type="file"
+										accept="text/csv"
+										name="file"
+										onChange={changeHandler}
+									/>
+									{selectedFile != undefined && isFilePicked ? (
 										<div>
 											<p
 												className="whitespace-nowrap overflow-hidden text-ellipsis max-w-xs"
@@ -106,68 +116,66 @@ const Assess = () => {
 						</header>
 						<div className="">
 							<div className="">
-
 								<div className="">
 									<table className="table-auto w-full">
 										<thead className="text-xs sticky transition duration-500 top-[85px] w-full font-semibold uppercase dark:bg-[#1f1f1f] text-gray-700 dark:text-white bg-gray-200  ">
 											<tr>
-												{CSVData!=undefined && isFilePicked ? (
-													Object.keys(CSVData[0]).map(event=>{
-														return event.toLowerCase() != 'employee_id' ?(
-
-														<th className="pl-24 whitespace-nowrap">
-															<div className="font-semibold text-center">
-																{event}
-															</div>
-														</th>
-													) : (
-														<th className="whitespace-nowrap">
-															<div className="font-semibold text-left pl-10 py-2">
-																Employee ID
-															</div>
-														</th>
-													);
-												})
-											) : (
-												<p>No file selected</p>
-											)}
-											{/* */}
-										</tr>
-									</thead>
-									{/* {employees.map((e) => {
+												{CSVData != undefined && isFilePicked ? (
+													Object.keys(CSVData[0]).map((event) => {
+														return event.toLowerCase() != "employee_id" ? (
+															<th className="pl-24 whitespace-nowrap">
+																<div className="font-semibold text-center">
+																	{event}
+																</div>
+															</th>
+														) : (
+															<th className="whitespace-nowrap">
+																<div className="font-semibold text-left pl-10 py-2">
+																	Employee ID
+																</div>
+															</th>
+														);
+													})
+												) : (
+													<p>No file selected</p>
+												)}
+												{/* */}
+											</tr>
+										</thead>
+										{/* {employees.map((e) => {
 												return <EmployeeRow key={e.id} e={e} />;
 											})} */}
 
 										<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700">
-											{CSVData != undefined && isFilePicked ?(
+											{CSVData != undefined && isFilePicked ? (
 												CSVData.map((e) => {
-													
-													return (<tr> {Object.keys(e).map(event => {
-															return (
-																event.toLowerCase() == 'employee_id' ?
-																(
-
-																<td className="whitespace-nowrap">
-																	<div className="font-semibold text-left pl-10 py-2">
-																		{e[event]}
-																	</div>
-																</td>
-															) : (
-																<td className="pl-24 whitespace-nowrap">
-																	<div className="font-semibold text-left pl-10 py-2">
-																		{e[event]}
-																	</div>
-																</td>
-															);
-														})}
-													</tr>
-												);
-											})
-										) : (
-											<p>No </p>
-										)}
-									</tbody>
-								</table>
+													return (
+														<tr>
+															{" "}
+															{Object.keys(e).map((event) => {
+																return event.toLowerCase() == "employee_id" ? (
+																	<td className="whitespace-nowrap">
+																		<div className="font-semibold text-left pl-10 py-2">
+																			{e[event]}
+																		</div>
+																	</td>
+																) : (
+																	<td className="pl-24 whitespace-nowrap">
+																		<div className="font-semibold text-left pl-10 py-2">
+																			{e[event]}
+																		</div>
+																	</td>
+																);
+															})}
+														</tr>
+													);
+												})
+											) : (
+												<p>No </p>
+											)}
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
