@@ -23,6 +23,7 @@ const Assess = () => {
 					setCSVData(result.data);
 				},
 			});
+			console.log(selectedFile)
 			document.querySelector(".table-data").classList.remove("hidden");
 			document.querySelector(".table-data").classList.add("flex");
 		} else {

@@ -37,6 +37,8 @@ const AddEmployeeForm = () => {
 	const month = new Date().getMonth();
 	const day = new Date().getDay();
 	const year = new Date().getFullYear();
+	const [pic, setPic] = useState();
+	const [isPicSelected, setIsPicSelected] = useState(false);
 
 	const [isEmailValid, setIsEmailValid] = useState(null);
 	const [isPhoneValid, setIsPhoneValid] = useState({
@@ -98,6 +100,7 @@ const AddEmployeeForm = () => {
 		ea: "", //emergency address
 		ecn: "", //emergency contact number
 		er: "", //emergency relationship
+		in: ""
 	});
 	const validateEmail = (email) => {
 		return String(email)
@@ -262,9 +265,9 @@ const AddEmployeeForm = () => {
 				dateJoined: add.dj,
 				emergencyName: add.en,
 				emergencyAddress: add.ea,
-
 				emergencyContactNumber: add.ecn,
 				emergencyRelationship: add.er,
+				imageName: add.in
 			}),
 		});
 		const data = await res.json();
@@ -301,6 +304,7 @@ const AddEmployeeForm = () => {
 			eocn: "", //emergency office contact number
 			ecn: "", //emergency contact number
 			er: "", //emergency relationship
+			in: "", //image name
 		});
 		setIsPhoneValid({
 			cn: null,
@@ -353,109 +357,136 @@ const AddEmployeeForm = () => {
 								Personal Information
 							</h2>
 							<hr className=" pb-6" />
-							<div className="flex flex-row gap-3">
-								<FormControl>
-									<FormLabel>First name</FormLabel>
-									<Input
-										onChange={handleChange}
-										name="fn"
-										ref={initialRef}
-										placeholder="First name"
-										required={true}
-									/>
-								</FormControl>
+							<div>
+								<div>
+									{/* <img className="absolute -z-10 left-0" src={dhbg} alt="" /> */}
+									{isPicSelected && pic!=undefined?(
+										<label>
+											<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
+												<img
+													src={pic}
+													className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
+												/>
+											</div>
+											<input type={'file'}  accept='image/*' onChange={changeHandler} hidden></input>
+										</label>
+									):(
+										<label>
+											<img
+												src={def}
+												width={90}
+												className="mb-[-1rem] hover:opacity-40 cursor-pointer"
+											/>
+											<input type={'file'}  accept='image/*' onChange={changeHandler} hidden></input>
+										</label>
+									)}
+								</div>
+								<div>
+										<div className="flex flex-row gap-3">
+										<FormControl>
+											<FormLabel>First name</FormLabel>
+											<Input
+												onChange={handleChange}
+												name="fn"
+												ref={initialRef}
+												placeholder="First name"
+												required={true}
+											/>
+										</FormControl>
 
-								<FormControl>
-									<FormLabel>Middle name</FormLabel>
-									<Input
-										onChange={handleChange}
-										name="mn"
-										placeholder="Middle name"
-									/>
-								</FormControl>
+										<FormControl>
+											<FormLabel>Middle name</FormLabel>
+											<Input
+												onChange={handleChange}
+												name="mn"
+												placeholder="Middle name"
+											/>
+										</FormControl>
 
-								<FormControl>
-									<FormLabel>Last name</FormLabel>
-									<Input
-										onChange={handleChange}
-										name="ln"
-										placeholder="Last name"
-									/>
-								</FormControl>
-							</div>
+										<FormControl>
+											<FormLabel>Last name</FormLabel>
+											<Input
+												onChange={handleChange}
+												name="ln"
+												placeholder="Last name"
+											/>
+										</FormControl>
+									</div>
 
-							<div className="flex flex-row gap-3 mt-4">
-								<FormControl>
-									<FormLabel>Birthdate</FormLabel>
-									<Input
-										onChange={handleChange}
-										className="border px-3 py-2 rounded-lg w-full"
-										type="date"
-										name="bdate"
-										max={date}
-										id=""
-										defaultValue={date}
-									/>
-								</FormControl>
-								<FormControl>
-									<FormLabel>Age</FormLabel>
-									<Input
-										name="age"
-										disabled
-										value={
-											validateAge() ? calculateAge(add.bdate) : "Invalid Date"
-										}
-										placeholder="Age"
-									/>
-								</FormControl>
-								<FormControl w={500}>
-									<FormLabel>Sex</FormLabel>
-									<Select
-										onChange={handleChange}
-										className="border px-3 py-2 rounded-lg w-full"
-										name="sex"
-										id=""
-									>
-										<option value="Male">Male</option>
-										<option value="Female">Female</option>
-										<option value="Other">Other</option>
-									</Select>
-								</FormControl>
+									<div className="flex flex-row gap-3 mt-4">
+										<FormControl>
+											<FormLabel>Birthdate</FormLabel>
+											<Input
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												type="date"
+												name="bdate"
+												max={date}
+												id=""
+												defaultValue={date}
+											/>
+										</FormControl>
+										<FormControl>
+											<FormLabel>Age</FormLabel>
+											<Input
+												name="age"
+												disabled
+												value={
+													validateAge() ? calculateAge(add.bdate) : "Invalid Date"
+												}
+												placeholder="Age"
+											/>
+										</FormControl>
+										<FormControl w={500}>
+											<FormLabel>Sex</FormLabel>
+											<Select
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												name="sex"
+												id=""
+											>
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+												<option value="Other">Other</option>
+											</Select>
+										</FormControl>
 
-								<FormControl w={600}>
-									<FormLabel>Civil Status</FormLabel>
-									<Select
-										onChange={handleChange}
-										className="border px-3 py-2 rounded-lg w-full"
-										name="cs"
-										id=""
-									>
-										<option default value="Single">
-											Single
-										</option>
-										<option value="Married">Married</option>
-										<option value="Divorced">Divorced</option>
-										<option value="Widow">Widow</option>
-									</Select>
-								</FormControl>
-								<FormControl width={"60%"}>
-									<FormLabel>Blood Type</FormLabel>
-									<Select
-										onChange={handleChange}
-										className="border px-3  rounded-lg w-full"
-										name="bt"
-										id=""
-									>
-										<option value="A+">A+</option>
-										<option value="A-">A-</option>
-										<option value="B+">B+</option>
-										<option value="B-">B-</option>
-										<option value="O+">O+</option>
-										<option value="O-">O-</option>
-										<option value="AB+">AB+</option>
-										<option value="AB-">AB-</option>
-									</Select>
-								</FormControl>
+										<FormControl w={600}>
+											<FormLabel>Civil Status</FormLabel>
+											<Select
+												onChange={handleChange}
+												className="border px-3 py-2 rounded-lg w-full"
+												name="cs"
+												id=""
+											>
+												<option default value="Single">
+													Single
+												</option>
+												<option value="Married">Married</option>
+												<option value="Divorced">Divorced</option>
+												<option value="Widow">Widow</option>
+											</Select>
+										</FormControl>
+										<FormControl width={"60%"}>
+											<FormLabel>Blood Type</FormLabel>
+											<Select
+												onChange={handleChange}
+												className="border px-3  rounded-lg w-full"
+												name="bt"
+												id=""
+											>
+												<option value="A+">A+</option>
+												<option value="A-">A-</option>
+												<option value="B+">B+</option>
+												<option value="B-">B-</option>
+												<option value="O+">O+</option>
+												<option value="O-">O-</option>
+												<option value="AB+">AB+</option>
+												<option value="AB-">AB-</option>
+											</Select>
+										</FormControl>
+									</div>
+								</div>
 							</div>
 							<div className="flex gap-3 mt-4">
 								<ContactNumber

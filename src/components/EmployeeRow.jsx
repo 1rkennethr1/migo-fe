@@ -7,6 +7,7 @@ import {
 	FormLabel,
 	Input,
 	InputGroup,
+	Image,
 	InputLeftAddon,
 	InputRightAddon,
 	InputRightElement,
@@ -61,7 +62,8 @@ const EmployeeRow = ({ e }) => {
 		getEmployees();
 	}, [isUpdated]);
 	const btnRef = React.useRef();
-
+	const [pic, setPic] = useState();
+	const [isPicSelected, setIsPicSelected] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [update, setUpdate] = useState({
 		fn: e.firstName,
@@ -83,15 +85,26 @@ const EmployeeRow = ({ e }) => {
 		yoe: e.yearsOfExperience, //years of experience
 		ct: e.contractType, //contract type
 		posApp: e.positionApplied,
-		posCode: e.positionCode,
+		posCode: e.positionCode, //
 		dj: e.dateJoined, //date joined
 		en: e.emergencyName, //emergency name
 		ea: e.emergencyAddress, //emergency address
 		assignedProjects: e.assignedProjects,
 		ecn: e.emergencyContactNumber, //emergency contact number
 		er: e.emergencyRelationship, //emergency relationship
+		in: e.imageName, //
 	});
-
+	const changeHandler = (e) =>{
+		let imageFile = e.target.files[0]
+		const reader = new FileReader()
+		reader.onload = x =>{
+			setPic(x.target.result)
+			// console.log(x.target.result)
+		}
+		reader.readAsDataURL(imageFile)
+		setIsPicSelected(true)
+		}
+		
 	const validateEmail = (email) => {
 		return String(email)
 			.toLowerCase()
@@ -128,7 +141,7 @@ const EmployeeRow = ({ e }) => {
 			} else {
 				setIsPhoneValid({ ...isPhoneValid, [name]: null });
 			}
-			console.log(validatePhone(phone));
+			// console.log(validatePhone(phone));
 		}
 		if (name == "bdate") {
 			setUpdate({ ...update, [name]: value, age: calculateAge() });
@@ -253,6 +266,7 @@ const EmployeeRow = ({ e }) => {
 					emergencyContactNumber: update.ecn,
 					emergencyRelationship: update.er,
 					assignedProjects: update.assignedProjects,
+					imageName: update.imageName
 				}),
 			});
 		} catch (error) {
@@ -277,7 +291,7 @@ const EmployeeRow = ({ e }) => {
 			method: "DELETE",
 		});
 		const data = await res.json();
-		console.log(data);
+		// console.log(data);
 		onClose();
 		toast({
 			title: "Employee removed.",
@@ -350,15 +364,26 @@ const EmployeeRow = ({ e }) => {
 						paddingTop={8}
 					>
 						<img className="absolute -z-10 left-0" src={dhbg} alt="" />
-						<img
-							src={"asdasd"}
-							onError={(e) => {
-								e.target.onerror = null;
-								e.target.src = def;
-							}}
-							width={90}
-							className="mb-[-1rem]"
-						/>
+						{isPicSelected && pic!=undefined?(
+							<label>
+								<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
+									<img
+										src={pic}
+										className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
+									/>
+								</div>
+								<input type={'file'}  accept='image/*' onChange={changeHandler} hidden></input>
+							</label>
+						):(
+							<label>
+								<img
+									src={def}
+									width={90}
+									className="mb-[-1rem] hover:opacity-40 cursor-pointer"
+								/>
+								<input type={'file'}  accept='image/*' onChange={changeHandler} hidden></input>
+							</label>
+						)}
 						<div>
 							<h1 className="text-3xl">
 								{e.firstName} {e.lastName}
@@ -372,7 +397,7 @@ const EmployeeRow = ({ e }) => {
 					</DrawerHeader>
 
 					<DrawerBody>
-						<Tabs colorScheme={"red"}>
+						<Tabs colorscheme={"red"}>
 							<TabList className="fixed z-10 bg-white w-[92%] pt-5 -mt-3">
 								<Tab fontWeight={500}>DETAILS</Tab>
 								<Tab fontWeight={500}>PROJECTS</Tab>
