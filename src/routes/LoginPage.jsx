@@ -9,9 +9,9 @@ import DarkModeButton from "../components/DarkModeButton";
 import { useStateContext } from "../lib/context";
 export default function LoginPage() {
 	const [wrf, setWrf] = useState(false);
-	const [user, setUser] = useState({ username: "", password: "" });
+
 	const [response, setResponse] = useState("");
-	const { jwt, setJwt } = useStateContext();
+	const { jwt, setJwt, user, setUser } = useStateContext();
 
 	const navigate = useNavigate();
 	const fade = {
@@ -81,6 +81,7 @@ export default function LoginPage() {
 					Please login to your account
 				</h3>
 				<form
+					autoComplete="off"
 					action=""
 					onSubmit={(e) => e.preventDefault()}
 					className="flex flex-col gap-4 w-full"
@@ -105,7 +106,7 @@ export default function LoginPage() {
 						}`}
 						type="text"
 						name="username"
-						id=""
+						id="username"
 						value={user.username}
 						onChange={handleChange}
 					/>
@@ -120,7 +121,7 @@ export default function LoginPage() {
 						name="password"
 						value={user.password}
 						onChange={handleChange}
-						id=""
+						id="password"
 					/>
 					{/* <div className="flex justify-between">
 						<div className="flex gap-2 items-center">
@@ -156,7 +157,7 @@ export default function LoginPage() {
 				</div>
 			</div>
 			<div className="hidden xl:block object-fill">
-				<img src={login} alt="" srcset="" width={1000} />
+				<img src={login} alt="" width={1000} />
 			</div>
 		</motion.div>
 	);

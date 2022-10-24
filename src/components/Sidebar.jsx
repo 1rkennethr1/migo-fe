@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import logo from "../assets/migo.svg";
+import user from "../assets/user.svg";
 import { IoIosArrowForward } from "react-icons/io";
 import {
 	MdSpaceDashboard,
@@ -14,6 +15,7 @@ import {
 import { BiLogOut } from "react-icons/bi";
 import DarkModeButton from "./DarkModeButton";
 import { useStateContext } from "../lib/context";
+
 const tabs = [
 	{
 		label: "Dashboard",
@@ -36,6 +38,7 @@ const tabs = [
 		path: "/main/benefits",
 	},
 ];
+
 const Sidebar = () => {
 	const location = useLocation();
 
@@ -50,12 +53,17 @@ const Sidebar = () => {
 		transition: "all .9 ease-in-out",
 		color: "white",
 	};
-	const { minimized, setMinimized } = useStateContext();
+	const { minimized, setMinimized, user } = useStateContext();
 	const linkBg = {
 		initial: { y: -45 },
 		animate: {
 			y: minimized ? -45 : -48,
 		},
+	};
+	const navigate = useNavigate();
+	const logout = () => {
+		navigate("/");
+		localStorage.setItem("jwt", "");
 	};
 	return (
 		<motion.div
@@ -67,22 +75,40 @@ const Sidebar = () => {
 				onClick={() => setMinimized(!minimized)}
 				className={`absolute cursor-pointer transition-all top-5 duration-500  rounded-xl p-2 bg-white shadow-sm ${
 					minimized ? "right-[-20px]" : " scale-x-[-1] right-[-10px]"
-				} dark:bg-[#1a1a1a] dark:text-white text-black`}
+				} dark:bg-[#1a1a1a] dark:text-white text-black z-50`}
 			>
 				<IoIosArrowForward />
 			</div>
 			<div
-				className={` w-full absolute bottom-0 left-0 h-max flex items-center justify-between`}
+				className={` w-full absolute pb-5 transition-all duration-500 top-0 left-0 h-max flex items-center justify-between ${
+					minimized ? "pl-6 " : ""
+				}`}
 			>
 				<div className="scale-75">
 					<DarkModeButton />
 				</div>
-				<Link
-					to={"/"}
-					className="text-2xl pr-2 text-black dark:text-white transition duration-500"
+			</div>
+			<div
+				className={` w-full absolute bottom-4 left-[-10px] h-max flex gap-3 items-center justify-end`}
+			>
+				<img src={user} alt="" width={100} />
+				<div className="flex gap-10">
+					{minimized ? (
+						""
+					) : (
+						<p className="text-black dark:text-white transition duration-500">
+							{user.username}
+						</p>
+					)}
+				</div>
+				<div
+					onClick={logout}
+					className={`text-2xl ${
+						minimized ? "pr-7" : "pr-2"
+					} text-black dark:text-white cursor-pointer transition duration-500`}
 				>
 					<BiLogOut />
-				</Link>
+				</div>
 			</div>
 			<div className="flex flex-col gap-5 justify-between">
 				<img
@@ -93,9 +119,27 @@ const Sidebar = () => {
 					srcSet=""
 					className="mb-8 self-center ml-2"
 				/>
-				<h1 className="text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap">
-					General
-				</h1>
+				<AnimatePresence>
+					{minimized ? (
+						<motion.h1
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							className="text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap"
+						>
+							General
+						</motion.h1>
+					) : (
+						<motion.h1
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							className="text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap"
+						>
+							General
+						</motion.h1>
+					)}
+				</AnimatePresence>
 				{tabs.map((e) => {
 					return (
 						<div key={e.label} className="relative dark:text-white text-black">

@@ -5,8 +5,9 @@ const MigoContext = createContext();
 export default function StateContext({ children }) {
 	const [minimized, setMinimized] = useState(false);
 	const [employees, setEmployees] = useState([]);
+	const [user, setUser] = useState({ username: "", password: "" });
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
-	const [jwt, setJwt] = useState(JSON.parse(localStorage.getItem("jwt")));
+	const [jwt, setJwt] = useState(localStorage.getItem("jwt"));
 	const getEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
@@ -20,6 +21,8 @@ export default function StateContext({ children }) {
 	return (
 		<MigoContext.Provider
 			value={{
+				user,
+				setUser,
 				minimized,
 				setMinimized,
 				employees,

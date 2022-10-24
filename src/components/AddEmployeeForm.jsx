@@ -192,6 +192,10 @@ const AddEmployeeForm = () => {
 		allPhoneValid && isEmailValid && allFieldsFilled
 			? setIsFormValid(true)
 			: setIsFormValid(false);
+
+		console.info(allPhoneValid);
+		console.log(isEmailValid);
+		console.log(allPhoneValid);
 	}, [isPhoneValid, add, isEmailValid]);
 	const addEmployee = async (e) => {
 		e.preventDefault();
@@ -343,326 +347,328 @@ const AddEmployeeForm = () => {
 
 					<ModalCloseButton />
 					<ModalBody pb={6}>
-						{/* name */}
-						<h2 className=" pb-2 text-2xl font-semibold text-[#383838]">
-							Personal Information
-						</h2>
-						<hr className=" pb-6" />
-						<div className="flex flex-row gap-3">
-							<FormControl>
-								<FormLabel>First name</FormLabel>
-								<Input
-									onChange={handleChange}
-									name="fn"
-									ref={initialRef}
-									placeholder="First name"
-									required={true}
-								/>
-							</FormControl>
-
-							<FormControl>
-								<FormLabel>Middle name</FormLabel>
-								<Input
-									onChange={handleChange}
-									name="mn"
-									placeholder="Middle name"
-								/>
-							</FormControl>
-
-							<FormControl>
-								<FormLabel>Last name</FormLabel>
-								<Input
-									onChange={handleChange}
-									name="ln"
-									placeholder="Last name"
-								/>
-							</FormControl>
-						</div>
-
-						<div className="flex flex-row gap-3 mt-4">
-							<FormControl>
-								<FormLabel>Birthdate</FormLabel>
-								<Input
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									type="date"
-									name="bdate"
-									max={date}
-									id=""
-									defaultValue={date}
-								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel>Age</FormLabel>
-								<Input
-									name="age"
-									disabled
-									value={
-										validateAge() ? calculateAge(add.bdate) : "Invalid Date"
-									}
-									placeholder="Age"
-								/>
-							</FormControl>
-							<FormControl w={500}>
-								<FormLabel>Sex</FormLabel>
-								<Select
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									name="sex"
-									id=""
-								>
-									<option value="Male">Male</option>
-									<option value="Female">Female</option>
-									<option value="Other">Other</option>
-								</Select>
-							</FormControl>
-
-							<FormControl w={600}>
-								<FormLabel>Civil Status</FormLabel>
-								<Select
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									name="cs"
-									id=""
-								>
-									<option default value="Single">
-										Single
-									</option>
-									<option value="Married">Married</option>
-									<option value="Divorced">Divorced</option>
-									<option value="Widow">Widow</option>
-								</Select>
-							</FormControl>
-							<FormControl width={"60%"}>
-								<FormLabel>Blood Type</FormLabel>
-								<Select
-									onChange={handleChange}
-									className="border px-3  rounded-lg w-full"
-									name="bt"
-									id=""
-								>
-									<option value="A+">A+</option>
-									<option value="A-">A-</option>
-									<option value="B+">B+</option>
-									<option value="B-">B-</option>
-									<option value="O+">O+</option>
-									<option value="O-">O-</option>
-									<option value="AB+">AB+</option>
-									<option value="AB-">AB-</option>
-								</Select>
-							</FormControl>
-						</div>
-						<div className="flex gap-3 mt-4">
-							<ContactNumber
-								label={"Contact Number"}
-								w={"49.5%"}
-								addname={"cn"}
-								handleChange={handleChange}
-								val={add.cn}
-								isPhoneValid={isPhoneValid.cn}
-							/>
-						</div>
-						<div className="flex flex-row gap-3 mt-4">
-							<FormControl>
-								<FormLabel>City Address</FormLabel>
-								<Input
-									onChange={handleChange}
-									name="ca"
-									placeholder="Unit 1, Brgy. 2, City, Province"
-								/>
-							</FormControl>
-
-							<ContactNumber
-								label={"City Contact Number"}
-								w={"100%"}
-								addname={"ccn"}
-								handleChange={handleChange}
-								val={add.ccn}
-								isPhoneValid={isPhoneValid.ccn}
-							/>
-						</div>
-
-						<div className="flex flex-row gap-3 mt-4">
-							<EmailInput
-								value={add.email}
-								isEmailValid={isEmailValid}
-								handleChange={handleChange}
-							/>
-
-							<FormControl>
-								<FormLabel>Contract Type</FormLabel>
-								<Select
-									onChange={handleChange}
-									className="border px-3  rounded-lg w-full"
-									name="ct"
-									id=""
-								>
-									<option value="Regular">Regular</option>
-									<option value="Part-time">Part-time</option>
-								</Select>
-							</FormControl>
-						</div>
-						<div className="flex flex-row gap-3 mt-4">
-							<FormControl width={"50%"}>
-								<FormLabel>Number of Dependents</FormLabel>
-								<Input
-									onChange={handleChange}
-									className=""
-									name="nod"
-									id=""
-									type="number"
-									placeholder="0"
-								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel>Civic Club Affiliation </FormLabel>
-								<Input
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									name="cca"
-									id=""
-									type="text"
-									placeholder="Optional"
-								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel>Religion</FormLabel>
-								<Select
-									onChange={handleChange}
-									className="border px-3  rounded-lg w-full"
-									name="rel"
-									id=""
-								>
-									<option value="Roman Catholic">Roman Catholic</option>
-									<option value="Muslim">Muslim</option>
-									<option value="Iglesia Ni Cristo">Iglesia Ni Cristo</option>
-									<option value="Protestant">Protestant</option>
-									<option value="Jehova's Witness">Jehova's Witness</option>
-									<option value="Buddhist">Buddhist</option>
-									<option value="Agnostic">Agnostic</option>
-									<option value="Atheist">Atheist</option>
-									<option value="Other">Prefer not to say</option>
-								</Select>
-							</FormControl>
-						</div>
-						<div className="flex flex-row gap-3 mt-4">
-							<FormControl width={"40%"}>
-								<FormLabel>Profession</FormLabel>
-								<Select
-									onChange={handleChange}
-									className="border px-3  rounded-lg w-full"
-									name="prof"
-									id=""
-								>
-									<option value="Information Technology">
-										Information Technology
-									</option>
-									<option value="Cyber Security">Cyber Security</option>
-									<option value="Computer Science">Computer Science</option>
-									<option value="Data Analyst">Data Analyst</option>
-								</Select>
-							</FormControl>
-							<FormControl width={"30%"}>
-								<FormLabel>Years of Experience</FormLabel>
-								<InputGroup>
+						<form autoComplete="off">
+							{/* name */}
+							<h2 className=" pb-2 text-2xl font-semibold text-[#383838]">
+								Personal Information
+							</h2>
+							<hr className=" pb-6" />
+							<div className="flex flex-row gap-3">
+								<FormControl>
+									<FormLabel>First name</FormLabel>
 									<Input
-										type="number"
 										onChange={handleChange}
-										name="yoe"
-										placeholder="3"
+										name="fn"
+										ref={initialRef}
+										placeholder="First name"
+										required={true}
 									/>
-									<InputRightAddon children="years" />
-								</InputGroup>
-							</FormControl>
-						</div>
-						<div className="flex flex-row gap-3 mt-4">
-							<FormControl>
-								<FormLabel>Position Applied</FormLabel>
-								<Select
-									onChange={handleChange}
-									className="border px-3  rounded-lg w-full"
-									name="posApp"
-									id=""
-									value={add.posApp}
-								>
-									{position.map((e, i) => {
-										return (
-											<option key={i} value={e.name}>
-												{e.name}
-											</option>
-										);
-									})}
-								</Select>
-							</FormControl>
-							<FormControl>
-								<FormLabel>Position Code</FormLabel>
-								<Input
-									onChange={handleChange}
-									name="posCode"
-									placeholder=""
-									disabled
-									value={add.posCode}
-								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel>Date Joined</FormLabel>
-								<input
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									type="date"
-									name="dj"
-									id=""
-									max={nowString}
-								/>
-							</FormControl>
-						</div>
-						<h2 className=" pt-10 pb-4 text-2xl font-semibold text-[#383838]">
-							Emergency Contact
-						</h2>
-						<hr className=" pb-6" />
-						<div className="flex flex-row gap-3 mt-4">
-							<FormControl>
-								<FormLabel>Emergency Name</FormLabel>
-								<Input
-									placeholder="John S. Doe"
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									name="en"
-									id=""
-								/>
-							</FormControl>
-							<FormControl>
-								<FormLabel>Emergency Address</FormLabel>
-								<Input
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									name="ea"
-									id=""
-									placeholder="Unit 1, Brgy. 2, City, Province"
-								/>
-							</FormControl>
-						</div>
+								</FormControl>
 
-						<div className="flex flex-row gap-3 mt-4">
-							<ContactNumber
-								label={"Emergency Contact Number"}
-								w={"100%"}
-								addname={"ecn"}
-								handleChange={handleChange}
-								val={add.ecn}
-								isPhoneValid={isPhoneValid.ecn}
-							/>
-							<FormControl>
-								<FormLabel>Emergency Relationship</FormLabel>
-								<Input
-									onChange={handleChange}
-									className="border px-3 py-2 rounded-lg w-full"
-									name="er"
-									id=""
-									placeholder="Wife"
+								<FormControl>
+									<FormLabel>Middle name</FormLabel>
+									<Input
+										onChange={handleChange}
+										name="mn"
+										placeholder="Middle name"
+									/>
+								</FormControl>
+
+								<FormControl>
+									<FormLabel>Last name</FormLabel>
+									<Input
+										onChange={handleChange}
+										name="ln"
+										placeholder="Last name"
+									/>
+								</FormControl>
+							</div>
+
+							<div className="flex flex-row gap-3 mt-4">
+								<FormControl>
+									<FormLabel>Birthdate</FormLabel>
+									<Input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										type="date"
+										name="bdate"
+										max={date}
+										id=""
+										defaultValue={date}
+									/>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Age</FormLabel>
+									<Input
+										name="age"
+										disabled
+										value={
+											validateAge() ? calculateAge(add.bdate) : "Invalid Date"
+										}
+										placeholder="Age"
+									/>
+								</FormControl>
+								<FormControl w={500}>
+									<FormLabel>Sex</FormLabel>
+									<Select
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="sex"
+										id=""
+									>
+										<option value="Male">Male</option>
+										<option value="Female">Female</option>
+										<option value="Other">Other</option>
+									</Select>
+								</FormControl>
+
+								<FormControl w={600}>
+									<FormLabel>Civil Status</FormLabel>
+									<Select
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="cs"
+										id=""
+									>
+										<option default value="Single">
+											Single
+										</option>
+										<option value="Married">Married</option>
+										<option value="Divorced">Divorced</option>
+										<option value="Widow">Widow</option>
+									</Select>
+								</FormControl>
+								<FormControl width={"60%"}>
+									<FormLabel>Blood Type</FormLabel>
+									<Select
+										onChange={handleChange}
+										className="border px-3  rounded-lg w-full"
+										name="bt"
+										id=""
+									>
+										<option value="A+">A+</option>
+										<option value="A-">A-</option>
+										<option value="B+">B+</option>
+										<option value="B-">B-</option>
+										<option value="O+">O+</option>
+										<option value="O-">O-</option>
+										<option value="AB+">AB+</option>
+										<option value="AB-">AB-</option>
+									</Select>
+								</FormControl>
+							</div>
+							<div className="flex gap-3 mt-4">
+								<ContactNumber
+									label={"Contact Number"}
+									w={"49.5%"}
+									addname={"cn"}
+									handleChange={handleChange}
+									val={add.cn}
+									isPhoneValid={isPhoneValid.cn}
 								/>
-							</FormControl>
-						</div>
+							</div>
+							<div className="flex flex-row gap-3 mt-4">
+								<FormControl>
+									<FormLabel>City Address</FormLabel>
+									<Input
+										onChange={handleChange}
+										name="ca"
+										placeholder="Unit 1, Brgy. 2, City, Province"
+									/>
+								</FormControl>
+
+								<ContactNumber
+									label={"City Contact Number"}
+									w={"100%"}
+									addname={"ccn"}
+									handleChange={handleChange}
+									val={add.ccn}
+									isPhoneValid={isPhoneValid.ccn}
+								/>
+							</div>
+
+							<div className="flex flex-row gap-3 mt-4">
+								<EmailInput
+									value={add.email}
+									isEmailValid={isEmailValid}
+									handleChange={handleChange}
+								/>
+
+								<FormControl>
+									<FormLabel>Contract Type</FormLabel>
+									<Select
+										onChange={handleChange}
+										className="border px-3  rounded-lg w-full"
+										name="ct"
+										id=""
+									>
+										<option value="Regular">Regular</option>
+										<option value="Part-time">Part-time</option>
+									</Select>
+								</FormControl>
+							</div>
+							<div className="flex flex-row gap-3 mt-4">
+								<FormControl width={"50%"}>
+									<FormLabel>Number of Dependents</FormLabel>
+									<Input
+										onChange={handleChange}
+										className=""
+										name="nod"
+										id=""
+										type="number"
+										placeholder="0"
+									/>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Civic Club Affiliation </FormLabel>
+									<Input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="cca"
+										id=""
+										type="text"
+										placeholder="Optional"
+									/>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Religion</FormLabel>
+									<Select
+										onChange={handleChange}
+										className="border px-3  rounded-lg w-full"
+										name="rel"
+										id=""
+									>
+										<option value="Roman Catholic">Roman Catholic</option>
+										<option value="Muslim">Muslim</option>
+										<option value="Iglesia Ni Cristo">Iglesia Ni Cristo</option>
+										<option value="Protestant">Protestant</option>
+										<option value="Jehova's Witness">Jehova's Witness</option>
+										<option value="Buddhist">Buddhist</option>
+										<option value="Agnostic">Agnostic</option>
+										<option value="Atheist">Atheist</option>
+										<option value="Other">Prefer not to say</option>
+									</Select>
+								</FormControl>
+							</div>
+							<div className="flex flex-row gap-3 mt-4">
+								<FormControl width={"40%"}>
+									<FormLabel>Profession</FormLabel>
+									<Select
+										onChange={handleChange}
+										className="border px-3  rounded-lg w-full"
+										name="prof"
+										id=""
+									>
+										<option value="Information Technology">
+											Information Technology
+										</option>
+										<option value="Cyber Security">Cyber Security</option>
+										<option value="Computer Science">Computer Science</option>
+										<option value="Data Analyst">Data Analyst</option>
+									</Select>
+								</FormControl>
+								<FormControl width={"30%"}>
+									<FormLabel>Years of Experience</FormLabel>
+									<InputGroup>
+										<Input
+											type="number"
+											onChange={handleChange}
+											name="yoe"
+											placeholder="3"
+										/>
+										<InputRightAddon children="years" />
+									</InputGroup>
+								</FormControl>
+							</div>
+							<div className="flex flex-row gap-3 mt-4">
+								<FormControl>
+									<FormLabel>Position Applied</FormLabel>
+									<Select
+										onChange={handleChange}
+										className="border px-3  rounded-lg w-full"
+										name="posApp"
+										id=""
+										value={add.posApp}
+									>
+										{position.map((e, i) => {
+											return (
+												<option key={i} value={e.name}>
+													{e.name}
+												</option>
+											);
+										})}
+									</Select>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Position Code</FormLabel>
+									<Input
+										onChange={handleChange}
+										name="posCode"
+										placeholder=""
+										disabled
+										value={add.posCode}
+									/>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Date Joined</FormLabel>
+									<input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										type="date"
+										name="dj"
+										id=""
+										max={nowString}
+									/>
+								</FormControl>
+							</div>
+							<h2 className=" pt-10 pb-4 text-2xl font-semibold text-[#383838]">
+								Emergency Contact
+							</h2>
+							<hr className=" pb-6" />
+							<div className="flex flex-row gap-3 mt-4">
+								<FormControl>
+									<FormLabel>Emergency Name</FormLabel>
+									<Input
+										placeholder="John S. Doe"
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="en"
+										id=""
+									/>
+								</FormControl>
+								<FormControl>
+									<FormLabel>Emergency Address</FormLabel>
+									<Input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="ea"
+										id=""
+										placeholder="Unit 1, Brgy. 2, City, Province"
+									/>
+								</FormControl>
+							</div>
+
+							<div className="flex flex-row gap-3 mt-4">
+								<ContactNumber
+									label={"Emergency Contact Number"}
+									w={"100%"}
+									addname={"ecn"}
+									handleChange={handleChange}
+									val={add.ecn}
+									isPhoneValid={isPhoneValid.ecn}
+								/>
+								<FormControl>
+									<FormLabel>Emergency Relationship</FormLabel>
+									<Input
+										onChange={handleChange}
+										className="border px-3 py-2 rounded-lg w-full"
+										name="er"
+										id=""
+										placeholder="Wife"
+									/>
+								</FormControl>
+							</div>
+						</form>
 					</ModalBody>
 
 					<ModalFooter>
