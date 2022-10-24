@@ -13,7 +13,7 @@ const Assess = () => {
 	const commonConfig = { delimiter: "," };
 
 	const [CSVData, setCSVData] = useState();
-	console.log(CSVData`);
+	console.log(CSVData);
 	const handleAssess = (e) => {
 		if (selectedFile != undefined) {
 			Papa.parse(selectedFile, {
