@@ -40,7 +40,7 @@ function App() {
 			<div
 				className={`${loc.pathname.split("/").includes("main") ? "flex" : ""}`}
 			>
-				{loc.pathname.split("/").includes("main") && (
+				{loc.pathname.split("/").includes("main") && jwt ? (
 					<motion.div
 						initial="initial"
 						animate="animate"
@@ -48,6 +48,8 @@ function App() {
 					>
 						<Sidebar />
 					</motion.div>
+				) : (
+					""
 				)}
 				<AnimatePresence mode="wait">
 					<Routes key={loc.pathname} location={loc}>
