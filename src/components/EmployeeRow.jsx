@@ -94,7 +94,7 @@ const EmployeeRow = ({ e }) => {
 		er: e.emergencyRelationship, //emergency relationship
 		in: e.imageName, //
 	});
-	const changeHandler = (e) =>{
+	const changeHandler = e => {
 		let imageFile = e.target.files[0]
 		const reader = new FileReader()
 		reader.onload = x =>{
@@ -103,8 +103,7 @@ const EmployeeRow = ({ e }) => {
 		}
 		reader.readAsDataURL(imageFile)
 		setIsPicSelected(true)
-		}
-		
+	}
 	const validateEmail = (email) => {
 		return String(email)
 			.toLowerCase()
@@ -122,7 +121,6 @@ const EmployeeRow = ({ e }) => {
 	let poscode;
 	useEffect(() => {
 		poscode = position.find((e) => e.name === update.posApp);
-
 		setUpdate({ ...update, posCode: poscode ? poscode.code : "" });
 	}, [update.posApp]);
 	const handleChange = (e) => {
@@ -197,9 +195,11 @@ const EmployeeRow = ({ e }) => {
 		allFields.every((e) => e === true)
 			? (allFieldsFilled = true)
 			: (allFields = []);
-		allPhoneValid && isEmailValid && allFieldsFilled && validateAge()
-			? setIsFormValid(true)
-			: setIsFormValid(false);
+		// allPhoneValid && isEmailValid && allFieldsFilled && validateAge()
+		// 	? setIsFormValid(true)
+		// 	: setIsFormValid(false);
+
+			setIsFormValid(true)
 	}, [isPhoneValid, update, isEmailValid]);
 	const updateEmployee = async (event) => {
 		let fn =
@@ -266,7 +266,7 @@ const EmployeeRow = ({ e }) => {
 					emergencyContactNumber: update.ecn,
 					emergencyRelationship: update.er,
 					assignedProjects: update.assignedProjects,
-					imageName: update.imageName
+					imageName: pic,
 				}),
 			});
 		} catch (error) {
@@ -440,26 +440,34 @@ const EmployeeRow = ({ e }) => {
 						paddingTop={8}
 					>
 						<img className="absolute -z-10 left-0" src={dhbg} alt="" />
-						{isPicSelected && pic!=undefined?(
-							<label>
-								<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
-									<img
-										src={pic}
-										className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
-									/>
-								</div>
-								<input type={'file'}  accept='image/*' onChange={changeHandler} hidden></input>
-							</label>
-						):(
-							<label>
-								<img
-									src={def}
-									width={90}
-									className="mb-[-1rem] hover:opacity-40 cursor-pointer"
-								/>
-								<input type={'file'}  accept='image/*' onChange={changeHandler} hidden></input>
-							</label>
-						)}
+						<div>
+							{isPicSelected && pic!=undefined?(
+								<FormControl>
+									<FormLabel>
+										<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
+											<img
+												src={pic}
+												className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
+												/>
+										</div>
+										<Input type={'file'}  accept='image/*' onChange={changeHandler} hidden></Input>
+									</FormLabel>
+								</FormControl>
+							):(
+							<FormControl>
+								<FormLabel>
+									<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
+										<img
+											src={def}
+											width={'100%'}
+											className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
+											/>
+									</div>
+									<Input type={'file'}  accept='image/*' onChange={changeHandler} hidden></Input>
+								</FormLabel>
+							</FormControl>
+							)}
+						</div>
 						<div>
 							<h1 className="text-3xl">
 								{e.firstName} {e.lastName}
@@ -473,7 +481,7 @@ const EmployeeRow = ({ e }) => {
 					</DrawerHeader>
 
 					<DrawerBody>
-						<Tabs colorscheme={"red"}>
+						<Tabs colorScheme={'red'}>
 							<TabList className="fixed z-10 bg-white w-[92%] pt-5 -mt-3">
 								<Tab fontWeight={500}>DETAILS</Tab>
 								<Tab fontWeight={500}>PROJECTS</Tab>
