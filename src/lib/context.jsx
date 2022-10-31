@@ -33,19 +33,11 @@ export default function StateContext({ children }) {
 		const data = await res.json();
 		setTimeLogs(data);
 	};
+
 	useEffect(() => {
 		searchEmployees();
-	}, [searchValue]);
-	useEffect(() => {
-		getEmployees();
 		setIsFetchingEmployees(false);
-		getTimeLogs();
-		setIsFetchingTimeLogs(false);
-	}, []);
-	const match = (string, test) => {
-		let pattern = new RegExp(`^${string}`, "i");
-		return pattern.test(test);
-	};
+	}, [searchValue]);
 	const searchEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
@@ -53,27 +45,37 @@ export default function StateContext({ children }) {
 			status === "active"
 				? data.filter(
 						(e) =>
-							(match(searchValue, e.firstName) ||
-								match(searchValue, e.lastName) ||
-								match(searchValue, e.middleName) ||
-								match(searchValue, e.positionApplied)) &&
+							(e.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
+								e.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
+								e.middleName
+									.toLowerCase()
+									.includes(searchValue.toLowerCase()) ||
+								e.positionApplied
+									.toLowerCase()
+									.includes(searchValue.toLowerCase())) &&
 							e.status === true
 				  )
 				: status === "inactive"
 				? data.filter(
 						(e) =>
-							(match(searchValue, e.firstName) ||
-								match(searchValue, e.lastName) ||
-								match(searchValue, e.middleName) ||
-								match(searchValue, e.positionApplied)) &&
+							(e.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
+								e.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
+								e.middleName
+									.toLowerCase()
+									.includes(searchValue.toLowerCase()) ||
+								e.positionApplied
+									.toLowerCase()
+									.includes(searchValue.toLowerCase())) &&
 							e.status === false
 				  )
 				: data.filter(
 						(e) =>
-							match(searchValue, e.firstName) ||
-							match(searchValue, e.lastName) ||
-							match(searchValue, e.middleName) ||
-							match(searchValue, e.positionApplied)
+							e.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
+							e.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
+							e.middleName.toLowerCase().includes(searchValue.toLowerCase()) ||
+							e.positionApplied
+								.toLowerCase()
+								.includes(searchValue.toLowerCase())
 				  );
 		setEmployees(sorted);
 	};
@@ -81,6 +83,7 @@ export default function StateContext({ children }) {
 	return (
 		<MigoContext.Provider
 			value={{
+				searchEmployees,
 				searchValue,
 				setSearchValue,
 				searchHandler,

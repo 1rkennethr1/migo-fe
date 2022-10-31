@@ -2,7 +2,7 @@
 import { GrSearch } from "react-icons/gr";
 
 //lib
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { CircularProgress, Input, Select } from "@chakra-ui/react";
 
 //context
@@ -27,9 +27,10 @@ const Employees = () => {
 		searchValue,
 		searchHandler,
 		setSearchValue,
+		searchEmployees,
 	} = useStateContext();
 	useEffect(() => {
-		getEmployees();
+		searchValue ? searchEmployees() : getEmployees();
 	}, [status]);
 
 	if (isFetchingEmployees) {
@@ -88,7 +89,7 @@ const Employees = () => {
 									<input
 										value={searchValue}
 										onChange={searchHandler}
-										placeholder="Search for an Employee"
+										placeholder="Search by (Name or Position)"
 										type="text"
 										className="border rounded-md w-[20rem] pl-5 pr-10 outline-none focus:border-2 focus:border-purple-900 transition-all duration-300 h-full"
 									></input>
@@ -100,7 +101,7 @@ const Employees = () => {
 						</header>
 					</div>
 					<div className="">
-						<div className="">
+						<div className="relative">
 							<table className="table-auto w-full">
 								<thead className="text-xs sticky transition duration-500 top-[85px] w-full font-semibold uppercase dark:bg-[#1f1f1f] text-gray-700 dark:text-white bg-gray-200  ">
 									<tr>
@@ -119,12 +120,45 @@ const Employees = () => {
 										</th>
 									</tr>
 								</thead>
-								<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700">
+								<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700 relative">
 									{employees.map((e) => {
 										return <EmployeeRow key={e.id} e={e} />;
 									})}
 								</tbody>
 							</table>
+							<div className="">
+								<AnimatePresence>
+									{employees.length === 0 && searchValue ? (
+										<motion.div
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.5 }}
+											className="flex justify-center items-center h-[50vh]"
+										>
+											<p className="text-neutral-500">
+												No results for{" "}
+												<span className="font-semibold">"{searchValue}" </span>
+												{status === "active"
+													? "in Active Employees"
+													: status === "inactive"
+													? "in Inactive Employees"
+													: ""}{" "}
+											</p>
+										</motion.div>
+									) : employees.length === 0 && searchValue.length === 0 ? (
+										<motion.div
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.5 }}
+											className="flex justify-center items-center h-[50vh]"
+										>
+											<p className="text-neutral-500">
+												Please run the backend server!
+											</p>
+										</motion.div>
+									) : null}
+								</AnimatePresence>
+							</div>
 						</div>
 					</div>
 				</div>
