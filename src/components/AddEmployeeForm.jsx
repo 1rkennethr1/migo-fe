@@ -189,10 +189,10 @@ const AddEmployeeForm = () => {
 			? setIsFormValid(true)
 			: setIsFormValid(false);
 
-		console.log(allFields);
-		console.info(`allfields: ${allFieldsFilled}`);
-		console.log(`all field: ${isEmailValid}`);
-		console.log(`allphone: ${allPhoneValid}`);
+		// console.log(allFields);
+		// console.info(`allfields: ${allFieldsFilled}`);
+		// console.log(`all field: ${isEmailValid}`);
+		// console.log(`allphone: ${allPhoneValid}`);
 	}, [isPhoneValid, add, isEmailValid]);
 	const addEmployee = async (e) => {
 		e.preventDefault();
@@ -677,7 +677,6 @@ const AddEmployeeForm = () => {
 							}`}
 							id={"addEmployee"}
 							onClick={isFormValid ? addEmployee : null}
-							colorScheme=""
 							mr={3}
 							ref={validate}
 						>

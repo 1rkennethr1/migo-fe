@@ -12,7 +12,7 @@ import Assess from "./routes/main/Assess";
 import { useState } from "react";
 function App() {
 	const loc = useLocation();
-	console.log();
+
 	const { minimized, jwt } = useStateContext();
 	const sidebarPadding = {
 		initial: {
@@ -29,6 +29,7 @@ function App() {
 			},
 		},
 	};
+
 	return (
 		<div
 			className={`App ${
