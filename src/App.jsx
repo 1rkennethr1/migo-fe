@@ -12,7 +12,7 @@ import Assess from "./routes/main/Assess";
 import { useState } from "react";
 function App() {
 	const loc = useLocation();
-	console.log();
+
 	const { minimized, jwt } = useStateContext();
 	const sidebarPadding = {
 		initial: {
@@ -29,6 +29,7 @@ function App() {
 			},
 		},
 	};
+
 	return (
 		<div
 			className={`App ${
@@ -70,7 +71,10 @@ function App() {
 							element={jwt ? <TimeLogs /> : <Navigate to="/login" />}
 						/>
 						<Route path="/" element={<Navigate to="/login" />} />
-						<Route path="/login" element={<LoginPage />} />
+						<Route
+							path="/login"
+							element={jwt ? <Navigate to="/main/dashboard" /> : <LoginPage />}
+						/>
 						<Route path="/homepage" element={<HomePage />} />
 					</Routes>
 				</AnimatePresence>

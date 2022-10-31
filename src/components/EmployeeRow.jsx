@@ -26,6 +26,7 @@ import {
 	useDisclosure,
 	useToast,
 	DrawerOverlay,
+	Badge,
 } from "@chakra-ui/react";
 import {
 	Popover,
@@ -53,19 +54,18 @@ import EmailInput from "./EmailInput";
 
 const EmployeeRow = ({ e }) => {
 	const [isUpdated, setIsUpdated] = useState(false);
-
-	const toast = useToast();
 	const { getEmployees } = useStateContext();
+	const toast = useToast();
+
 	// const employeeInitRef = React.useRef(null);
 	// const employeeFinalRef = React.useRef(null);
-	useEffect(() => {
-		getEmployees();
-	}, [isUpdated]);
+
 	const btnRef = React.useRef();
 	const [pic, setPic] = useState();
 	const [isPicSelected, setIsPicSelected] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [update, setUpdate] = useState({
+		id: e.id,
 		fn: e.firstName,
 		mn: e.middleName,
 		ln: e.lastName,
@@ -285,22 +285,89 @@ const EmployeeRow = ({ e }) => {
 		onClose();
 	};
 	const deleteEmployee = async (event) => {
+		let fn =
+			update.fn.split(" ").length > 1
+				? update.fn
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: update.fn[0].toUpperCase() + update.fn.slice(1, update.fn.length);
+
+		let mn =
+			update.mn.split(" ").length > 1
+				? update.mn
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: update.mn[0].toUpperCase() + update.mn.slice(1, update.mn.length);
+
+		let ln =
+			update.ln.split(" ").length > 1
+				? update.ln
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: update.ln[0].toUpperCase() + update.ln.slice(1, update.ln.length);
+
 		event.preventDefault();
 		const url = `https://localhost:7241/Employee/${e.id}`;
-		const res = await fetch(url, {
-			method: "DELETE",
-		});
-		const data = await res.json();
-		// console.log(data);
-		onClose();
+
+		try {
+			const res = await fetch(url, {
+				method: "put",
+				headers: { "Content-Type": "application/json-patch+json" },
+				body: JSON.stringify({
+					id: e.id,
+					firstName: fn,
+					middleName: mn,
+					active: false,
+					lastName: ln,
+					cityAddress: update.ca,
+					cityContactNumber: update.ccn,
+					numberOfDependents: update.nod,
+					civicClubAffliation: update.cca,
+					religion: update.rel,
+					bloodType: update.bt,
+					age: update.age,
+					sex: update.sex,
+					civilStatus: update.cs,
+					birthdate: update.bdate,
+					profession: update.prof,
+					contactNumber: update.cn,
+					emailAddress: update.email,
+					yearsOfExperience: update.yoe,
+					contractType: update.ct,
+					positionApplied: update.posApp,
+					positionCode: update.posCode,
+					dateJoined: update.dj,
+					emergencyName: update.en,
+					emergencyAddress: update.ea,
+					emergencyContactNumber: update.ecn,
+					emergencyRelationship: update.er,
+					assignedProjects: update.assignedProjects,
+				}),
+			});
+		} catch (error) {
+			console.log(error);
+		}
+
+		await getEmployees();
+		setIsUpdated(!isUpdated);
+
 		toast({
-			title: "Employee removed.",
-			description: `successfully deleted!`,
+			title: `Employee #${update.id}`,
+			description: `${update.fn} ${update.ln} successfully deactivated"`,
 			status: "success",
-			duration: 9000,
+			duration: 2000,
 			isClosable: true,
 		});
-		await getEmployees();
+		onClose();
 	};
 	var curr = new Date();
 	curr.setFullYear(curr.getFullYear() - 22);
@@ -335,9 +402,18 @@ const EmployeeRow = ({ e }) => {
 					{e.positionApplied}
 				</div>
 			</td>
+
 			<td className="p-2 whitespace-nowrap">
 				<div className=" text-center transition duration-500 text-black dark:text-white">
-					{e.dateJoined}
+					{e.status ? (
+						<Badge variant="subtle" colorScheme="green">
+							Active
+						</Badge>
+					) : (
+						<Badge variant="subtle" colorScheme="red">
+							Inactive
+						</Badge>
+					)}
 				</div>
 			</td>
 			<Drawer
@@ -792,18 +868,18 @@ const EmployeeRow = ({ e }) => {
 							{({ isOpen, onClose }) => (
 								<>
 									<PopoverTrigger>
-										<Button colorScheme="red">Delete</Button>
+										<Button colorScheme="red">Deactivate</Button>
 									</PopoverTrigger>
 									<PopoverContent>
 										<PopoverArrow />
 										<PopoverCloseButton />
 										<PopoverHeader>Confirmation!</PopoverHeader>
 										<PopoverBody>
-											Are you sure you want to delete this employee?
+											Are you sure you want to deactivate this employee?
 										</PopoverBody>
 										<div className="flex justify-end pb-5 pr-5 pt-5 gap-3">
 											<Button onClick={deleteEmployee} colorScheme="red">
-												Delete please!
+												Yes
 											</Button>
 											<Button onClick={onClose}>No, Thanks!</Button>
 										</div>

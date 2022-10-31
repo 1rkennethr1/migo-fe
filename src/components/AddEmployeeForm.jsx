@@ -46,7 +46,7 @@ const AddEmployeeForm = () => {
 		ccn: null,
 		ecn: null,
 	});
-
+	const { getEmployees } = useStateContext();
 	const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
 		<div
 			className="hover:opacity-60 transition-opacity duration-300"
@@ -59,10 +59,6 @@ const AddEmployeeForm = () => {
 
 	const [isAdded, setIsAdded] = useState(false);
 	const [selectedPosition, setSelectedPosition] = useState(position[0]);
-	const { getEmployees, employees } = useStateContext();
-	useEffect(() => {
-		getEmployees();
-	}, [isAdded]);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -196,9 +192,10 @@ const AddEmployeeForm = () => {
 			? setIsFormValid(true)
 			: setIsFormValid(false);
 
-		console.info(allPhoneValid);
-		console.log(isEmailValid);
-		console.log(allPhoneValid);
+		// console.log(allFields);
+		// console.info(`allfields: ${allFieldsFilled}`);
+		// console.log(`all field: ${isEmailValid}`);
+		// console.log(`allphone: ${allPhoneValid}`);
 	}, [isPhoneValid, add, isEmailValid]);
 	const addEmployee = async (e) => {
 		e.preventDefault();
@@ -265,6 +262,9 @@ const AddEmployeeForm = () => {
 				dateJoined: add.dj,
 				emergencyName: add.en,
 				emergencyAddress: add.ea,
+
+				active: true,
+
 				emergencyContactNumber: add.ecn,
 				emergencyRelationship: add.er,
 				imageName: add.in
@@ -711,7 +711,6 @@ const AddEmployeeForm = () => {
 							}`}
 							id={"addEmployee"}
 							onClick={isFormValid ? addEmployee : null}
-							colorScheme=""
 							mr={3}
 							ref={validate}
 						>

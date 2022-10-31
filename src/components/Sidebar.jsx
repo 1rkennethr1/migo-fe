@@ -15,6 +15,7 @@ import {
 import { BiLogOut } from "react-icons/bi";
 import DarkModeButton from "./DarkModeButton";
 import { useStateContext } from "../lib/context";
+import { Tooltip } from "@chakra-ui/react";
 
 const tabs = [
 	{
@@ -53,7 +54,7 @@ const Sidebar = () => {
 		transition: "all .9 ease-in-out",
 		color: "white",
 	};
-	const { minimized, setMinimized, user } = useStateContext();
+	const { minimized, setMinimized, user, setJwt } = useStateContext();
 	const linkBg = {
 		initial: { y: -45 },
 		animate: {
@@ -62,12 +63,13 @@ const Sidebar = () => {
 	};
 	const navigate = useNavigate();
 	const logout = () => {
+		localStorage.removeItem("jwt");
+		setJwt("");
 		navigate("/");
-		localStorage.setItem("jwt", "");
 	};
 	return (
 		<motion.div
-			className={`  fixed top-0 h-screen bg-white dark:bg-[#1a1a1a] shadow-xl transition-all duration-500 px-5 pt-16 z-50 ${
+			className={`  fixed top-0 h-screen bg-white dark:bg-[#1a1a1a] border-r dark:border-r-[#333] transition-all duration-500 px-5 pt-16 z-50 ${
 				minimized ? "w-[90px]" : "w-[250px]"
 			} `}
 		>
@@ -101,47 +103,77 @@ const Sidebar = () => {
 						</p>
 					)}
 				</div>
-				<div
-					onClick={logout}
-					className={`text-2xl ${
-						minimized ? "pr-7" : "pr-2"
-					} text-black dark:text-white cursor-pointer transition duration-500`}
-				>
-					<BiLogOut />
-				</div>
+				<Tooltip label="Logout">
+					<div
+						onClick={logout}
+						className={`text-2xl ${
+							minimized ? "pr-7" : "pr-2"
+						} text-black dark:text-white cursor-pointer transition duration-500`}
+					>
+						<BiLogOut />
+					</div>
+				</Tooltip>
 			</div>
 			<div className="flex flex-col gap-5 justify-between">
 				<img
 					src={logo}
-					width={120}
-					height={120}
+					width={50}
+					height={50}
 					alt=""
 					srcSet=""
-					className="mb-8 self-center ml-2"
+					className={`mb-8 mt-10  transition-all duration-700 ${
+						minimized ? "" : "ml-2"
+					} `}
 				/>
-				<AnimatePresence>
-					{minimized ? (
-						<motion.h1
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							className="text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap"
-						>
-							General
-						</motion.h1>
-					) : (
-						<motion.h1
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							className="text-gray-300 text-ellipsis overflow-hidden whitespace-nowrap"
-						>
-							General
-						</motion.h1>
-					)}
-				</AnimatePresence>
+
 				{tabs.map((e) => {
-					return (
+					return minimized ? (
+						<div key={e.label} className="relative dark:text-white text-black">
+							<Tooltip label={e.label} placement="right">
+								<div
+									className={`transition duration-300 ${
+										e === selectedTab
+											? ""
+											: "hover:bg-[#ededed] dark:hover:bg-[#282828]"
+									} rounded-lg py-1 overflow-hidden text-ellipsis whitespace-nowrap`}
+								>
+									<NavLink
+										to={e.path}
+										onClick={() => {
+											setSelectedTab(e);
+											localStorage.setItem("tab", JSON.stringify(e));
+										}}
+										style={({ isActive }) => (isActive ? active : undefined)}
+									>
+										<div className="flex items-center gap-3 py-2 ml-3">
+											<div className="text-2xl">{e.icon}</div>
+											<AnimatePresence>
+												{minimized ? null : (
+													<motion.p
+														initial={{ opacity: 0 }}
+														animate={{ opacity: 1 }}
+														exit={{ opacity: 0 }}
+														className="translate-y-[3.5%] text-lg font-semibold "
+													>
+														{e.label}
+													</motion.p>
+												)}
+											</AnimatePresence>
+										</div>
+									</NavLink>
+									{selectedTab === e ? (
+										<motion.div
+											initial="initial"
+											animate="animate"
+											variants={linkBg}
+											layoutId="active "
+											className="w-full bg-[#EC2224] absolute rounded-lg h-full -z-10 "
+										></motion.div>
+									) : null}
+								</div>
+							</Tooltip>
+						</div>
+					) : (
 						<div key={e.label} className="relative dark:text-white text-black">
 							<div
 								className={`transition duration-300 ${
