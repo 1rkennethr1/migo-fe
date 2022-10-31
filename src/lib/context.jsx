@@ -8,10 +8,9 @@ export default function StateContext({ children }) {
 	const [status, setStatus] = useState("active");
 	const [timelogs, setTimeLogs] = useState([]);
 	const [isFetchingTimeLogs, setIsFetchingTimeLogs] = useState(true);
-
 	const [user, setUser] = useState({ username: "", password: "" });
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
-	const [jwt, setJwt] = useState(localStorage.getItem("jwt"));
+	const [jwt, setJwt] = useState(localStorage.getItem("jwt") || "");
 	const [searchValue, setSearchValue] = useState("");
 
 	const searchHandler = (e) => {
@@ -37,6 +36,8 @@ export default function StateContext({ children }) {
 	useEffect(() => {
 		searchEmployees();
 		setIsFetchingEmployees(false);
+		getTimeLogs();
+		setIsFetchingTimeLogs(false);
 	}, [searchValue]);
 	const searchEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");

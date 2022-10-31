@@ -30,7 +30,7 @@ const Employees = () => {
 		searchEmployees,
 	} = useStateContext();
 	useEffect(() => {
-		searchValue ? searchEmployees() : getEmployees();
+		searchEmployees();
 	}, [status]);
 
 	if (isFetchingEmployees) {
