@@ -1,6 +1,9 @@
+//icons
+import { GrSearch } from "react-icons/gr";
+
 //lib
-import { motion } from "framer-motion";
-import { CircularProgress } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { CircularProgress, Input, Select } from "@chakra-ui/react";
 
 //context
 import { useStateContext } from "../../lib/context";
@@ -10,8 +13,25 @@ import MainLayout from "../../components/MainLayout";
 import EmployeeRow from "../../components/EmployeeRow";
 import AddEmployeeForm from "../../components/AddEmployeeForm";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 const Employees = () => {
-	const { minimized, employees, isFetchingEmployees } = useStateContext();
+	const {
+		minimized,
+		employees,
+		getEmployees,
+		setEmployees,
+		isFetchingEmployees,
+		status,
+		setStatus,
+		searchValue,
+		searchHandler,
+		setSearchValue,
+		searchEmployees,
+	} = useStateContext();
+	useEffect(() => {
+		searchValue ? searchEmployees() : getEmployees();
+	}, [status]);
 
 	if (isFetchingEmployees) {
 		return (
@@ -22,6 +42,11 @@ const Employees = () => {
 			</MainLayout>
 		);
 	}
+	const statusHandler = (e) => {
+		const { value } = e.target;
+		setStatus(value);
+		getEmployees();
+	};
 	return (
 		<MainLayout>
 			<motion.div
@@ -41,14 +66,42 @@ const Employees = () => {
 						minimized ? "max-w-[75rem]" : "2xl:max-w-[90rem] max-w-5xl"
 					} ml-20 h-[80vh] overflow-y-scroll mt-10  bg-white dark:bg-[#171717]  shadow-lg rounded-xl border border-gray-200 dark:border-neutral-600`}
 				>
-					<header className="px-5 py-4 border-b border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d] flex justify-between items-center sticky top-0 bg-white">
-						<h2 className="font-semibold text-gray-800 py-3 text-xl dark:text-white transition duration-500 ">
-							Alliance Software Inc. Employees
-						</h2>
-						<AddEmployeeForm />
-					</header>
+					<div className="flex flex-col">
+						<header className="px-5 py-4 border-b border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d]  sticky top-0 bg-white flex flex-col">
+							<div className="flex justify-between items-center">
+								<h2 className="font-semibold text-gray-800 py-3 text-xl dark:text-white transition duration-500 ">
+									Alliance Software Inc. Employees
+								</h2>
+								<AddEmployeeForm />
+							</div>
+							<div className="flex gap-5">
+								<Select
+									name="status"
+									onChange={statusHandler}
+									value={status}
+									w={"15%"}
+								>
+									<option value="all">All</option>
+									<option value="active">Active</option>
+									<option value="inactive">Inactive</option>
+								</Select>
+								<div className="relative">
+									<input
+										value={searchValue}
+										onChange={searchHandler}
+										placeholder="Search by (Name or Position)"
+										type="text"
+										className="border rounded-md w-[20rem] pl-5 pr-10 outline-none focus:border-2 focus:border-purple-900 transition-all duration-300 h-full"
+									></input>
+									<div className="absolute top-3 right-3">
+										<GrSearch />
+									</div>
+								</div>
+							</div>
+						</header>
+					</div>
 					<div className="">
-						<div className="">
+						<div className="relative">
 							<table className="table-auto w-full">
 								<thead className="text-xs sticky transition duration-500 top-[85px] w-full font-semibold uppercase dark:bg-[#1f1f1f] text-gray-700 dark:text-white bg-gray-200  ">
 									<tr>
@@ -61,19 +114,51 @@ const Employees = () => {
 										<th className="p-2 whitespace-nowrap">
 											<div className="font-semibold text-left">Role</div>
 										</th>
+
 										<th className="p-2 whitespace-nowrap">
-											<div className="font-semibold text-center">
-												Date Joined
-											</div>
+											<div className="font-semibold text-center">Status</div>
 										</th>
 									</tr>
 								</thead>
-								<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700">
+								<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700 relative">
 									{employees.map((e) => {
 										return <EmployeeRow key={e.id} e={e} />;
 									})}
 								</tbody>
 							</table>
+							<div className="">
+								<AnimatePresence>
+									{employees.length === 0 && searchValue ? (
+										<motion.div
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.5 }}
+											className="flex justify-center items-center h-[50vh]"
+										>
+											<p className="text-neutral-500">
+												No results for{" "}
+												<span className="font-semibold">"{searchValue}" </span>
+												{status === "active"
+													? "in Active Employees"
+													: status === "inactive"
+													? "in Inactive Employees"
+													: ""}{" "}
+											</p>
+										</motion.div>
+									) : employees.length === 0 && searchValue.length === 0 ? (
+										<motion.div
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.5 }}
+											className="flex justify-center items-center h-[50vh]"
+										>
+											<p className="text-neutral-500">
+												Please run the backend server!
+											</p>
+										</motion.div>
+									) : null}
+								</AnimatePresence>
+							</div>
 						</div>
 					</div>
 				</div>

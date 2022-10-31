@@ -70,7 +70,10 @@ function App() {
 							element={jwt ? <TimeLogs /> : <Navigate to="/login" />}
 						/>
 						<Route path="/" element={<Navigate to="/login" />} />
-						<Route path="/login" element={<LoginPage />} />
+						<Route
+							path="/login"
+							element={jwt ? <Navigate to="/main/dashboard" /> : <LoginPage />}
+						/>
 						<Route path="/homepage" element={<HomePage />} />
 					</Routes>
 				</AnimatePresence>
