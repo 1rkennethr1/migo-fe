@@ -32,7 +32,7 @@ import toast from "react-hot-toast";
 import { position } from "../../utils/position";
 import ContactNumber from "./ContactNumber";
 import EmailInput from "./EmailInput";
-
+import def from "../assets/default.png";
 const AddEmployeeForm = () => {
 	const month = new Date().getMonth();
 	const day = new Date().getDay();
@@ -98,6 +98,17 @@ const AddEmployeeForm = () => {
 		er: "", //emergency relationship
 		in: ""
 	});
+	const changeHandler = (e) =>{
+		let imageFile = e.target.files[0]
+		const reader = new FileReader()
+		reader.onload = x =>{
+			setPic(x.target.result)
+			// console.log(x.target.result)
+		}
+		reader.readAsDataURL(imageFile)
+		setIsPicSelected(true)
+		}
+		
 	const validateEmail = (email) => {
 		return String(email)
 			.toLowerCase()
