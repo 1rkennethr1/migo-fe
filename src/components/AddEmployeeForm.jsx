@@ -98,7 +98,7 @@ const AddEmployeeForm = () => {
 		er: "", //emergency relationship
 		in: "", //image name
 		is: "", //image source
-		if: "" //image file
+		if: "", //image file
 	});
 	// const changeHandler = (e) =>{
 	// 	let imageFile = e.target.files[0]
@@ -116,7 +116,7 @@ const AddEmployeeForm = () => {
 	// 	reader.readAsDataURL(imageFile)
 	// 	setIsPicSelected(true)
 	// 	}
-		
+
 	const validateEmail = (email) => {
 		return String(email)
 			.toLowerCase()
@@ -141,7 +141,7 @@ const AddEmployeeForm = () => {
 		if (name == "bdate") {
 			setAdd({ ...add, [name]: value, age: calculateAge() });
 		}
-		
+
 		if (name == "email") {
 			if (value.length > 0) {
 				validateEmail(value) ? setIsEmailValid(true) : setIsEmailValid(false);
@@ -154,72 +154,74 @@ const AddEmployeeForm = () => {
 			setAdd({ ...add, [name]: phone });
 			if (value.length > 0) {
 				validatePhone(phone)
-				? setIsPhoneValid({ ...isPhoneValid, [name]: true })
-				: setIsPhoneValid({ ...isPhoneValid, [name]: false });
+					? setIsPhoneValid({ ...isPhoneValid, [name]: true })
+					: setIsPhoneValid({ ...isPhoneValid, [name]: false });
 			} else {
 				setIsPhoneValid({ ...isPhoneValid, [name]: null });
 			}
 			// console.log(validatePhone(phone));
 		}
-		if(name =='image'){
-			console.log(value)
-			let imageFile = e.target.files[0]
-			console.log(value)
-			const reader = new FileReader()
-			reader.onload = x =>{
+		if (name == "image") {
+			console.log(value);
+			let imageFile = e.target.files[0];
+			console.log(value);
+			const reader = new FileReader();
+			reader.onload = (x) => {
 				setAdd({
 					...add,
 					in: "",
 					is: x.target.result,
-					if: imageFile
+					if: imageFile,
 				}),
-					setPic(x.target.result)
-				console.log(x.target.result)
-			}
+					setPic(x.target.result);
+				console.log(x.target.result);
+			};
 			// console.log(add)
-			reader.readAsDataURL(imageFile)
-			setIsPicSelected(true)
+			reader.readAsDataURL(imageFile);
+			setIsPicSelected(true);
 		}
 	};
 	function calculateAge() {
 		let birthDate = new Date(add.bdate);
 		let today = new Date();
-		
+
 		var years = today.getFullYear() - birthDate.getFullYear();
-		
+
 		if (
 			today.getMonth() < birthDate.getMonth() ||
 			(today.getMonth() == birthDate.getMonth() &&
-			today.getDate() < birthDate.getDate())
-			) {
-				years--;
-			}
-			
-			return years;
+				today.getDate() < birthDate.getDate())
+		) {
+			years--;
 		}
-		
-		const validate = useRef();
-		const [isFormValid, setIsFormValid] = useState(false);
-		useEffect(() => {
-			let allPhone = [];
-			let allPhoneValid = false;
-			let allFields = [];
-			let allFieldsFilled = false;
-			for (const [key, value] of Object.entries(isPhoneValid)) {
-				allPhone.push(value);
-			}
-			for (const [key, value] of Object.entries(add)) {
-				allFields.push(
-					value
+
+		return years;
+	}
+
+	const validate = useRef();
+	const [isFormValid, setIsFormValid] = useState(false);
+	useEffect(() => {
+		let allPhone = [];
+		let allPhoneValid = false;
+		let allFields = [];
+		let allFieldsFilled = false;
+		for (const [key, value] of Object.entries(isPhoneValid)) {
+			allPhone.push(value);
+		}
+		for (const [key, value] of Object.entries(add)) {
+			allFields.push(
+				value
 					? true
-					: (key == "cca" && value == "") || (key == "cca" && value == null) 
-					|| (key == "in" && value == null) || (key == "in" && value == "")
+					: (key == "cca" && value == "") ||
+					  (key == "cca" && value == null) ||
+					  (key == "in" && value == null) ||
+					  (key == "in" && value == "")
 					? true
 					: false
-					);
-				}
-				
-				allPhone.every((e) => e === true)
+			);
+		}
+
+		allPhone.every((e) => e === true)
 			? (allPhoneValid = true)
 			: (allPhone = []);
 
@@ -261,100 +263,64 @@ const AddEmployeeForm = () => {
 				: add.mn[0].toUpperCase() + add.mn.slice(1, add.mn.length);
 
 		let ln =
-		add.ln.split(" ").length > 1
-		? add.ln
-		.split(" ")
-		.map((e) => {
-			return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
-		})
-		.join(" ")
-		: add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length);
-		
+			add.ln.split(" ").length > 1
+				? add.ln
+						.split(" ")
+						.map((e) => {
+							return `${e[0].toUpperCase()}${e.slice(1, e.length)}`;
+						})
+						.join(" ")
+				: add.ln[0].toUpperCase() + add.ln.slice(1, add.ln.length);
+
 		// data.LastName.split("").splice(0, 1).join("").toUpperCase() +
 		// data.LastName.split("").splice(1, data.LastName.length).join("");
 		const url = "https://localhost:7241/Employee";
-		let formData = new FormData()
-		formData.append('firstName', fn)
-		formData.append('middleName', mn)
-		formData.append('lastName', ln)
-		formData.append('cityAddress', add.ca)
-		formData.append('cityContactNumber', add.ccn)
-		formData.append('numberOfDependents', add.nod)
-		formData.append('civicClubAffiliation', add.cca)
-		formData.append('religion', add.rel)
-		formData.append('bloodType', add.bt)
-		formData.append('age', add.age)
-		formData.append('sex', add.sex)
-		formData.append('civilStatus', add.cs)
-		formData.append('birthdate', add.bdate)
-		formData.append('profession', add.prof)
-		formData.append('contactNumber', add.cn)
-		formData.append('emailAddress', add.email)
-		formData.append('yearsOfExperience', add.yoe)
-		formData.append('contractType', add.ct)
-		formData.append('positionApplied', add.posApp)
-		formData.append('positionCode', add.posCode)
-		formData.append('dateJoined', add.dj)
-		formData.append('emergencyName', add.en)
-		formData.append('emergencyAddress', add.ea)
-		formData.append('active', true)
-		formData.append('emergencyContactNumber', add.ecn)
-		formData.append('emergencyRelationship', add.er)
-		formData.append('imageName', '')
-		formData.append('imageSrc', '')
-		formData.append('imageFile', null)
-		for(let [key, value] of formData.entries()){
-			console.log(`${key}: ${value}`)
-		}
-		const res = await fetch(url, {
-			method: "post",
-			headers: { "Content-Type": "application/json-patch+json" },
-			// headers: { "Content-Type": "multipart/form-data" },
+		let formData = new FormData();
+		formData.append("firstName", fn);
+		formData.append("middleName", mn);
+		formData.append("lastName", ln);
+		formData.append("cityAddress", add.ca);
+		formData.append("cityContactNumber", add.ccn);
+		formData.append("numberOfDependents", add.nod);
+		formData.append("civicClubAffiliation", add.cca);
+		formData.append("religion", add.rel);
+		formData.append("bloodType", add.bt);
+		formData.append("age", add.age);
+		formData.append("sex", add.sex);
+		formData.append("civilStatus", add.cs);
+		formData.append("birthdate", add.bdate);
+		formData.append("profession", add.prof);
+		formData.append("contactNumber", add.cn);
+		formData.append("emailAddress", add.email);
+		formData.append("yearsOfExperience", add.yoe);
+		formData.append("contractType", add.ct);
+		formData.append("positionApplied", add.posApp);
+		formData.append("positionCode", add.posCode);
+		formData.append("dateJoined", add.dj);
+		formData.append("emergencyName", add.en);
+		formData.append("emergencyAddress", add.ea);
+		formData.append("status", true);
+		formData.append("emergencyContactNumber", add.ecn);
+		formData.append("emergencyRelationship", add.er);
+		formData.append("imageName", "");
+		formData.append("imageSrc", "");
+		formData.append("imageFile", add.if);
 
-			body: 
-			// formData
-				JSON.stringify({
-					firstName: fn,
-					middleName: mn,
-					lastName: ln,
-					cityAddress: add.ca,
-					cityContactNumber: add.ccn,
-					numberOfDependents: add.nod,
-					civicClubAffiliation: add.cca,
-					religion: add.rel,
-					bloodType: add.bt,
-					age: add.age,
-					sex: add.sex,
-					civilStatus: add.cs,
-					birthdate: add.bdate,
-					profession: add.prof,
-					contactNumber: add.cn,
-					emailAddress: add.email,
-					yearsOfExperience: add.yoe,
-					contractType: add.ct,
-					positionApplied: add.posApp,
-					positionCode: add.posCode,
-					dateJoined: add.dj,
-					emergencyName: add.en,
-					emergencyAddress: add.ea,
-					active: true,
-					emergencyContactNumber: add.ecn,
-					emergencyRelationship: add.er,
-					imageName: '',
-					// imageSrc: '',
-					imageFile: add.if
-			}),
-		});
-		// const res2 = await fetch(url, {method: "POST", body: formData})
-		// .then(res =>{
-		// 	console.log(res)
-		// })
-		// const data = await res.json();
-		console.log("Res:");
-		console.log(add.if);
+		try {
+			const res = await fetch(url, {
+				method: "post",
+				body: formData,
+			});
+			const data = await res.json();
+			console.log(res);
+			console.log(data);
+		} catch (e) {
+			console.log(e);
+		}
+
 		setIsAdded(!isAdded);
 		onClose();
-		
+
 		setAdd({
 			fn: "", //first name
 			mn: "", //middle name
@@ -386,10 +352,10 @@ const AddEmployeeForm = () => {
 			er: "", //emergency relationship
 			in: "", //image name
 			is: "", //image source
-			if: "" //image file
+			if: "", //image file
 		});
-		setPic("")
-		setIsPicSelected(false)
+		setPic("");
+		setIsPicSelected(false);
 		setIsPhoneValid({
 			cn: null,
 			ccn: null,
@@ -444,7 +410,7 @@ const AddEmployeeForm = () => {
 							<div>
 								<div>
 									{/* <img className="absolute -z-10 left-0" src={dhbg} alt="" /> */}
-									{isPicSelected && pic!=undefined?(
+									{isPicSelected && pic != undefined ? (
 										<label>
 											<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
 												<img
@@ -452,21 +418,33 @@ const AddEmployeeForm = () => {
 													className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
 												/>
 											</div>
-											<input type={'file'}  name='image' accept='image/*' onChange={handleChange} hidden></input>
+											<input
+												type={"file"}
+												name="image"
+												accept="image/*"
+												onChange={handleChange}
+												hidden
+											></input>
 										</label>
-									):(
+									) : (
 										<label>
 											<img
 												src={def}
 												width={90}
 												className="mb-[-1rem] hover:opacity-40 cursor-pointer"
 											/>
-											<input type={'file'} name='image' accept='image/*' onChange={handleChange} hidden></input>
+											<input
+												type={"file"}
+												name="image"
+												accept="image/*"
+												onChange={handleChange}
+												hidden
+											></input>
 										</label>
 									)}
 								</div>
 								<div>
-										<div className="flex flex-row gap-3">
+									<div className="flex flex-row gap-3">
 										<FormControl>
 											<FormLabel>First name</FormLabel>
 											<Input
@@ -516,7 +494,9 @@ const AddEmployeeForm = () => {
 												name="age"
 												disabled
 												value={
-													validateAge() ? calculateAge(add.bdate) : "Invalid Date"
+													validateAge()
+														? calculateAge(add.bdate)
+														: "Invalid Date"
 												}
 												placeholder="Age"
 											/>
@@ -789,14 +769,9 @@ const AddEmployeeForm = () => {
 					<ModalFooter>
 						<button
 							className={`font-semibold px-5 mr-3 py-2 rounded-lg transition-all duration-300 
-							${
-								isFormValid
-									? "bg-green-400 hover:opacity-80  text-[#353535] "
-									: "bg-neutral-100 cursor-default text-[#949494]"
-							}`
-						}
+							bg-green-400 hover:opacity-80  text-[#353535] `}
 							id={"addEmployee"}
-							onClick={isFormValid ? addEmployee : null}
+							onClick={addEmployee}
 							mr={3}
 							ref={validate}
 						>

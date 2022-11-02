@@ -44,6 +44,7 @@ export default function LoginPage() {
 		setUser({ ...user, [name]: value });
 	};
 	const handleLogin = async () => {
+		localStorage.setItem("user", JSON.stringify(user));
 		axios({
 			url: "https://localhost:7241/api/Auth/login",
 			method: "post",

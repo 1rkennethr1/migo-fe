@@ -6,3 +6,10 @@
 	font-family: "Archivo";
 }
 
+select {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	-webkit-border-radius: 0px;
+	appearance: none;
+	outline-width: 0;
+}

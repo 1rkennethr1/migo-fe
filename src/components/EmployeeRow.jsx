@@ -53,6 +53,7 @@ import ContactNumber from "./ContactNumber";
 import EmailInput from "./EmailInput";
 
 const EmployeeRow = ({ e }) => {
+	console.log(e.imageSrc.split("/")[5].includes("jpeg"));
 	const [isUpdated, setIsUpdated] = useState(false);
 	const { getEmployees } = useStateContext();
 	const toast = useToast();
@@ -93,25 +94,25 @@ const EmployeeRow = ({ e }) => {
 		ecn: e.emergencyContactNumber, //emergency contact number
 		er: e.emergencyRelationship, //emergency relationship
 		in: e.imageName, //
-		is: '', //image source
+		is: e.imageSrc, //image source
 		if: null, //image file
 	});
-	const changeHandler = e => {
-		let imageFile = e.target.files[0]
-		const reader = new FileReader()
-		reader.onload = x =>{
+	const changeHandler = (e) => {
+		let imageFile = e.target.files[0];
+		const reader = new FileReader();
+		reader.onload = (x) => {
 			setUpdate({
 				...update,
 				if: imageFile,
-				is: x.target.result 
-			})
-			setPic(x.target.result)
+				is: x.target.result,
+			});
+			setPic(x.target.result);
 			// console.log(x.target.result)
-			console.log(update.if)
-		}
-		reader.readAsDataURL(imageFile)
-		setIsPicSelected(true)
-	}
+			console.log(update.if);
+		};
+		reader.readAsDataURL(imageFile);
+		setIsPicSelected(true);
+	};
 	const validateEmail = (email) => {
 		return String(email)
 			.toLowerCase()
@@ -207,7 +208,7 @@ const EmployeeRow = ({ e }) => {
 		// 	? setIsFormValid(true)
 		// 	: setIsFormValid(false);
 
-			setIsFormValid(true)
+		setIsFormValid(true);
 	}, [isPhoneValid, update, isEmailValid]);
 	const updateEmployee = async (event) => {
 		let fn =
@@ -242,45 +243,45 @@ const EmployeeRow = ({ e }) => {
 
 		event.preventDefault();
 		const url = `https://localhost:7241/Employee/${e.id}`;
+		let formData = new FormData();
+		formData.append("id", e.id);
+		formData.append("firstName", fn);
+		formData.append("middleName", mn);
+		formData.append("lastName", ln);
+		formData.append("cityAddress", update.ca);
+		formData.append("cityContactNumber", update.ccn);
+		formData.append("numberOfDependents", update.nod || 0);
+		formData.append("civicClubAffiliation", update.cca);
+		formData.append("religion", update.rel);
+		formData.append("bloodType", update.bt);
+		formData.append("age", update.age);
+		formData.append("sex", update.sex);
+		formData.append("civilStatus", update.cs);
+		formData.append("birthdate", update.bdate);
+		formData.append("profession", update.prof);
+		formData.append("contactNumber", update.cn);
+		formData.append("emailAddress", update.email);
+		formData.append("yearsOfExperience", update.yoe || 0);
+		formData.append("contractType", update.ct);
+		formData.append("positionApplied", update.posApp);
+		formData.append("positionCode", update.posCode);
+		formData.append("dateJoined", update.dj);
+		formData.append("emergencyName", update.en);
+		formData.append("emergencyAddress", update.ea);
+		formData.append("status", e.status);
+		formData.append("emergencyContactNumber", update.ecn);
+		formData.append("emergencyRelationship", update.er);
+		formData.append("imageName", update.if ? update.if.name : update.in);
+		formData.append("imageSrc", update.is);
+		formData.append("imageFile", update.if);
+
 		try {
 			const res = await fetch(url, {
 				method: "put",
-				headers: { "Content-Type": "application/json-patch+json" },
-				body: JSON.stringify({
-					id: e.id,
-					firstName: fn,
-					middleName: mn,
-					lastName: ln,
-					cityAddress: update.ca,
-					cityContactNumber: update.ccn,
-					numberOfDependents: update.nod,
-					civicClubAffliation: update.cca,
-					religion: update.rel,
-					bloodType: update.bt,
-					age: update.age,
-					sex: update.sex,
-					civilStatus: update.cs,
-					birthdate: update.bdate,
-					profession: update.prof,
-					contactNumber: update.cn,
-					emailAddress: update.email,
-					yearsOfExperience: update.yoe,
-					contractType: update.ct,
-					positionApplied: update.posApp,
-					positionCode: update.posCode,
-					dateJoined: update.dj,
-					emergencyName: update.en,
-					emergencyAddress: update.ea,
-					emergencyContactNumber: update.ecn,
-					emergencyRelationship: update.er,
-					assignedProjects: update.assignedProjects,
-					imageName: update.in,
-					imageSrc: update.is,
-					imageFile: update.if
-				}),
+
+				body: formData,
 			});
-			// console.log(pic)
-			console.log(res)
+			console.log(res);
 		} catch (error) {
 			console.log(error);
 		}
@@ -329,44 +330,41 @@ const EmployeeRow = ({ e }) => {
 
 		event.preventDefault();
 		const url = `https://localhost:7241/Employee/${e.id}`;
-
+		let formData = new FormData();
+		formData.append("id", e.id);
+		formData.append("firstName", fn);
+		formData.append("middleName", mn);
+		formData.append("lastName", ln);
+		formData.append("cityAddress", update.ca);
+		formData.append("cityContactNumber", update.ccn);
+		formData.append("numberOfDependents", update.nod || 0);
+		formData.append("civicClubAffiliation", update.cca);
+		formData.append("religion", update.rel);
+		formData.append("bloodType", update.bt);
+		formData.append("age", update.age);
+		formData.append("sex", update.sex);
+		formData.append("civilStatus", update.cs);
+		formData.append("birthdate", update.bdate);
+		formData.append("profession", update.prof);
+		formData.append("contactNumber", update.cn);
+		formData.append("emailAddress", update.email);
+		formData.append("yearsOfExperience", update.yoe || 0);
+		formData.append("contractType", update.ct);
+		formData.append("positionApplied", update.posApp);
+		formData.append("positionCode", update.posCode);
+		formData.append("dateJoined", update.dj);
+		formData.append("emergencyName", update.en);
+		formData.append("emergencyAddress", update.ea);
+		formData.append("status", !e.status);
+		formData.append("emergencyContactNumber", update.ecn);
+		formData.append("emergencyRelationship", update.er);
+		formData.append("imageName", update.if ? update.if.name : update.in);
+		formData.append("imageSrc", update.is);
+		formData.append("imageFile", update.if);
 		try {
 			const res = await fetch(url, {
 				method: "put",
-				headers: { "Content-Type": "application/json-patch+json" },
-				body: JSON.stringify({
-					id: e.id,
-					firstName: fn,
-					middleName: mn,
-					active: false,
-					lastName: ln,
-					cityAddress: update.ca,
-					cityContactNumber: update.ccn,
-					numberOfDependents: update.nod,
-					civicClubAffliation: update.cca,
-					religion: update.rel,
-					bloodType: update.bt,
-					age: update.age,
-					sex: update.sex,
-					civilStatus: update.cs,
-					birthdate: update.bdate,
-					profession: update.prof,
-					contactNumber: update.cn,
-					emailAddress: update.email,
-					yearsOfExperience: update.yoe,
-					contractType: update.ct,
-					positionApplied: update.posApp,
-					positionCode: update.posCode,
-					dateJoined: update.dj,
-					emergencyName: update.en,
-					emergencyAddress: update.ea,
-					emergencyContactNumber: update.ecn,
-					emergencyRelationship: update.er,
-					assignedProjects: update.assignedProjects,
-					imageName: update.in,
-					imageSrc: update.is,
-					imageFile: update.if
-				}),
+				body: formData,
 			});
 		} catch (error) {
 			console.log(error);
@@ -408,8 +406,25 @@ const EmployeeRow = ({ e }) => {
 				</div>
 			</td>
 			<td className="pl-24 whitespace-nowrap">
-				<div className="text-left transition duration-500  text-black dark:text-white">
-					{e.firstName} {e.middleName[0]}. {e.lastName}
+				<div className="flex items-center gap-3">
+					<div className="rounded-full overflow-hidden">
+						<img
+							src={
+								e.imageSrc &&
+								(e.imageSrc.split("/")[5].includes("jpeg") ||
+									e.imageSrc.split("/")[5].includes("png") ||
+									e.imageSrc.split("/")[5].includes("svg") ||
+									e.imageSrc.split("/")[5].includes("jpg"))
+									? e.imageSrc
+									: def
+							}
+							className="w-10 h-10"
+							alt=""
+						/>
+					</div>
+					<div className="text-left transition duration-500  text-black dark:text-white">
+						{e.firstName} {e.middleName[0]}. {e.lastName}
+					</div>
 				</div>
 			</td>
 			<td className="p-2 whitespace-nowrap">
@@ -456,32 +471,50 @@ const EmployeeRow = ({ e }) => {
 					>
 						<img className="absolute -z-10 left-0" src={dhbg} alt="" />
 						<div>
-							{isPicSelected && pic!=undefined?(
+							{isPicSelected && pic != undefined ? (
 								<FormControl>
 									<FormLabel>
 										<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
 											<img
 												src={pic}
 												className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
-												/>
-												{console.log(update)}
+											/>
+											{console.log(update)}
 										</div>
-										<Input type={'file'}  accept='image/*' onChange={changeHandler} hidden></Input>
+										<Input
+											type={"file"}
+											accept="image/*"
+											onChange={changeHandler}
+											hidden
+										></Input>
 									</FormLabel>
 								</FormControl>
-							):(
-							<FormControl>
-								<FormLabel>
-									<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
-										<img
-											src={def}
-											width={'100%'}
-											className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
+							) : (
+								<FormControl>
+									<FormLabel>
+										<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
+											<img
+												src={
+													update.is &&
+													(update.is.split("/")[5].includes("jpeg") ||
+														update.is.split("/")[5].includes("png") ||
+														update.is.split("/")[5].includes("svg") ||
+														update.is.split("/")[5].includes("jpg"))
+														? update.is
+														: def
+												}
+												width={"100%"}
+												className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
 											/>
-									</div>
-									<Input type={'file'}  accept='image/*' onChange={changeHandler} hidden></Input>
-								</FormLabel>
-							</FormControl>
+										</div>
+										<Input
+											type={"file"}
+											accept="image/*"
+											onChange={changeHandler}
+											hidden
+										></Input>
+									</FormLabel>
+								</FormControl>
 							)}
 						</div>
 						<div>
@@ -497,7 +530,7 @@ const EmployeeRow = ({ e }) => {
 					</DrawerHeader>
 
 					<DrawerBody>
-						<Tabs colorScheme={'red'}>
+						<Tabs colorScheme={"red"}>
 							<TabList className="fixed z-10 bg-white w-[92%] pt-5 -mt-3">
 								<Tab fontWeight={500}>DETAILS</Tab>
 								<Tab fontWeight={500}>PROJECTS</Tab>
@@ -883,7 +916,6 @@ const EmployeeRow = ({ e }) => {
 							}`}
 							id={"addEmployee"}
 							onClick={isFormValid ? updateEmployee : null}
-							colorScheme=""
 							mr={3}
 						>
 							Update
@@ -892,17 +924,24 @@ const EmployeeRow = ({ e }) => {
 							{({ isOpen, onClose }) => (
 								<>
 									<PopoverTrigger>
-										<Button colorScheme="red">Deactivate</Button>
+										<Button colorScheme={e.status ? "red" : "green"}>
+											{e.status ? "Deactivate" : "Reactivate"}
+										</Button>
 									</PopoverTrigger>
 									<PopoverContent>
 										<PopoverArrow />
 										<PopoverCloseButton />
 										<PopoverHeader>Confirmation!</PopoverHeader>
 										<PopoverBody>
-											Are you sure you want to deactivate this employee?
+											{e.status
+												? "Are you sure you want to deactivate this employee?"
+												: "Are you sure you want to reactivate this employee?"}
 										</PopoverBody>
 										<div className="flex justify-end pb-5 pr-5 pt-5 gap-3">
-											<Button onClick={deleteEmployee} colorScheme="red">
+											<Button
+												onClick={deleteEmployee}
+												colorScheme={e.status ? "red" : "green"}
+											>
 												Yes
 											</Button>
 											<Button onClick={onClose}>No, Thanks!</Button>

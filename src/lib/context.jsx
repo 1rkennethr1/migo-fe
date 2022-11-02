@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { json } from "react-router-dom";
 
 const MigoContext = createContext();
 
@@ -8,7 +9,13 @@ export default function StateContext({ children }) {
 	const [status, setStatus] = useState("active");
 	const [timelogs, setTimeLogs] = useState([]);
 	const [isFetchingTimeLogs, setIsFetchingTimeLogs] = useState(true);
-	const [user, setUser] = useState({ username: "", password: "" });
+	const [user, setUser] = useState(
+		JSON.parse(localStorage.getItem("user")) || {
+			username: "",
+			password: "",
+		}
+	);
+	console.log(employees);
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
 	const [jwt, setJwt] = useState(localStorage.getItem("jwt") || "");
 	const [searchValue, setSearchValue] = useState("");
@@ -69,15 +76,19 @@ export default function StateContext({ children }) {
 									.includes(searchValue.toLowerCase())) &&
 							e.status === false
 				  )
-				: data.filter(
-						(e) =>
-							e.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
-							e.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
-							e.middleName.toLowerCase().includes(searchValue.toLowerCase()) ||
-							e.positionApplied
-								.toLowerCase()
-								.includes(searchValue.toLowerCase())
-				  );
+				: data
+						.filter(
+							(e) =>
+								e.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
+								e.lastName.toLowerCase().includes(searchValue.toLowerCase()) ||
+								e.middleName
+									.toLowerCase()
+									.includes(searchValue.toLowerCase()) ||
+								e.positionApplied
+									.toLowerCase()
+									.includes(searchValue.toLowerCase())
+						)
+						.sort((a, b) => Number(b.status) - Number(a.status));
 		setEmployees(sorted);
 	};
 
@@ -96,6 +107,7 @@ export default function StateContext({ children }) {
 				setMinimized,
 				employees,
 				isFetchingEmployees,
+				setEmployees,
 				getEmployees,
 				timelogs,
 				isFetchingTimeLogs,

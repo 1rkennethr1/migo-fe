@@ -64,6 +64,7 @@ const Sidebar = () => {
 	const navigate = useNavigate();
 	const logout = () => {
 		localStorage.removeItem("jwt");
+		localStorage.removeItem("user");
 		setJwt("");
 		navigate("/");
 	};
