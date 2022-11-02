@@ -15,11 +15,11 @@ export default function StateContext({ children }) {
 			password: "",
 		}
 	);
-	console.log(employees);
+
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
 	const [jwt, setJwt] = useState(localStorage.getItem("jwt") || "");
 	const [searchValue, setSearchValue] = useState("");
-
+	console.log(searchValue);
 	const searchHandler = (e) => {
 		const { value } = e.target;
 		setSearchValue(value);
@@ -58,9 +58,10 @@ export default function StateContext({ children }) {
 								e.middleName
 									.toLowerCase()
 									.includes(searchValue.toLowerCase()) ||
-								e.positionApplied
-									.toLowerCase()
-									.includes(searchValue.toLowerCase())) &&
+								(e.positionApplied &&
+									e.positionApplied
+										.toLowerCase()
+										.includes(searchValue.toLowerCase()))) &&
 							e.status === true
 				  )
 				: status === "inactive"
@@ -71,9 +72,10 @@ export default function StateContext({ children }) {
 								e.middleName
 									.toLowerCase()
 									.includes(searchValue.toLowerCase()) ||
-								e.positionApplied
-									.toLowerCase()
-									.includes(searchValue.toLowerCase())) &&
+								(e.positionApplied &&
+									e.positionApplied
+										.toLowerCase()
+										.includes(searchValue.toLowerCase()))) &&
 							e.status === false
 				  )
 				: data
@@ -84,9 +86,10 @@ export default function StateContext({ children }) {
 								e.middleName
 									.toLowerCase()
 									.includes(searchValue.toLowerCase()) ||
-								e.positionApplied
-									.toLowerCase()
-									.includes(searchValue.toLowerCase())
+								(e.positionApplied &&
+									e.positionApplied
+										.toLowerCase()
+										.includes(searchValue.toLowerCase()))
 						)
 						.sort((a, b) => Number(b.status) - Number(a.status));
 		setEmployees(sorted);
