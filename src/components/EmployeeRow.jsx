@@ -418,7 +418,7 @@ const EmployeeRow = ({ e }) => {
 									? e.imageSrc
 									: def
 							}
-							className="w-10 h-10"
+							className="w-10 h-10 object-cover"
 							alt=""
 						/>
 					</div>
