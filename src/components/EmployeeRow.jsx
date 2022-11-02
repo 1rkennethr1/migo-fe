@@ -93,13 +93,21 @@ const EmployeeRow = ({ e }) => {
 		ecn: e.emergencyContactNumber, //emergency contact number
 		er: e.emergencyRelationship, //emergency relationship
 		in: e.imageName, //
+		is: '', //image source
+		if: null, //image file
 	});
 	const changeHandler = e => {
 		let imageFile = e.target.files[0]
 		const reader = new FileReader()
 		reader.onload = x =>{
+			setUpdate({
+				...update,
+				if: imageFile,
+				is: x.target.result 
+			})
 			setPic(x.target.result)
 			// console.log(x.target.result)
+			console.log(update.if)
 		}
 		reader.readAsDataURL(imageFile)
 		setIsPicSelected(true)
@@ -266,9 +274,13 @@ const EmployeeRow = ({ e }) => {
 					emergencyContactNumber: update.ecn,
 					emergencyRelationship: update.er,
 					assignedProjects: update.assignedProjects,
-					imageName: pic,
+					imageName: update.in,
+					imageSrc: update.is,
+					imageFile: update.if
 				}),
 			});
+			// console.log(pic)
+			console.log(res)
 		} catch (error) {
 			console.log(error);
 		}
@@ -351,6 +363,9 @@ const EmployeeRow = ({ e }) => {
 					emergencyContactNumber: update.ecn,
 					emergencyRelationship: update.er,
 					assignedProjects: update.assignedProjects,
+					imageName: update.in,
+					imageSrc: update.is,
+					imageFile: update.if
 				}),
 			});
 		} catch (error) {
@@ -449,6 +464,7 @@ const EmployeeRow = ({ e }) => {
 												src={pic}
 												className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
 												/>
+												{console.log(update)}
 										</div>
 										<Input type={'file'}  accept='image/*' onChange={changeHandler} hidden></Input>
 									</FormLabel>
