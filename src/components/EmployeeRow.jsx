@@ -96,6 +96,7 @@ const EmployeeRow = ({ e }) => {
 		in: e.imageName, //
 		is: e.imageSrc, //image source
 		if: null, //image file
+		status: e.status,
 	});
 	const changeHandler = (e) => {
 		let imageFile = e.target.files[0];

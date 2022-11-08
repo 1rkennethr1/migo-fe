@@ -2,9 +2,6 @@
 @tailwind utilities;
 @tailwind base;
 @tailwind components;
-* {
-	font-family: "Archivo";
-}
 
 select {
 	-moz-appearance: none;

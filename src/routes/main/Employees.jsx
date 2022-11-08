@@ -60,7 +60,7 @@ const Employees = () => {
 				animate={{ opacity: 1, y: 0 }}
 				exit={{ opacity: 0 }}
 				transition={{
-					duration: 0.5,
+					duration: 0.1,
 					type: "spring",
 					damping: 20,
 					stiffness: 90,
@@ -149,7 +149,7 @@ const Employees = () => {
 											<div className="font-semibold mr-32">Name</div>
 										</th>
 										<th className="p-2 whitespace-nowrap">
-											<div className="font-semibold text-left">Role</div>
+											<div className="font-semibold text-left">Position</div>
 										</th>
 
 										<th className="p-2 whitespace-nowrap">

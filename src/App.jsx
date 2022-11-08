@@ -10,6 +10,7 @@ import Dashboard from "./routes/main/Dashboard";
 import Employees from "./routes/main/Employees";
 import Assess from "./routes/main/Assess";
 import { useState } from "react";
+import Projects from "./routes/main/Projects";
 function App() {
 	const loc = useLocation();
 
@@ -52,7 +53,7 @@ function App() {
 				) : (
 					""
 				)}
-				<AnimatePresence mode="wait">
+				<AnimatePresence mode="wait" initial={false}>
 					<Routes key={loc.pathname} location={loc}>
 						<Route
 							path="/main/dashboard"
@@ -61,6 +62,10 @@ function App() {
 						<Route
 							path="/main/employees"
 							element={jwt ? <Employees /> : <Navigate to="/login" />}
+						/>
+						<Route
+							path="/main/projects"
+							element={jwt ? <Projects /> : <Navigate to="/login" />}
 						/>
 						<Route
 							path="/main/assess"
