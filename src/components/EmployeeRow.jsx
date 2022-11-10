@@ -278,7 +278,6 @@ const EmployeeRow = ({ e }) => {
 		try {
 			const res = await fetch(url, {
 				method: "put",
-
 				body: formData,
 			});
 			console.log(res);
@@ -395,17 +394,17 @@ const EmployeeRow = ({ e }) => {
 	return (
 		<tr
 			onClick={onOpen}
-			className="p-10 cursor-pointer hover:bg-neutral-100 dark:hover:bg-[#111] transition duration-300 ease-in-out"
+			className={`p-4 cursor-pointer hover:bg-neutral-100 dark:hover:bg-[#111] transition duration-300 ease-in-out shadow-md`}
 			ref={btnRef}
 		>
-			<td className="px-10 py-9 whitespace-nowrap">
+			{/* <td className="whitespace-nowrap">
 				<div className="flex items-center">
 					<div className="font-medium text-gray-800 dark:text-white transition duration-500 ">
 						{e.id}
 					</div>
 				</div>
-			</td>
-			<td className="pl-24 whitespace-nowrap">
+			</td> */}
+			<td className="px-9 py-5 pl-10 whitespace-nowrap">
 				<div className="flex items-center gap-3">
 					<div className="rounded-full overflow-hidden">
 						<img
