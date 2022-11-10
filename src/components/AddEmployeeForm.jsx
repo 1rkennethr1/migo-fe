@@ -397,7 +397,47 @@ const AddEmployeeForm = () => {
 			>
 				<ModalOverlay />
 				<ModalContent padding={5}>
-					<ModalHeader fontSize={50}>Add Employee</ModalHeader>
+					<ModalHeader>
+						<div className="flex justify-between items-center">
+							<p className="text-[50px]">Add Employee</p>
+							<div className="flex flex-col items-center">
+								{/* <img className="absolute -z-10 left-0" src={dhbg} alt="" /> */}
+								{isPicSelected && pic != undefined ? (
+									<label>
+										<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
+											<img
+												src={pic}
+												className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
+											/>
+										</div>
+										<input
+											type={"file"}
+											name="image"
+											accept="image/*"
+											onChange={handleChange}
+											hidden
+										></input>
+									</label>
+								) : (
+									<label>
+										<img
+											src={def}
+											width={90}
+											className="mb-[-1rem] hover:opacity-40 cursor-pointer"
+										/>
+										<input
+											type={"file"}
+											name="image"
+											accept="image/*"
+											onChange={handleChange}
+											hidden
+										></input>
+									</label>
+								)}
+								<p className="mt-5 text-sm">Employee Photo</p>
+							</div>
+						</div>
+					</ModalHeader>
 
 					<ModalCloseButton />
 					<ModalBody pb={6}>
@@ -408,41 +448,6 @@ const AddEmployeeForm = () => {
 							</h2>
 							<hr className=" pb-6" />
 							<div>
-								<div>
-									{/* <img className="absolute -z-10 left-0" src={dhbg} alt="" /> */}
-									{isPicSelected && pic != undefined ? (
-										<label>
-											<div className="overflow-hidden flex justify-center w-28 h-28 rounded-full">
-												<img
-													src={pic}
-													className="mb-[-1rem] hover:opacity-40 cursor-pointer object-cover"
-												/>
-											</div>
-											<input
-												type={"file"}
-												name="image"
-												accept="image/*"
-												onChange={handleChange}
-												hidden
-											></input>
-										</label>
-									) : (
-										<label>
-											<img
-												src={def}
-												width={90}
-												className="mb-[-1rem] hover:opacity-40 cursor-pointer"
-											/>
-											<input
-												type={"file"}
-												name="image"
-												accept="image/*"
-												onChange={handleChange}
-												hidden
-											></input>
-										</label>
-									)}
-								</div>
 								<div>
 									<div className="flex flex-row gap-3">
 										<FormControl>

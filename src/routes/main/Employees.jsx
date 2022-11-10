@@ -237,34 +237,25 @@ const Employees = () => {
 		// 	</motion.div>
 		// </MainLayout>
 		<MainLayout>
-			<div className="flex flex-col w-[100%] px-10">
-				<h1 className=' text-5xl font-bold'>Employees</h1>
-				<div className="flex flex-row gap-3 h-[25%] w-[100%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#121212] p-5 mb-10 mt-5">
-					<div className="flex flex-row gap-3 bg-[#E0585B] w-[80%] p-8 rounded-lg items-center justify-start">
-						<div><BsPeopleFill size={70} color='white'/></div> 
-						<div className="flex flex-col justify-center items-start">
-							<div className="text-lg font-bold text-white">Total Employees</div>
-							<div className="text-3xl font-bold text-white">{employees.length}</div>
-						</div>
-					</div> 
-					<div className="flex flex-row gap-3 bg-[#EDC958] w-[80%] p-8 rounded-lg items-center justify-start">
-						<div><BsPeopleFill size={70} color='white'/></div> 
-						<div className="flex flex-col justify-center items-start">
-							<div className="text-lg font-bold text-white">New Hires</div>
-							<div className="text-3xl  font-bold text-white">{employees.length}</div>
-						</div>
-					</div> 
-					<div className="flex flex-row gap-3 bg-[#FF9549] w-[80%] p-8 rounded-lg items-center justify-start">
-						<div><BsPeopleFill size={70} color='white'/></div> 
-						<div className="flex flex-col justify-center items-start">
-							<div className="text-lg font-bold text-white">Total Employees</div>
-							<div className="text-3xl  font-bold text-white">{employees.length}</div>
-						</div>
-					</div> 
-				</div>
-				
-					<div className="flex flex-col sticky top-0 z-50 border-white">
-						<header className="px-5  py-4 border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-neutral-800  sticky top-0 bg-white flex flex-col pb-10">
+			<motion.div
+				className="flex justify-center"
+				initial={{ opacity: 0, y: 50 }}
+				animate={{ opacity: 1, y: 0 }}
+				exit={{ opacity: 0 }}
+				transition={{
+					duration: 0.5,
+					type: "spring",
+					damping: 20,
+					stiffness: 90,
+				}}
+			>
+				<div
+					className={`w-screen pb-10 transition-all duration-500 ${
+						minimized ? "max-w-[75rem]" : "2xl:max-w-[90rem] max-w-5xl"
+					} ml-20 h-[80vh] overflow-y-scroll mt-10  bg-white dark:bg-[#171717]  shadow-lg rounded-xl border border-gray-200 dark:border-neutral-600`}
+				>
+					<div className="flex flex-col sticky top-0 z-50">
+						<header className="px-5  py-4 border-b border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d]  sticky top-0 bg-white flex flex-col">
 							<div className="flex justify-between items-center">
 								<h2 className="font-semibold text-gray-800 py-3 text-lg dark:text-white transition duration-500 ">
 									Alliance Software Inc. Employees
@@ -336,7 +327,7 @@ const Employees = () => {
 											</div>
 										</th>
 										<th className="p-2 whitespace-nowrap">
-											<div className="font-semibold text-left">Role</div>
+											<div className="font-semibold text-left">Position</div>
 										</th>
 
 										<th className="p-2 whitespace-nowrap">
@@ -385,6 +376,7 @@ const Employees = () => {
 						</tbody>
 					</table>
 				</div>
+			</motion.div>
 		</MainLayout>
 	);
 };

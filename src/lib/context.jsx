@@ -4,11 +4,26 @@ import { json } from "react-router-dom";
 const MigoContext = createContext();
 
 export default function StateContext({ children }) {
+	//sidebar minimize
 	const [minimized, setMinimized] = useState(false);
-	const [employees, setEmployees] = useState([]);
+
+	//employee status sort
 	const [status, setStatus] = useState("active");
+
+	//employee search value
+	const [searchValue, setSearchValue] = useState("");
+
+	//data
+	const [employees, setEmployees] = useState([]);
+	const [projects, setProjects] = useState([]);
 	const [timelogs, setTimeLogs] = useState([]);
+
+	//fetch loader
+	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
 	const [isFetchingTimeLogs, setIsFetchingTimeLogs] = useState(true);
+	const [isFetchingProjects, setIsFetchingProjects] = useState(true);
+
+	//login state
 	const [user, setUser] = useState(
 		JSON.parse(localStorage.getItem("user")) || {
 			username: "",
@@ -16,14 +31,15 @@ export default function StateContext({ children }) {
 		}
 	);
 
-	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
+	//JSON Web Token for Login
 	const [jwt, setJwt] = useState(localStorage.getItem("jwt") || "");
-	const [searchValue, setSearchValue] = useState("");
-	console.log(searchValue);
+
 	const searchHandler = (e) => {
 		const { value } = e.target;
 		setSearchValue(value);
 	};
+
+	//GET
 	const getEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
@@ -33,7 +49,11 @@ export default function StateContext({ children }) {
 			? setEmployees(data)
 			: setEmployees(data.filter((e) => e.status === false));
 	};
-
+	const getProjects = async () => {
+		const res = await fetch("https://localhost:7241/Project");
+		const data = await res.json();
+		setProjects(data);
+	};
 	const getTimeLogs = async () => {
 		const res = await fetch("https://localhost:7241/api/EmployeeTimeLog");
 		const data = await res.json();
@@ -45,6 +65,8 @@ export default function StateContext({ children }) {
 		setIsFetchingEmployees(false);
 		getTimeLogs();
 		setIsFetchingTimeLogs(false);
+		getProjects();
+		setIsFetchingProjects(false);
 	}, [searchValue]);
 	const searchEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
@@ -102,6 +124,8 @@ export default function StateContext({ children }) {
 				searchValue,
 				setSearchValue,
 				searchHandler,
+				getProjects,
+				projects,
 				status,
 				setStatus,
 				user,

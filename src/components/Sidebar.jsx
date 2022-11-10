@@ -16,6 +16,7 @@ import { BiLogOut } from "react-icons/bi";
 import DarkModeButton from "./DarkModeButton";
 import { useStateContext } from "../lib/context";
 import { Tooltip } from "@chakra-ui/react";
+import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 
 const tabs = [
 	{
@@ -27,6 +28,11 @@ const tabs = [
 		label: "Employees",
 		icon: <MdPeople />,
 		path: "/main/employees",
+	},
+	{
+		label: "Projects",
+		icon: <AiOutlineFundProjectionScreen />,
+		path: "/main/projects",
 	},
 	{
 		label: "Assess",
@@ -76,9 +82,9 @@ const Sidebar = () => {
 		>
 			<div
 				onClick={() => setMinimized(!minimized)}
-				className={`absolute cursor-pointer transition-all top-5 duration-500  rounded-xl p-2 bg-white shadow-sm ${
-					minimized ? "right-[-20px]" : " scale-x-[-1] right-[-10px]"
-				} dark:bg-[#1a1a1a] dark:text-white text-black z-50`}
+				className={`absolute cursor-pointer transition-all top-5 duration-500  rounded-full p-2 bg-white shadow-sm ${
+					minimized ? "right-[-18px]" : " scale-x-[-1] right-[-15px]"
+				} dark:bg-[#1a1a1a] dark:text-white text-black z-50 border border-[#56565634]`}
 			>
 				<IoIosArrowForward />
 			</div>
@@ -128,9 +134,9 @@ const Sidebar = () => {
 				/>
 
 				{tabs.map((e) => {
-					return minimized ? (
+					return (
 						<div key={e.label} className="relative dark:text-white text-black">
-							<Tooltip label={e.label} placement="right">
+							<Tooltip label={minimized ? e.label : ""} placement="right">
 								<div
 									className={`transition duration-300 ${
 										e === selectedTab
@@ -173,50 +179,6 @@ const Sidebar = () => {
 									) : null}
 								</div>
 							</Tooltip>
-						</div>
-					) : (
-						<div key={e.label} className="relative dark:text-white text-black">
-							<div
-								className={`transition duration-300 ${
-									e === selectedTab
-										? ""
-										: "hover:bg-[#ededed] dark:hover:bg-[#282828]"
-								} rounded-lg py-1 overflow-hidden text-ellipsis whitespace-nowrap`}
-							>
-								<NavLink
-									to={e.path}
-									onClick={() => {
-										setSelectedTab(e);
-										localStorage.setItem("tab", JSON.stringify(e));
-									}}
-									style={({ isActive }) => (isActive ? active : undefined)}
-								>
-									<div className="flex items-center gap-3 py-2 ml-3">
-										<div className="text-2xl">{e.icon}</div>
-										<AnimatePresence>
-											{minimized ? null : (
-												<motion.p
-													initial={{ opacity: 0 }}
-													animate={{ opacity: 1 }}
-													exit={{ opacity: 0 }}
-													className="translate-y-[3.5%] text-lg font-semibold "
-												>
-													{e.label}
-												</motion.p>
-											)}
-										</AnimatePresence>
-									</div>
-								</NavLink>
-								{selectedTab === e ? (
-									<motion.div
-										initial="initial"
-										animate="animate"
-										variants={linkBg}
-										layoutId="active "
-										className="w-full bg-[#EC2224] absolute rounded-lg h-full -z-10 "
-									></motion.div>
-								) : null}
-							</div>
 						</div>
 					);
 				})}

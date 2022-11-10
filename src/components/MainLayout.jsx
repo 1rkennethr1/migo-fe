@@ -8,8 +8,8 @@ export default function MainLayout({ children }) {
 			exit={{ opacity: 0 }}
 			transition={{
 				type: "spring",
-				duration: 0.3,
-				damping: 20,
+				duration: 0.1,
+				damping: 10,
 				stiffness: 100,
 			}}
 			className="p-10 min-h-screen   flex w-screen "
