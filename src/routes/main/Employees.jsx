@@ -238,7 +238,7 @@ const Employees = () => {
 		// </MainLayout>
 		<MainLayout>
 			<motion.div
-				className="flex justify-center"
+				className="flex justify-center w-full"
 				initial={{ opacity: 0, y: 50 }}
 				animate={{ opacity: 1, y: 0 }}
 				exit={{ opacity: 0 }}
@@ -249,13 +249,34 @@ const Employees = () => {
 					stiffness: 90,
 				}}
 			>
-				<div
-					className={`w-screen pb-10 transition-all duration-500 ${
-						minimized ? "max-w-[75rem]" : "2xl:max-w-[90rem] max-w-5xl"
-					} ml-20 h-[80vh] overflow-y-scroll mt-10  bg-white dark:bg-[#171717]  shadow-lg rounded-xl border border-gray-200 dark:border-neutral-600`}
-				>
+			<div className="flex flex-col px-10 w-full">
+				<h1 className=' text-5xl font-bold'>Employees</h1>
+				<div className="flex flex-row gap-3 h-[25%] w-[100%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#121212] p-5 mb-10 mt-5">
+					<div className="flex flex-row gap-3 bg-[#E0585B] w-[80%] p-8 rounded-lg items-center justify-start">
+						<div><BsPeopleFill size={70} color='white'/></div> 
+						<div className="flex flex-col justify-center items-start">
+							<div className="text-lg font-bold text-white">Total Employees</div>
+							<div className="text-3xl font-bold text-white">{employees.length}</div>
+						</div>
+					</div> 
+					<div className="flex flex-row gap-3 bg-[#EDC958] w-[80%] p-8 rounded-lg items-center justify-start">
+						<div><BsPeopleFill size={70} color='white'/></div> 
+						<div className="flex flex-col justify-center items-start">
+							<div className="text-lg font-bold text-white">New Hires</div>
+							<div className="text-3xl  font-bold text-white">{employees.length}</div>
+						</div>
+					</div> 
+					<div className="flex flex-row gap-3 bg-[#FF9549] w-[80%] p-8 rounded-lg items-center justify-start">
+						<div><BsPeopleFill size={70} color='white'/></div> 
+						<div className="flex flex-col justify-center items-start">
+							<div className="text-lg font-bold text-white">Total Employees</div>
+							<div className="text-3xl  font-bold text-white">{employees.length}</div>
+						</div>
+					</div> 
+				</div>
+
 					<div className="flex flex-col sticky top-0 z-50">
-						<header className="px-5  py-4 border-b border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d]  sticky top-0 bg-white flex flex-col">
+						<header className="px-5 mb-3 py-4 border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d]  sticky top-0 bg-white flex flex-col">
 							<div className="flex justify-between items-center">
 								<h2 className="font-semibold text-gray-800 py-3 text-lg dark:text-white transition duration-500 ">
 									Alliance Software Inc. Employees
@@ -276,7 +297,7 @@ const Employees = () => {
 										<option value="inactive">Inactive</option>
 									</select>
 									<div className="absolute right-2 pointer-events-none text-5xl font-bold">
-										<BiChevronDown size={20}/>
+										<BiChevronDown size={30}/>
 									</div>
 								</div>
 
@@ -295,80 +316,81 @@ const Employees = () => {
 							</div>
 						</header>
 					</div>
-						<table className="table-auto w-full transition-all">
-	 						<thead className="text-xs sticky transition duration-500 top-[127px] w-full font-semibold uppercase dark:bg-[#1f1f1f] z-50 text-gray-700 dark:text-white   ">
-	 							<tr>
-	 								<th className="pl-14 whitespace-nowrap">
-	 									<div className="font-semibold text-left pl-10">
-	 										<div
-													onClick={() => {
-														setIdDescending(!idDescending);
-														idDescending
-															? setEmployees(
-																	employees.sort((a, b) => a.id - b.id)
-															  )
-															: setEmployees(
-																	employees.sort((a, b) => b.id - a.id)
-															  );
-													}}
-													className="flex gap-3 items-center cursor-pointer hover:opacity-75 transition-opacity"
-												>
-													Name
-													{idDescending === null ? null : (
-														<div className="text-lg">
-															{idDescending ? (
-																<BiChevronUp />
-															) : (
-																<BiChevronDown />
-															)}
-														</div>
+				<div>
+					<table className="table-auto w-full">
+						<thead className="text-xs sticky transition duration-500 top-[127px] w-full font-semibold uppercase dark:bg-[#1f1f1f] z-50 text-gray-700 dark:text-white">
+							<tr>
+								<th className="whitespace-nowrap">
+									<div className="font-semibold text-left pl-[5.5rem]">
+										<div
+											onClick={() => {
+												setIdDescending(!idDescending);
+												idDescending
+													? setEmployees(
+															employees.sort((a, b) => a.id - b.id)
+														)
+													: setEmployees(
+															employees.sort((a, b) => b.id - a.id)
+														);
+											}}
+											className="flex gap-3 items-center cursor-pointer hover:opacity-75 transition-opacity"
+										>
+											Name
+											{idDescending === null ? null : (
+												<div className="text-lg">
+													{idDescending ? (
+														<BiChevronUp />
+													) : (
+														<BiChevronDown />
 													)}
 												</div>
-											</div>
-										</th>
-										<th className="p-2 whitespace-nowrap">
-											<div className="font-semibold text-left">Position</div>
-										</th>
+											)}
+										</div>
+									</div>
+								</th>
+								<th className="p-2 whitespace-nowrap">
+									<div className="font-semibold text-left">Position</div>
+								</th>
 
-										<th className="p-2 whitespace-nowrap">
-											<div className="font-semibold text-right ">
-												<div
-													onClick={() => {
-														status === "all"
-															? (setStatusDescending(!statusDescending),
-															  setIdDescending(false),
-															  statusDescending
-																	? setEmployees(
-																			employees.sort(
-																				(a, b) =>
-																					Number(a.status) - Number(b.status)
-																			)
-																	  )
-																	: setEmployees(
-																			employees.sort(
-																				(a, b) =>
-																					Number(b.status) - Number(a.status)
-																			)
-																	  ))
-															: null;
-													}}
-													className="flex justify-center items-center cursor-pointer hover:opacity-75 transition-opacity "
-												>
-													<p>Status</p>
-													{status === "all" && (
-														<div className="text-lg">
-															{statusDescending ? (
-																<BiChevronDown />
-															) : (
-																<BiChevronUp />
-															)}
-														</div>
+								<th className="p-2 whitespace-nowrap">
+									<div className="font-semibold text-right ">
+										<div
+											onClick={() => {
+												status === "all"
+													? (setStatusDescending(!statusDescending),
+														setIdDescending(false),
+														statusDescending
+															? setEmployees(
+																	employees.sort(
+																		(a, b) =>
+																			Number(a.status) - Number(b.status)
+																	)
+																)
+															: setEmployees(
+																	employees.sort(
+																		(a, b) =>
+																			Number(b.status) - Number(a.status)
+																	)
+																))
+													: null;
+											}}
+											className="flex justify-center items-center cursor-pointer hover:opacity-75 transition-opacity "
+										>
+											<p>Status</p>
+											{status === "all" && (
+												<div className="text-lg">
+													{statusDescending ? (
+														<BiChevronDown />
+													) : (
+														<BiChevronUp />
 													)}
 												</div>
-											</div>
-										</th>
-									</tr>
-								</thead>
+											)}
+										</div>
+									</div>
+								</th>
+							</tr>
+						</thead>
 						<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700 relative">
 							{employees.map((e) => {
 								return <EmployeeRow key={e.id} e={e} />;
@@ -376,8 +398,9 @@ const Employees = () => {
 						</tbody>
 					</table>
 				</div>
+			</div>
 			</motion.div>
-		</MainLayout>
+			</MainLayout>
 	);
 };
 
