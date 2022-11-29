@@ -322,32 +322,29 @@ const AddEmployeeForm = () => {
 		onClose();
 
 		setAdd({
-			fn: "", //first name
-			mn: "", //middle name
-			ln: "", //last name
-			city: "", //city address
+			fn: "",
+			mn: "",
+			ln: "",
+			ca: "",
 			ccn: "", // city contact number
-			pa: "", // provincial address
-			pcn: "", //provincial contact number
 			nod: "", //number of dependents
 			cca: "", //civic club affiliation
-			rel: "", //religion
-			bt: "", //bloodtype
+			rel: "Roman Catholic", //religion
+			bt: "A+", //bloodtype
 			sex: "Male", //
 			cs: "Single", //civil status
-			bdate: "", //birthdate
-			prof: "", //profession
+			age: 22,
+			bdate: date, //birthdate
+			prof: "Information Technology", //profession
 			cn: "", // contact number
 			email: "", //email
 			yoe: "", //year of experience
 			ct: "Regular", //contract type
-			posApp: "", //position applied
-			posCode: "", //position code
+			posApp: "Senior Back-end Developer",
+			posCode: "",
 			dj: "", //date joined
 			en: "", //emergency name
 			ea: "", //emergency address
-			ercn: "", //emergency Residential contact number
-			eocn: "", //emergency office contact number
 			ecn: "", //emergency contact number
 			er: "", //emergency relationship
 			in: "", //image name

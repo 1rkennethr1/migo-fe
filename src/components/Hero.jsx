@@ -35,7 +35,6 @@ const Hero = () => {
 			opacity: 1,
 			transition: {
 				duration: 1,
-
 				type: "spring",
 				damping: 30,
 				stiffness: 120,

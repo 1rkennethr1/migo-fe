@@ -3,7 +3,7 @@ import { GrSearch } from "react-icons/gr";
 
 //lib
 import { AnimatePresence, motion } from "framer-motion";
-import { CircularProgress, Input, Select} from "@chakra-ui/react";
+import { CircularProgress, Input, Select } from "@chakra-ui/react";
 
 //context
 import { useStateContext } from "../../lib/context";
@@ -249,31 +249,47 @@ const Employees = () => {
 					stiffness: 90,
 				}}
 			>
-			<div className="flex flex-col px-10 w-full">
-				<h1 className=' text-5xl font-bold'>Employees</h1>
-				<div className="flex flex-row gap-3 h-[25%] w-[100%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#121212] p-5 mb-10 mt-5">
-					<div className="flex flex-row gap-3 bg-[#E0585B] w-[80%] p-8 rounded-lg items-center justify-start">
-						<div><BsPeopleFill size={70} color='white'/></div> 
-						<div className="flex flex-col justify-center items-start">
-							<div className="text-lg font-bold text-white">Total Employees</div>
-							<div className="text-3xl font-bold text-white">{employees.length}</div>
+				<div className="flex flex-col px-10 w-full">
+					<h1 className=" text-5xl font-bold">Employees</h1>
+					<div className="flex flex-row gap-3 h-[25%] w-[100%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#121212] p-5 mb-10 mt-5">
+						<div className="flex flex-row gap-3 bg-[#E0585B] w-[80%] p-8 rounded-lg items-center justify-start">
+							<div>
+								<BsPeopleFill size={70} color="white" />
+							</div>
+							<div className="flex flex-col justify-center items-start">
+								<div className="text-lg font-bold text-white">
+									Total Employees
+								</div>
+								<div className="text-3xl font-bold text-white">
+									{employees.length}
+								</div>
+							</div>
 						</div>
-					</div> 
-					<div className="flex flex-row gap-3 bg-[#EDC958] w-[80%] p-8 rounded-lg items-center justify-start">
-						<div><BsPeopleFill size={70} color='white'/></div> 
-						<div className="flex flex-col justify-center items-start">
-							<div className="text-lg font-bold text-white">New Hires</div>
-							<div className="text-3xl  font-bold text-white">{employees.length}</div>
+						<div className="flex flex-row gap-3 bg-[#EDC958] w-[80%] p-8 rounded-lg items-center justify-start">
+							<div>
+								<BsPeopleFill size={70} color="white" />
+							</div>
+							<div className="flex flex-col justify-center items-start">
+								<div className="text-lg font-bold text-white">New Hires</div>
+								<div className="text-3xl  font-bold text-white">
+									{employees.length}
+								</div>
+							</div>
 						</div>
-					</div> 
-					<div className="flex flex-row gap-3 bg-[#FF9549] w-[80%] p-8 rounded-lg items-center justify-start">
-						<div><BsPeopleFill size={70} color='white'/></div> 
-						<div className="flex flex-col justify-center items-start">
-							<div className="text-lg font-bold text-white">Total Employees</div>
-							<div className="text-3xl  font-bold text-white">{employees.length}</div>
+						<div className="flex flex-row gap-3 bg-[#FF9549] w-[80%] p-8 rounded-lg items-center justify-start">
+							<div>
+								<BsPeopleFill size={70} color="white" />
+							</div>
+							<div className="flex flex-col justify-center items-start">
+								<div className="text-lg font-bold text-white">
+									Total Employees
+								</div>
+								<div className="text-3xl  font-bold text-white">
+									{employees.length}
+								</div>
+							</div>
 						</div>
-					</div> 
-				</div>
+					</div>
 
 					<div className="flex flex-col sticky top-0 z-50">
 						<header className="px-5 mb-3 py-4 border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d]  sticky top-0 bg-white flex flex-col">
@@ -297,7 +313,7 @@ const Employees = () => {
 										<option value="inactive">Inactive</option>
 									</select>
 									<div className="absolute right-2 pointer-events-none text-5xl font-bold">
-										<BiChevronDown size={30}/>
+										<BiChevronDown size={30} />
 									</div>
 								</div>
 
@@ -316,91 +332,87 @@ const Employees = () => {
 							</div>
 						</header>
 					</div>
-				<div>
-					<table className="table-auto w-full">
-						<thead className="text-xs sticky transition duration-500 top-[127px] w-full font-semibold uppercase dark:bg-[#1f1f1f] z-50 text-gray-700 dark:text-white">
-							<tr>
-								<th className="whitespace-nowrap">
-									<div className="font-semibold text-left pl-[5.5rem]">
-										<div
-											onClick={() => {
-												setIdDescending(!idDescending);
-												idDescending
-													? setEmployees(
-															employees.sort((a, b) => a.id - b.id)
-														)
-													: setEmployees(
-															employees.sort((a, b) => b.id - a.id)
-														);
-											}}
-											className="flex gap-3 items-center cursor-pointer hover:opacity-75 transition-opacity"
-										>
-											Name
-											{idDescending === null ? null : (
-												<div className="text-lg">
-													{idDescending ? (
-														<BiChevronUp />
-													) : (
-														<BiChevronDown />
-													)}
-												</div>
-											)}
+					<div>
+						<table className="table-auto w-full">
+							<thead className="text-xs sticky transition duration-500 top-[127px] w-full font-semibold uppercase dark:bg-[#1f1f1f] z-50 text-gray-700 dark:text-white">
+								<tr>
+									<th className="whitespace-nowrap">
+										<div className="font-semibold text-left pl-[5.5rem]">
+											<div
+												onClick={() => {
+													setIdDescending(!idDescending);
+													idDescending
+														? setEmployees(
+																employees.sort((a, b) => a.id - b.id)
+														  )
+														: setEmployees(
+																employees.sort((a, b) => b.id - a.id)
+														  );
+												}}
+												className="flex gap-3 items-center cursor-pointer hover:opacity-75 transition-opacity"
+											>
+												Name
+												{idDescending === null ? null : (
+													<div className="text-lg">
+														{idDescending ? <BiChevronUp /> : <BiChevronDown />}
+													</div>
+												)}
+											</div>
 										</div>
-									</div>
-								</th>
-								<th className="p-2 whitespace-nowrap">
-									<div className="font-semibold text-left">Position</div>
-								</th>
+									</th>
+									<th className="p-2 whitespace-nowrap">
+										<div className="font-semibold text-left">Position</div>
+									</th>
 
-								<th className="p-2 whitespace-nowrap">
-									<div className="font-semibold text-right ">
-										<div
-											onClick={() => {
-												status === "all"
-													? (setStatusDescending(!statusDescending),
-														setIdDescending(false),
-														statusDescending
-															? setEmployees(
-																	employees.sort(
-																		(a, b) =>
-																			Number(a.status) - Number(b.status)
-																	)
-																)
-															: setEmployees(
-																	employees.sort(
-																		(a, b) =>
-																			Number(b.status) - Number(a.status)
-																	)
-																))
-													: null;
-											}}
-											className="flex justify-center items-center cursor-pointer hover:opacity-75 transition-opacity "
-										>
-											<p>Status</p>
-											{status === "all" && (
-												<div className="text-lg">
-													{statusDescending ? (
-														<BiChevronDown />
-													) : (
-														<BiChevronUp />
-													)}
-												</div>
-											)}
+									<th className="p-2 whitespace-nowrap">
+										<div className="font-semibold text-right ">
+											<div
+												onClick={() => {
+													status === "all"
+														? (setStatusDescending(!statusDescending),
+														  setIdDescending(false),
+														  statusDescending
+																? setEmployees(
+																		employees.sort(
+																			(a, b) =>
+																				Number(a.status) - Number(b.status)
+																		)
+																  )
+																: setEmployees(
+																		employees.sort(
+																			(a, b) =>
+																				Number(b.status) - Number(a.status)
+																		)
+																  ))
+														: null;
+												}}
+												className="flex justify-center items-center cursor-pointer hover:opacity-75 transition-opacity "
+											>
+												<p>Status</p>
+												{status === "all" && (
+													<div className="text-lg">
+														{statusDescending ? (
+															<BiChevronDown />
+														) : (
+															<BiChevronUp />
+														)}
+													</div>
+												)}
+											</div>
 										</div>
-									</div>
-								</th>
-							</tr>
-						</thead>
-						<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700 relative">
-							{employees.map((e) => {
-								return <EmployeeRow key={e.id} e={e} />;
-							})}
-						</tbody>
-					</table>
+									</th>
+								</tr>
+							</thead>
+							<tbody className="text-md divide-y divide-gray-100 dark:divide-neutral-700 relative">
+								{employees.map((e) => {
+									return <EmployeeRow key={e.id} e={e} />;
+								})}
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
 			</motion.div>
-			</MainLayout>
+		</MainLayout>
 	);
 };
 
