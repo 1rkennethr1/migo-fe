@@ -27,8 +27,6 @@ import {
 	useToast,
 	DrawerOverlay,
 	Badge,
-} from "@chakra-ui/react";
-import {
 	Popover,
 	PopoverTrigger,
 	PopoverContent,
@@ -39,15 +37,11 @@ import {
 	PopoverCloseButton,
 	PopoverAnchor,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useStateContext } from "../lib/context";
-import { MdClose } from "react-icons/md";
-import { BsCheck } from "react-icons/bs";
-import { motion } from "framer-motion";
 import def from "../assets/default.png";
 import dhbg from "../assets/drawerheader.png";
-import { useEffect } from "react";
 import { position } from "../../utils/position";
 import ContactNumber from "./ContactNumber";
 import EmailInput from "./EmailInput";
@@ -55,7 +49,7 @@ import EmailInput from "./EmailInput";
 const EmployeeRow = ({ e }) => {
 	console.log(e.imageSrc.split("/")[5].includes("jpeg"));
 	const [isUpdated, setIsUpdated] = useState(false);
-	const { getEmployees } = useStateContext();
+	const { getEmployees} = useStateContext();
 	const toast = useToast();
 
 	// const employeeInitRef = React.useRef(null);
@@ -392,6 +386,7 @@ const EmployeeRow = ({ e }) => {
 			? false
 			: true;
 	};
+
 	return (
 		<tr
 			onClick={onOpen}
@@ -533,7 +528,7 @@ const EmployeeRow = ({ e }) => {
 						<Tabs colorScheme={"red"}>
 							<TabList className="fixed z-10 bg-white w-[92%] pt-5 -mt-3">
 								<Tab fontWeight={500}>DETAILS</Tab>
-								<Tab fontWeight={500}>PROJECTS</Tab>
+								<Tab fontWeight={500}>OVERVIEW</Tab>
 								<Tab fontWeight={500}>PERFORMANCE</Tab>
 							</TabList>
 							<TabPanels className="pt-[4rem]">
@@ -832,7 +827,7 @@ const EmployeeRow = ({ e }) => {
 											/>
 										</FormControl>
 
-										<FormControl>
+										{/* <FormControl>
 											<FormLabel>Date Joined</FormLabel>
 											<Input
 												onChange={handleChange}
@@ -842,7 +837,7 @@ const EmployeeRow = ({ e }) => {
 												value={update.dj}
 												id=""
 											/>
-										</FormControl>
+										</FormControl> */}
 									</div>
 									<h2 className=" pt-10 pb-4 text-2xl font-semibold text-[#383838]">
 										Emergency Contact
@@ -901,13 +896,17 @@ const EmployeeRow = ({ e }) => {
 													<p>{e.name}</p>
 												</div>
 										  ))
-										: ""}
+										: ""
+									}
+								</TabPanel>
+								<TabPanel>
 								</TabPanel>
 							</TabPanels>
 						</Tabs>
 					</DrawerBody>
 
 					<DrawerFooter>
+						<div id="footerButtons">
 						<button
 							className={`font-semibold px-5 mr-3 py-2 rounded-lg transition-all duration-300 ${
 								isFormValid
@@ -950,6 +949,7 @@ const EmployeeRow = ({ e }) => {
 								</>
 							)}
 						</Popover>
+						</div>
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>

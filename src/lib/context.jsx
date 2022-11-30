@@ -15,10 +15,12 @@ export default function StateContext({ children }) {
 
 	//data
 	const [employees, setEmployees] = useState([]);
+	const [allEmployees, setAllEmployees] = useState([])
 	const [projects, setProjects] = useState([]);
 	const [timelogs, setTimeLogs] = useState([]);
 
 	//fetch loader
+	// const [isFetchingAllEmployees, setIsFetchingAllEmployees] = useState(true);
 	const [isFetchingEmployees, setIsFetchingEmployees] = useState(true);
 	const [isFetchingTimeLogs, setIsFetchingTimeLogs] = useState(true);
 	const [isFetchingProjects, setIsFetchingProjects] = useState(true);
@@ -43,6 +45,7 @@ export default function StateContext({ children }) {
 	const getEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
+		setAllEmployees(data);
 		status === "active"
 			? setEmployees(data.filter((e) => e.status === true))
 			: status === "all"
@@ -59,15 +62,19 @@ export default function StateContext({ children }) {
 		const data = await res.json();
 		setTimeLogs(data);
 	};
-
+	//---------------------------------------------------//
 	useEffect(() => {
 		searchEmployees();
+		getEmployees()
+		// setIsFetchingAllEmployees(false);
+		// getAllEmployees();
 		setIsFetchingEmployees(false);
 		getTimeLogs();
 		setIsFetchingTimeLogs(false);
 		getProjects();
 		setIsFetchingProjects(false);
 	}, [searchValue]);
+
 	const searchEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
@@ -116,7 +123,6 @@ export default function StateContext({ children }) {
 						.sort((a, b) => Number(b.status) - Number(a.status));
 		setEmployees(sorted);
 	};
-
 	return (
 		<MigoContext.Provider
 			value={{
@@ -133,6 +139,10 @@ export default function StateContext({ children }) {
 				minimized,
 				setMinimized,
 				employees,
+				allEmployees,
+				// isFetchingAllEmployees,
+				setAllEmployees,
+				// getAllEmployees,
 				isFetchingEmployees,
 				setEmployees,
 				getEmployees,

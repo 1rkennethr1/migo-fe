@@ -30,6 +30,7 @@ const Employees = () => {
 		searchValue,
 		searchHandler,
 		setSearchValue,
+		allEmployees,
 		searchEmployees,
 	} = useStateContext();
 	useEffect(() => {
@@ -261,7 +262,7 @@ const Employees = () => {
 									Total Employees
 								</div>
 								<div className="text-3xl font-bold text-white">
-									{employees.length}
+									{allEmployees.length}
 								</div>
 							</div>
 						</div>
@@ -272,7 +273,7 @@ const Employees = () => {
 							<div className="flex flex-col justify-center items-start">
 								<div className="text-lg font-bold text-white">New Hires</div>
 								<div className="text-3xl  font-bold text-white">
-									{employees.length}
+									{allEmployees.length}
 								</div>
 							</div>
 						</div>
@@ -285,7 +286,7 @@ const Employees = () => {
 									Total Employees
 								</div>
 								<div className="text-3xl  font-bold text-white">
-									{employees.length}
+									{allEmployees.length}
 								</div>
 							</div>
 						</div>
