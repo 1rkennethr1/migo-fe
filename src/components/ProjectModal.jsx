@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { BiPlus } from "react-icons/bi";
 const ProjectModal = ({ e, setClicked }) => {
 	console.log(e);
 	return (

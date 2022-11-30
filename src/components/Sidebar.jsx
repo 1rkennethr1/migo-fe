@@ -98,7 +98,7 @@ const Sidebar = () => {
 				</div>
 			</div>
 			<div
-				className={` w-full absolute bottom-4 left-[-10px] h-max flex gap-3 items-center justify-end`}
+				className={`w-full absolute bottom-4 left-[-10px] h-max flex gap-3 items-center justify-end z-10 bg-[#ddd]`}
 			>
 				<img src={user} alt="" width={100} />
 				<div className="flex gap-10">
