@@ -30,14 +30,14 @@ const tabs = [
 		path: "/main/employees",
 	},
 	{
-		label: "Projects",
-		icon: <AiOutlineFundProjectionScreen />,
-		path: "/main/projects",
-	},
-	{
 		label: "Assess",
 		icon: <MdOutlineAssessment />,
 		path: "/main/assess",
+	},
+	{
+		label: "Projects",
+		icon: <AiOutlineFundProjectionScreen />,
+		path: "/main/projects",
 	},
 	{
 		label: "Time Logs",
@@ -45,6 +45,7 @@ const tabs = [
 		path: "/main/benefits",
 	},
 ];
+
 
 const Sidebar = () => {
 	const location = useLocation();
@@ -132,18 +133,21 @@ const Sidebar = () => {
 						minimized ? "" : "ml-2"
 					} `}
 				/>
-
 				{tabs.map((e) => {
 					return (
-						<div key={e.label} className="relative dark:text-white text-black">
+						<div key={e.label}>
+						{tabs.indexOf(e)===0? (<h1>General</h1>):('')}
+						{tabs.indexOf(e)===3? (<h1>Tables</h1>):('')}
+						<div className="relative dark:text-white text-black">
+							
 							<Tooltip label={minimized ? e.label : ""} placement="right">
 								<div
 									className={`transition duration-300 ${
 										e === selectedTab
 											? ""
 											: "hover:bg-[#ededed] dark:hover:bg-[#282828]"
-									} rounded-lg py-1 overflow-hidden text-ellipsis whitespace-nowrap`}
-								>
+										} rounded-lg py-1 overflow-hidden text-ellipsis whitespace-nowrap`}
+										>
 									<NavLink
 										to={e.path}
 										onClick={() => {
@@ -151,16 +155,16 @@ const Sidebar = () => {
 											localStorage.setItem("tab", JSON.stringify(e));
 										}}
 										style={({ isActive }) => (isActive ? active : undefined)}
-									>
+										>
 										<div className="flex items-center gap-3 py-2 ml-3">
 											<div className="text-2xl">{e.icon}</div>
 											<AnimatePresence>
 												{minimized ? null : (
 													<motion.p
-														initial={{ opacity: 0 }}
-														animate={{ opacity: 1 }}
-														exit={{ opacity: 0 }}
-														className="translate-y-[3.5%] text-lg font-semibold "
+													initial={{ opacity: 0 }}
+													animate={{ opacity: 1 }}
+													exit={{ opacity: 0 }}
+													className="translate-y-[3.5%] text-lg font-semibold "
 													>
 														{e.label}
 													</motion.p>
@@ -170,21 +174,23 @@ const Sidebar = () => {
 									</NavLink>
 									{selectedTab === e ? (
 										<motion.div
-											initial="initial"
-											animate="animate"
+										initial="initial"
+										animate="animate"
 											variants={linkBg}
 											layoutId="active "
 											className="w-full bg-[#EC2224] absolute rounded-lg h-full -z-10 "
-										></motion.div>
-									) : null}
+											></motion.div>
+											) : null}
 								</div>
 							</Tooltip>
 						</div>
+					</div>
 					);
 				})}
 			</div>
 		</motion.div>
-	);
-};
-
-export default Sidebar;
+		);
+	};
+	
+	export default Sidebar;
+	
