@@ -5,13 +5,20 @@ import image2 from "../../assets/dashboard/2.webp";
 import image3 from "../../assets/dashboard/3.webp";
 import image4 from "../../assets/dashboard/4.webp";
 import image5 from "../../assets/dashboard/5.webp";
+import { useStateContext } from "../../lib/context";
 const Dashboard = () => {
+	const {user} = useStateContext()
 	return (
 		<MainLayout>
 			<div className="flex flex-col w-full">
-				<h1 className="text-5xl font-semibold mb-20">
-					Alliance Inc. Dashboard
-				</h1>
+				<div className="mb-20">
+					<h1 className="text-5xl font-semibold">
+						Welcome back, {user.username}!
+					</h1>
+					<h1 className="text-xl text-gray-400 ">
+						Here are today's performance reports
+					</h1>
+				</div>
 				<div className="flex flex-col">
 					<motion.div
 						initial={{ y: 40, opacity: 0 }}
