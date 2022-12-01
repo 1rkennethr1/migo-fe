@@ -15,6 +15,8 @@ import {
     Stack, 
     useDisclosure
 } from "@chakra-ui/react"
+import {IoMdCall} from 'react-icons/io'
+import {MdEmail} from 'react-icons/md'
 import React from 'react'
 const EmployeeAssessItem = ({e}) =>{
     const btnRef = React.useRef()
@@ -25,36 +27,52 @@ const EmployeeAssessItem = ({e}) =>{
     }
     return(
         <div 
-            className=" dark:text-white text-black text-3xl p-8 dark:border-white border-none shadow-md border-2 w-64 h-56 rounded-md hover:cursor-pointer hover:bg-[#eee]"
+            className=" dark:text-white text-black flex flex-col gap-2 text-3xl p-4 dark:border-white border-none shadow-md border-2 w-72 h-80 rounded-md hover:cursor-pointer hover:bg-[#e8e8e8]"
             onClick={onOpen}
             ref={btnRef}
         >
-            <div className="overflow-hidden flex justify-center w-20 h-20 rounded-full">
-                <img 
-                    src={
-                        e.imageSrc &&
-                            (e.imageSrc.split("/")[5].includes("jpeg") ||
-                                e.imageSrc.split("/")[5].includes("png") ||
-                                e.imageSrc.split("/")[5].includes("svg") ||
-                                e.imageSrc.split("/")[5].includes("jpg"))
-                                ? e.imageSrc
-                                : def
-                    }
-                    className='object-cover'
-                    >
-                </img>
-            </div>
-            
-            <h1 className="text-[.7em] whitespace-nowrap overflow-hidden text-ellipsis">{e.firstName} {e.lastName}</h1>
-            <div className="flex flex-row flex-wrap gap-2">
-                {e.assignedProjects.map(ev=>{
-                    return (
-                        <div className="rounded-full bg-slate-300  w-20 h-8">
-                            <p className="text-sm px-2 py-1 overflow-hidden text-ellipsis whitespace-nowrap italic">{ev.name}</p>
+            {
+                e.status ? 
+                    (<div className="text-sm self-end border-2 border-green-600 text-green-600 rounded-md px-3"> Active</div>)
+                :   (<div className="text-sm self-end border-2 border-red-600 text-red-600 rounded-md px-3">Inactive</div>)
+            }
+           <div className="flex flex-col gap-5 items-center justify-center">
+                <div className="overflow-hidden flex justify-center w-20 h-20 rounded-full">
+                    <img 
+                        src={
+                            e.imageSrc &&
+                                (e.imageSrc.split("/")[5].includes("jpeg") ||
+                                    e.imageSrc.split("/")[5].includes("png") ||
+                                    e.imageSrc.split("/")[5].includes("svg") ||
+                                    e.imageSrc.split("/")[5].includes("jpg"))
+                                    ? e.imageSrc
+                                    : def
+                        }
+                        className='object-cover'
+                        >
+                    </img>
+                </div>
+                <h1 className="font-bold text-[.6em] leading-5 overflow-hidden text-center mb-[-1rem]">{e.firstName} {e.lastName}</h1>
+                <h1 className="text-sm leading-3 grid grid-flow-col-dense items-center gap-2 mb-[-.5rem]"><span>{e.positionApplied!== 'null' ? e.positionApplied : 'Web Developer'}</span></h1>
+                <div className=" bg-gray-100 text-sm w-[100%] items-center flex flex-col p-3 rounded-md">
+                    <div className="flex w-[100%] self-start flex-row overflow-hidden whitespace-nowrap text-ellipsis gap-3 mb-3">
+                        <div className="text-left">
+                            <h1 className="text-gray-500">Profession</h1>
+                            <h1 className="leading-3 whitespace-nowrap overflow-hidden text-ellipsis w-24">{e.profession!== 'null' ? e.profession : 'N/A'}</h1>
                         </div>
-                        )
-                })}
-            </div>
+                        <div className="text-right">
+                            <h1 className="text-gray-500">Date Joined</h1>
+                            <h1 className="leading-3 text-ellipsis">{e.dateJoined!== 'null' ? e.dateJoined : 'N/A'}</h1>
+                        </div>
+                    </div>
+                    <div className="self-start flex flex-row overflow-hidden whitespace-nowrap text-ellipsis gap-3">
+                        <div className="self-start text-left">
+                            <h1 className="text-gray-500"><span className="flex gap-1 items-center"><IoMdCall/>{e.contactNumber!== 'null' ? "+63" +e.contactNumber : 'N/A'}</span></h1>
+                            <h1 className="text-gray-500"><span className="flex gap-1 items-center"><MdEmail/>{e.emailAddress!== 'null' ? e.emailAddress : 'N/A'}</span></h1>
+                        </div>
+                    </div>
+                </div>
+           </div>
 
             <Drawer
 				isOpen={isOpen}

@@ -15,6 +15,7 @@ export default function StateContext({ children }) {
 
 	//data
 	const [employees, setEmployees] = useState([]);
+	const [activeEmployees, setActiveEmployees] = useState([]);
 	const [allEmployees, setAllEmployees] = useState([])
 	const [projects, setProjects] = useState([]);
 	const [timelogs, setTimeLogs] = useState([]);
@@ -46,6 +47,7 @@ export default function StateContext({ children }) {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
 		setAllEmployees(data);
+		setActiveEmployees(data.filter(e=>{if(e.status) return e}))
 		status === "active"
 			? setEmployees(data.filter((e) => e.status === true))
 			: status === "all"
@@ -138,6 +140,7 @@ export default function StateContext({ children }) {
 				setUser,
 				minimized,
 				setMinimized,
+				activeEmployees,
 				employees,
 				allEmployees,
 				// isFetchingAllEmployees,

@@ -7,7 +7,7 @@ import { Select, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import EmployeeAssessItem from "../../components/EmployeeAssessItem";
 
 const Assess = () => {
-	const { minimized, allEmployees, isFetchingEmployees } = useStateContext();
+	const { minimized, allEmployees, activeEmployees, isFetchingEmployees } = useStateContext();
 	const [selectedFile, setSelectedFile] = useState();
 	const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -38,7 +38,14 @@ const Assess = () => {
 	return (
 		<MainLayout>
 			<div className="flex flex-col w-full">
-				<h1 className="text-5xl font-semibold mb-14">Assess</h1>
+			<div className="mb-20">
+					<h1 className="text-5xl font-semibold">
+						Assess Employees
+					</h1>
+					<h1 className="text-xl text-gray-400 ">
+						Evaluate Alliance Software Inc. employees
+					</h1>
+				</div>
 				<h2 className="text-2xl font-semibold mb-5">Not Evaluated</h2>
 				<div className="flex flex-row flex-wrap gap-3">
 				{allEmployees.map((e)=>{
@@ -46,7 +53,7 @@ const Assess = () => {
 				})}
 				</div>
 				<h2 className="text-2xl font-semibold mb-5 pt-5">Evaluated</h2>
-					{console.log(allEmployees)}
+					{console.log(activeEmployees)}
 				<div>
 
 			{/* <div className="flex w-full justify-center">
