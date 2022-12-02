@@ -48,7 +48,7 @@ const Assess = () => {
 				</div>
 				<h2 className="text-2xl font-semibold mb-5">Not Evaluated</h2>
 				<div className="flex flex-row flex-wrap gap-3">
-				{allEmployees.map((e)=>{
+				{activeEmployees.map((e)=>{
 					return <EmployeeAssessItem key={e.id} e={e}/>
 				})}
 				</div>
