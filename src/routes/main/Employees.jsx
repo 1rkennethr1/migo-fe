@@ -252,7 +252,7 @@ const Employees = () => {
 			>
 				<div className="flex flex-col px-10 w-full">
 					<h1 className=" text-5xl font-bold">Employees</h1>
-					<div className="flex flex-row gap-3 h-[25%] w-[100%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#121212] p-5 mb-10 mt-5">
+					<div className="flex flex-row gap-3 h-[25%] w-[100%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#1a1a1a] p-5 mb-10 mt-5">
 						<div className="flex flex-row gap-3 bg-[#E0585B] w-[80%] p-8 rounded-lg items-center justify-start">
 							<div>
 								<BsPeopleFill size={70} color="white" />
@@ -293,7 +293,7 @@ const Employees = () => {
 					</div>
 
 					<div className="flex flex-col sticky top-0 z-50">
-						<header className="px-5 mb-3 py-4 border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#0d0d0d]  sticky top-0 bg-white flex flex-col">
+						<header className="px-5 mb-3 py-4 border-gray-100 dark:border-neutral-600 transition duration-500 dark:bg-[#1a1a1a]  sticky top-0 bg-white flex flex-col">
 							<div className="flex justify-between items-center">
 								<h2 className="font-semibold text-gray-800 py-3 text-lg dark:text-white transition duration-500 ">
 									Alliance Software Inc. Employees
