@@ -1,8 +1,69 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BiPlus } from "react-icons/bi";
+import { AiFillEdit } from "react-icons/ai";
+import Select from "react-select";
+import { useStateContext } from "../lib/context";
+import { useState } from "react";
+import { useEffect } from "react";
 const ProjectModal = ({ e, setClicked }) => {
-	console.log(e);
+	const [editAssigned, setEditAssigned] = useState(false);
+	const { employees, projects, getProjects } = useStateContext();
+	const [assigned, setAssigned] = useState([]);
+	const [finalAss, setFinal] = useState([]);
+	const emp = e.assignedEmployees.map((e) => {
+		return { value: e.id, label: e.firstName + " " + e.lastName };
+	});
+
+	const loyees = employees.map((e) => {
+		if (!emp.includes(e)) {
+			return { value: e.id, label: e.firstName + " " + e.lastName };
+		}
+	});
+	useEffect(() => {
+		const newArr = [];
+		assigned.map((e) => {
+			return emp.map((elem) => {
+				if (e.label !== elem.label) {
+					newArr.push(e);
+				}
+			});
+		});
+		console.log(newArr);
+		setFinal(newArr);
+	}, [assigned]);
+
+	const assignedEdit = () => {
+		const url = "https://localhost:7241/Employee/project";
+		assigned.forEach(async (elem) => {
+			try {
+				console.log(projects);
+				const res = await fetch(url, {
+					method: "post",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						employeeId: elem.value,
+						projectId: e.id,
+					}),
+				});
+				const data2 = await res.json();
+				console.log(data2);
+			} catch (error) {
+				console.log(error);
+			}
+			setEditAssigned(false);
+			getProjects();
+		});
+		setTimeout(() => {
+			getProjects();
+		}, 500);
+	};
+	const assignHandler = (e) => {
+		setAssigned(e);
+	};
+
 	return (
 		<motion.div
 			onClick={() => setClicked(false)}
@@ -58,28 +119,57 @@ const ProjectModal = ({ e, setClicked }) => {
 					</p>
 				</div>
 				<div className="mt-5">
-					<h2 className="text-xl font-semibold mb-5">Assigned Employees</h2>
-					<div className="flex gap-3 flex-wrap items-center">
-						{e.assignedEmployees.map((e) => {
-							return (
-								<div
-									className={`flex gap-2 items-center py-1 px-5 border rounded-full ${
-										e.status ? "" : "border-red-600 border-2"
-									}`}
-									key={e.id}
-								>
-									<img
-										src={`https://localhost:7241/Images/Employees/${e.imageName}`}
-										className="w-7 h-7 rounded-full object-center"
-										alt=""
-									/>
-									<div className="">
-										{e.firstName} {e.lastName}
-									</div>
-								</div>
-							);
-						})}
+					<div className="flex gap-3 items-center mb-5">
+						<h2 className="text-xl font-semibold ">Assigned Employees</h2>
+						<div
+							onClick={() => setEditAssigned(!editAssigned)}
+							className="text-xl cursor-pointer transition-opacity hover:opacity-80"
+						>
+							<AiFillEdit />
+						</div>
 					</div>
+					{!editAssigned ? (
+						<div className="flex gap-3 flex-wrap items-center">
+							{e.assignedEmployees.map((e) => {
+								return (
+									<div
+										className={`flex gap-2 items-center py-1 px-5 border rounded-full ${
+											e.status ? "" : "border-red-600 border-2"
+										}`}
+										key={e.id}
+									>
+										<img
+											src={`https://localhost:7241/Images/Employees/${e.imageName}`}
+											className="w-7 h-7 rounded-full object-center"
+											alt=""
+										/>
+										<div className="">
+											{e.firstName} {e.lastName}
+										</div>
+									</div>
+								);
+							})}
+						</div>
+					) : (
+						<div className="w-[80%] flex flex-col gap-5">
+							<Select
+								defaultValue={emp}
+								onChange={assignHandler}
+								isMulti
+								name="colors"
+								options={loyees}
+								setClickedData
+								className="basic-multi-select"
+								classNamePrefix="select"
+							/>
+							<button
+								onClick={assignedEdit}
+								className="px-3 w-max py-1 rounded-md bg-green-300"
+							>
+								edit
+							</button>
+						</div>
+					)}
 				</div>
 			</motion.div>
 		</motion.div>
