@@ -324,6 +324,7 @@ const EmployeeAssessItem = ({ e }) => {
 				}),
 			});
 			const data2 = await res.json();
+			console.log(data2);
 			if (data2.length > 0) {
 				onClose();
 				setFilled(false);
