@@ -49,7 +49,7 @@ import EmailInput from "./EmailInput";
 const EmployeeRow = ({ e }) => {
 	console.log(e.imageSrc.split("/")[5].includes("jpeg"));
 	const [isUpdated, setIsUpdated] = useState(false);
-	const { getEmployees} = useStateContext();
+	const { getEmployees } = useStateContext();
 	const toast = useToast();
 
 	// const employeeInitRef = React.useRef(null);
@@ -896,59 +896,57 @@ const EmployeeRow = ({ e }) => {
 													<p>{e.name}</p>
 												</div>
 										  ))
-										: ""
-									}
+										: ""}
 								</TabPanel>
-								<TabPanel>
-								</TabPanel>
+								<TabPanel></TabPanel>
 							</TabPanels>
 						</Tabs>
 					</DrawerBody>
 
 					<DrawerFooter>
 						<div id="footerButtons">
-						<button
-							className={`font-semibold px-5 mr-3 py-2 rounded-lg transition-all duration-300 ${
-								isFormValid
-									? "bg-yellow-400 hover:opacity-80  text-[#353535] "
-									: "bg-neutral-100 cursor-default text-[#949494]"
-							}`}
-							id={"addEmployee"}
-							onClick={isFormValid ? updateEmployee : null}
-							mr={3}
-						>
-							Update
-						</button>
-						<Popover closeOnBlur={false} placement="left">
-							{({ isOpen, onClose }) => (
-								<>
-									<PopoverTrigger>
-										<Button colorScheme={e.status ? "red" : "green"}>
-											{e.status ? "Deactivate" : "Reactivate"}
-										</Button>
-									</PopoverTrigger>
-									<PopoverContent>
-										<PopoverArrow />
-										<PopoverCloseButton />
-										<PopoverHeader>Confirmation!</PopoverHeader>
-										<PopoverBody>
-											{e.status
-												? "Are you sure you want to deactivate this employee?"
-												: "Are you sure you want to reactivate this employee?"}
-										</PopoverBody>
-										<div className="flex justify-end pb-5 pr-5 pt-5 gap-3">
-											<Button
-												onClick={deleteEmployee}
-												colorScheme={e.status ? "red" : "green"}
-											>
-												Yes
+							<button
+								className={`font-semibold px-5 mr-3 py-2 rounded-lg transition-all duration-300 ${
+									isFormValid
+										? "bg-yellow-400 hover:opacity-80  text-[#353535] "
+										: "bg-neutral-100 cursor-default text-[#949494]"
+								}`}
+								id={"addEmployee"}
+								onClick={isFormValid ? updateEmployee : null}
+								mr={3}
+							>
+								Update
+							</button>
+							<Popover closeOnBlur={false} placement="left">
+								{({ isOpen, onClose }) => (
+									<>
+										<PopoverTrigger>
+											<Button colorScheme={e.status ? "red" : "green"}>
+												{e.status ? "Deactivate" : "Reactivate"}
 											</Button>
-											<Button onClick={onClose}>No, Thanks!</Button>
-										</div>
-									</PopoverContent>
-								</>
-							)}
-						</Popover>
+										</PopoverTrigger>
+										<PopoverContent>
+											<PopoverArrow />
+											<PopoverCloseButton />
+											<PopoverHeader>Confirmation!</PopoverHeader>
+											<PopoverBody>
+												{e.status
+													? "Are you sure you want to deactivate this employee?"
+													: "Are you sure you want to reactivate this employee?"}
+											</PopoverBody>
+											<div className="flex justify-end pb-5 pr-5 pt-5 gap-3">
+												<Button
+													onClick={deleteEmployee}
+													colorScheme={e.status ? "red" : "green"}
+												>
+													Yes
+												</Button>
+												<Button onClick={onClose}>No, Thanks!</Button>
+											</div>
+										</PopoverContent>
+									</>
+								)}
+							</Popover>
 						</div>
 					</DrawerFooter>
 				</DrawerContent>
