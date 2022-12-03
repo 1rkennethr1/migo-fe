@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import MainLayout from "../../components/MainLayout";
 import { Select, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import EmployeeAssessItem from "../../components/EmployeeAssessItem";
+import { useEffect } from "react";
 
 const Assess = () => {
 	const { employees } = useStateContext();
@@ -50,11 +51,17 @@ const Assess = () => {
 				<h2 className="text-2xl font-semibold mb-5">Not Evaluated</h2>
 				<div className="flex flex-row flex-wrap gap-3">
 					{activeEmployees.map((e) => {
-						return <EmployeeAssessItem key={e.id} e={e} />;
+						if(!e.evaluated)
+							return <EmployeeAssessItem disabled={false} key={e.id} e={e} />;
 					})}
 				</div>
 				<h2 className="text-2xl font-semibold mb-5 pt-5">Evaluated</h2>
-				{console.log(activeEmployees)}
+				<div className="flex flex-row flex-wrap gap-3">
+					{activeEmployees.map((e) => {
+						if(e.evaluated)
+						return <EmployeeAssessItem disabled={true} key={e.id} e={e} />;
+					})}
+				</div>
 				<div>
 					{/* <div className="flex w-full justify-center">
 				<div className="flex flex-col w-[70%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#121212] p-10 ">

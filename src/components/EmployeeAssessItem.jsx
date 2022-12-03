@@ -31,8 +31,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
-const EmployeeAssessItem = ({ e }) => {
+import { useStateContext } from "../lib/context";
+const EmployeeAssessItem = ({ e, disabled}) => {
 	const btnRef = React.useRef();
+    const {getEmployees} = useStateContext()
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [data, setData] = useState({
 		quality: {
@@ -76,13 +78,17 @@ const EmployeeAssessItem = ({ e }) => {
 			p_E_Q1: 0,
 		},
 	});
+    console.log(e)
+
+
 	const [isFormFilled, setFilled] = useState(false);
 	const onChangeHandler = (event) => {
 		const { value, name, attributes } = event.target;
-		if (event.target.value >= 0.0 && event.target.value <= 5.0) {
+		if (event.target.value >= 0 && event.target.value <= 5) {
 			event.target.value = event.target.value.slice(0, 4);
-		} else {
-			event.target.value = event.target.value.slice(0, 1);
+		} 
+        else {
+			event.target.value = event.target.value.slice(0, 0);
 		}
 		let section = attributes.section.value;
 		if (section === "quality") {
@@ -276,6 +282,49 @@ const EmployeeAssessItem = ({ e }) => {
 	}, [data]);
 	const submitHandler = async () => {
 		const url = `https://localhost:7241/api/Assessment?empId=${e.id}`;
+        const url2 = `https://localhost:7241/Employee/${e.id}`;
+		let formData = new FormData();
+		formData.append("id", e.id);
+		formData.append("firstName", e.firstName);
+		formData.append("middleName", e.middleName);
+		formData.append("lastName", e.lastName);
+		formData.append("cityAddress", e.cityAddress);
+		formData.append("cityContactNumber", e.cityContactNumber);
+		formData.append("numberOfDependents", e.numberOfDependents|| 0);
+		formData.append("civicClubAffiliation", e.civicClubAffiliation);
+		formData.append("religion", e.religion);
+		formData.append("bloodType", e.bloodType);
+		formData.append("age", e.age);
+		formData.append("sex", e.sex);
+		formData.append("civilStatus", e.civilStatus);
+		formData.append("birthdate", e.birthdate);
+		formData.append("profession", e.profession);
+		formData.append("contactNumber", e.contactNumber);
+		formData.append("emailAddress", e.emailAddress);
+		formData.append("yearsOfExperience", e.yearsOfExperience || 0);
+		formData.append("contractType", e.contractType);
+		formData.append("positionApplied", e.positionApplied);
+		formData.append("positionCode", e.positionCode);
+		formData.append("dateJoined", e.dateJoined);
+		formData.append("emergencyName", e.emergencyName);
+		formData.append("emergencyAddress", e.emergencyAddress);
+		formData.append("status", e.status);
+		formData.append("emergencyContactNumber", e.emergencyContactNumber);
+		formData.append("emergencyRelationship", e.emergencyRelationship);
+		formData.append("imageName", e.imageFile ? e.imageFile.name : e.imageName);
+		formData.append("imageSrc", e.imageSrc);
+		formData.append("imageFile", e.imageFile);
+        formData.append("evaluated", true)
+        formData.append("dateEvaluated", new Date().toISOString())
+		try {
+			const res = await fetch(url2, {
+				method: "put",
+				body: formData,
+			});
+			console.log(res);
+		} catch (error) {
+			console.log(error);
+		}
 		try {
 			const res = await fetch(url, {
 				method: "post",
@@ -381,15 +430,18 @@ const EmployeeAssessItem = ({ e }) => {
 			duration: 1000,
 			isClosable: true,
 		});
+        getEmployees()
 	};
 	return (
 		<div
-			className=" dark:text-white dark:hover:border-2 dark:border-2 text-black flex flex-col gap-2 text-3xl p-4 dark:border-white shadow-md w-72 h-80 rounded-md hover:cursor-pointer hover:bg-[#e8e8e8] dark:hover:bg-zinc-900"
-			onClick={onOpen}
+			className={disabled? 
+                    `dark:text-gray-500 dark:hover:border-2 dark:border-2 text-black flex flex-col gap-2 text-3xl p-4 dark:border-white shadow-md w-72 h-80 rounded-md before:content-[' '] before:absolute before:bg-[rgba(0,0,0,.1)] before:rounded-lg before:p-[9rem] before:pb-[11rem] before:ml-[-1rem] before:mt-[-1rem]` 
+                    : 'dark:text-white dark:hover:border-2 dark:border-2 text-black flex flex-col gap-2 text-3xl p-4 dark:border-white shadow-md w-72 h-80 rounded-md hover:cursor-pointer hover:bg-[#e8e8e8] dark:hover:bg-zinc-900'}
+			onClick={disabled? '': onOpen}
 			ref={btnRef}
 		>
 			{e.status ? (
-				<div className="text-sm self-end border-2 border-green-600 text-green-600 rounded-md px-3">
+				<div className={`text-sm self-end border-2 ${disabled? 'border-gray-600 text-gray-600': 'border-green-600 text-green-600'} rounded-md px-3`}>
 					{" "}
 					Active
 				</div>
@@ -410,7 +462,7 @@ const EmployeeAssessItem = ({ e }) => {
 								? e.imageSrc
 								: def
 						}
-						className="object-cover"
+						className={`object-cover ${disabled?' grayscale': ''}`}
 					></img>
 				</div>
 				<h1 className="font-bold text-[.6em] leading-5 overflow-hidden text-center mb-[-1rem]">

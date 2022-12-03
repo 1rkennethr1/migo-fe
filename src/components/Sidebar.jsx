@@ -136,8 +136,8 @@ const Sidebar = () => {
 				{tabs.map((e) => {
 					return (
 						<div key={e.label}>
-						{tabs.indexOf(e)===0? (<h1>General</h1>):('')}
-						{tabs.indexOf(e)===3? (<h1>Tables</h1>):('')}
+						{tabs.indexOf(e)===0? (<h1 className=" whitespace-nowrap text-ellipsis overflow-hidden text-sm font-bold text-gray-500">General</h1>):('')}
+						{tabs.indexOf(e)===3? (<h1 className=" whitespace-nowrap text-ellipsis overflow-hidden text-sm font-bold text-gray-500">Tables</h1>):('')}
 						<div className="relative dark:text-white text-black">
 							
 							<Tooltip label={minimized ? e.label : ""} placement="right">

@@ -99,6 +99,7 @@ const AddEmployeeForm = () => {
 		in: "", //image name
 		is: "", //image source
 		if: "", //image file
+		e: ""
 	});
 	// const changeHandler = (e) =>{
 	// 	let imageFile = e.target.files[0]
@@ -173,7 +174,7 @@ const AddEmployeeForm = () => {
 					is: x.target.result,
 					if: imageFile,
 				}),
-					setPic(x.target.result);
+				setPic(x.target.result);
 				console.log(x.target.result);
 			};
 			// console.log(add)
@@ -305,6 +306,7 @@ const AddEmployeeForm = () => {
 		formData.append("imageName", "");
 		formData.append("imageSrc", "");
 		formData.append("imageFile", add.if);
+		formData.append("evaluated", false);
 
 		try {
 			const res = await fetch(url, {
