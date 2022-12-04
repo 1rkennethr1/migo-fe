@@ -78,7 +78,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 			p_E_Q1: 0,
 		},
 	});
-    console.log(e)
+    // console.log(e)
 
 
 	const [isFormFilled, setFilled] = useState(false);
@@ -272,7 +272,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 				const [key, value] = a;
 				return Object.entries(value).every((e) => {
 					const [key, value] = e;
-					console.log(value);
+					// console.log(value);
 					return value != 0;
 				});
 			})
@@ -321,9 +321,9 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 				method: "put",
 				body: formData,
 			});
-			console.log(res);
+			// console.log(res);
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 		}
 		try {
 			const res = await fetch(url, {
@@ -373,7 +373,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 				}),
 			});
 			const data2 = await res.json();
-			console.log(data2);
+			// console.log(data2);
 			if (data2.length > 0) {
 				onClose();
 				setFilled(false);
@@ -421,7 +421,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 				});
 			}
 		} catch (err) {
-			console.log(err);
+			// console.log(err);
 		}
 		toast({
 			title: `${e.firstName} ${e.lastName}`,
@@ -440,14 +440,14 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 			onClick={disabled? '': onOpen}
 			ref={btnRef}
 		>
-			{e.status ? (
+			{((new Date() - new Date(e.dateJoined))/1000/60/60/24) < 180 ? (
 				<div className={`text-sm self-end border-2 ${disabled? 'border-gray-600 text-gray-600': 'border-green-600 text-green-600'} rounded-md px-3`}>
 					{" "}
-					Active
+					New
 				</div>
 			) : (
-				<div className="text-sm self-end border-2 border-red-600 text-red-600 rounded-md px-3">
-					Inactive
+				<div className="p-3">
+					{/* Inactive */}
 				</div>
 			)}
 			<div className="flex flex-col gap-5 items-center justify-center">
