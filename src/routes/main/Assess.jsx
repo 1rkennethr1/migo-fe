@@ -3,67 +3,127 @@ import { useStateContext } from "../../lib/context";
 import Papa from "papaparse";
 import { motion } from "framer-motion";
 import MainLayout from "../../components/MainLayout";
-import { Select, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import dhbg from "../../assets/drawerheader.png";
+import {
+  Select,
+  FormControl,
+  FormLabel,
+  Input,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from "@chakra-ui/react";
 import EmployeeAssessItem from "../../components/EmployeeAssessItem";
+import EmployeeTrainingItem from "../../components/EmployeeTrainingItem";
 import { useEffect } from "react";
+import def from "../../assets/default.png";
 
 const Assess = () => {
-	const { employees } = useStateContext();
-	const { minimized, allEmployees, activeEmployees, isFetchingEmployees } =
-		useStateContext();
-	const [selectedFile, setSelectedFile] = useState();
-	const [isFilePicked, setIsFilePicked] = useState(false);
+  const { employees } = useStateContext();
+  const { minimized, allEmployees, activeEmployees, isFetchingEmployees } = useStateContext();
+  const [selectedFile, setSelectedFile] = useState();
+  const [isFilePicked, setIsFilePicked] = useState(false);
+  const [active, setActive] = useState({})
+  
+  const commonConfig = { delimiter: "," };
 
-	const commonConfig = { delimiter: "," };
-
-	const [CSVData, setCSVData] = useState();
-
-	const handleAssess = (e) => {
-		if (selectedFile != undefined) {
-			Papa.parse(selectedFile, {
-				...commonConfig,
-				header: true,
-				complete: (result) => {
-					setCSVData(result.data);
-				},
-			});
-			document.querySelector(".table-data").classList.remove("hidden");
-			document.querySelector(".table-data").classList.add("flex");
-		} else {
-			document.querySelector(".table-data").classList.remove("flex");
-			document.querySelector(".table-data").classList.add("hidden");
-		}
-	};
-	const changeHandler = (e) => {
-		setSelectedFile(e.target.files[0]);
-		setIsFilePicked(true);
-	};
-	console.log(employees);
-	return (
-		<MainLayout>
-			<div className="flex flex-col w-full">
-				<div className="mb-20">
-					<h1 className="text-5xl font-semibold">Assess Employees</h1>
-					<h1 className="text-xl text-gray-400 ">
-						Evaluate Alliance Software Inc. employees
-					</h1>
-				</div>
-				<h2 className="text-2xl font-semibold mb-5">Not Evaluated</h2>
-				<div className="flex flex-row flex-wrap gap-3">
-					{activeEmployees.map((e) => {
-						if(!e.evaluated)
-							return <EmployeeAssessItem disabled={false} key={e.id} e={e} />;
+  const [CSVData, setCSVData] = useState();
+  const handleAssess = (e) => {
+    if (selectedFile != undefined) {
+      Papa.parse(selectedFile, {
+        ...commonConfig,
+        header: true,
+        complete: (result) => {
+          setCSVData(result.data);
+        },
+      });
+      document.querySelector(".table-data").classList.remove("hidden");
+      document.querySelector(".table-data").classList.add("flex");
+    } else {
+      document.querySelector(".table-data").classList.remove("flex");
+      document.querySelector(".table-data").classList.add("hidden");
+    }
+  };
+  const changeHandler = (e) => {
+    setSelectedFile(e.target.files[0]);
+    setIsFilePicked(true);
+  };
+//   console.log(employees);
+  return (
+    <MainLayout>
+		<div>
+		<div className="mb-20">
+			<h1 className="text-5xl font-semibold">Assess Employees</h1>
+			<h1 className="text-xl text-gray-400 ">
+				Evaluate Alliance Software Inc. employees
+			</h1>
+		</div>
+		<Tabs variant='enclosed' colorScheme={'red'}>
+			<TabList >
+				<Tab selected={{color: '#E0585B, '}}>Evaluate</Tab>
+				<Tab>In Need of Training</Tab>
+				<Tab></Tab>
+			</TabList>
+			<TabPanels>
+				<TabPanel>
+					<div className="flex flex-col w-full">
+						<h2 className="text-2xl font-semibold mb-5">Not Evaluated</h2>
+						<div className="flex flex-row flex-wrap gap-3">
+							{activeEmployees.map((e) => {
+							if (!e.evaluated)
+								return (
+								<EmployeeAssessItem disabled={false} key={e.id} e={e} />
+								);
+							})}
+						</div>
+						<h2 className="text-2xl font-semibold mb-5 pt-5">Evaluated</h2>
+						<div className="flex flex-row flex-wrap gap-3">
+							{activeEmployees.map((e) => {
+							if (e.evaluated)
+								return (
+								<EmployeeAssessItem disabled={true} key={e.id} e={e} />
+								);
+							})}
+						</div>
+					</div>
+				</TabPanel>
+				<TabPanel width={'60%'}>
+					<div className="flex flex-row flex-wrap gap-3">
+					{activeEmployees.map(e =>{
+						return <EmployeeTrainingItem setActive={setActive} e={e}/>
 					})}
-				</div>
-				<h2 className="text-2xl font-semibold mb-5 pt-5">Evaluated</h2>
-				<div className="flex flex-row flex-wrap gap-3">
-					{activeEmployees.map((e) => {
-						if(e.evaluated)
-						return <EmployeeAssessItem disabled={true} key={e.id} e={e} />;
-					})}
-				</div>
-				<div>
-					{/* <div className="flex w-full justify-center">
+					</div>
+					<div
+						className="absolute top-0 right-0 bg-gray-100 p h-full w-[40rem]">
+						<div>
+							<img className="absolute z-[0] w-[100%]  left-0" src={dhbg} alt="" />
+							{active ? (
+							<div className=" z-[20] ml-[-2rem] overflow-hidden flex justify-center w-14 h-14 rounded-full">
+								{console.log(active)}
+								<img
+									src={
+										active.imageSrc &&
+										(active.imageSrc.split("/")[5].includes("jpeg") ||
+											active.imageSrc.split("/")[5].includes("png") ||
+											active.imageSrc.split("/")[5].includes("svg") ||
+											active.imageSrc.split("/")[5].includes("jpg"))
+											? active.imageSrc
+											: def
+									}
+									className={`object-cover `}
+								></img>
+							</div>
+							): ('')}  
+						</div>            
+					</div>
+				</TabPanel>
+			</TabPanels>
+		</Tabs>
+		</div>
+
+      {/* <div className="flex w-full justify-center">
 				<div className="flex flex-col w-[70%] rounded-lg shadow-lg dark:shadow-none dark:bg-[#121212] p-10 ">
 				<div className="flex items-end gap-10 mb-10">
 				<div className="flex flex-col items-start">
@@ -201,10 +261,8 @@ const Assess = () => {
 														</div>
 														</div>
 													</motion.div> */}
-				</div>
-			</div>
-		</MainLayout>
-	);
+    </MainLayout>
+  );
 };
 
 export default Assess;

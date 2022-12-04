@@ -54,6 +54,7 @@ const Employees = () => {
 		);
 	}
 
+	console.log(employees)
 	return (
 		// <MainLayout>
 		// 	<motion.div
