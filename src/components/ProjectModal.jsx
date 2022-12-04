@@ -8,9 +8,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 const ProjectModal = ({ e, setClicked }) => {
 	const [editAssigned, setEditAssigned] = useState(false);
-	const { employees, projects, getProjects } = useStateContext();
+	const { employees, projects, getProjects, getEmployees } = useStateContext();
 	const [assigned, setAssigned] = useState([]);
 	const [finalAss, setFinal] = useState([]);
+	const [test, setTest] = useState(true);
 	const emp = e.assignedEmployees.map((e) => {
 		return { value: e.id, label: e.firstName + " " + e.lastName };
 	});
@@ -32,10 +33,10 @@ const ProjectModal = ({ e, setClicked }) => {
 		console.log(newArr);
 		setFinal(newArr);
 	}, [assigned]);
-
-	const assignedEdit = () => {
+	console.log(finalAss);
+	const assignedEdit = async () => {
 		const url = "https://localhost:7241/Employee/project";
-		assigned.forEach(async (elem) => {
+		finalAss.forEach(async (elem) => {
 			try {
 				console.log(projects);
 				const res = await fetch(url, {
@@ -55,10 +56,8 @@ const ProjectModal = ({ e, setClicked }) => {
 			}
 			setEditAssigned(false);
 			getProjects();
+			getEmployees();
 		});
-		setTimeout(() => {
-			getProjects();
-		}, 500);
 	};
 	const assignHandler = (e) => {
 		setAssigned(e);
@@ -129,27 +128,31 @@ const ProjectModal = ({ e, setClicked }) => {
 						</div>
 					</div>
 					{!editAssigned ? (
-						<div className="flex gap-3 flex-wrap items-center">
-							{e.assignedEmployees.map((e) => {
-								return (
-									<div
-										className={`flex gap-2 items-center py-1 px-5 border rounded-full ${
-											e.status ? "" : "border-red-600 border-2"
-										}`}
-										key={e.id}
-									>
-										<img
-											src={`https://localhost:7241/Images/Employees/${e.imageName}`}
-											className="w-7 h-7 rounded-full object-center"
-											alt=""
-										/>
-										<div className="">
-											{e.firstName} {e.lastName}
+						test ? (
+							<div className="flex gap-3 flex-wrap items-center">
+								{e.assignedEmployees.map((e) => {
+									return (
+										<div
+											className={`flex gap-2 items-center py-1 px-5 border rounded-full ${
+												e.status ? "" : "border-red-600 border-2"
+											}`}
+											key={e.id}
+										>
+											<img
+												src={`https://localhost:7241/Images/Employees/${e.imageName}`}
+												className="w-7 h-7 rounded-full object-center"
+												alt=""
+											/>
+											<div className="">
+												{e.firstName} {e.lastName}
+											</div>
 										</div>
-									</div>
-								);
-							})}
-						</div>
+									);
+								})}
+							</div>
+						) : (
+							""
+						)
 					) : (
 						<div className="w-[80%] flex flex-col gap-5">
 							<Select
