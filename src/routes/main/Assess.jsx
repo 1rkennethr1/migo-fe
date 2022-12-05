@@ -15,11 +15,30 @@ import {
 	Tab,
 	TabPanel,
 } from "@chakra-ui/react";
+import {
+	Chart as ChartJS,
+	RadialLinearScale,
+	PointElement,
+	LineElement,
+	Filler,
+	Tooltip,
+	Legend,
+  } from 'chart.js';
+  import { Radar } from 'react-chartjs-2';
+  
 import EmployeeAssessItem from "../../components/EmployeeAssessItem";
 import EmployeeTrainingItem from "../../components/EmployeeTrainingItem";
 import { useEffect } from "react";
 import def from "../../assets/default.png";
 
+ChartJS.register(
+	RadialLinearScale,
+	PointElement,
+	LineElement,
+	Filler,
+	Tooltip,
+	Legend
+  );
 const Assess = () => {
 	const { employees } = useStateContext();
 	const { minimized, allEmployees, activeEmployees, isFetchingEmployees } =
@@ -27,6 +46,7 @@ const Assess = () => {
 	const [selectedFile, setSelectedFile] = useState();
 	const [isFilePicked, setIsFilePicked] = useState(false);
 	const [active, setActive] = useState({});
+	const [assessment, setAssessment] = useState({});
 
 	const commonConfig = { delimiter: "," };
 
@@ -47,11 +67,40 @@ const Assess = () => {
 			document.querySelector(".table-data").classList.add("hidden");
 		}
 	};
+	const [data1, setData1] = useState({
+		labels: ['Quality', 'Innovation', 'Agility', 'Efficiency', 'Integrity'],
+			datasets: [
+				{
+				label: 'Consistency with Alliance Values',
+				data: [0, 0, 0, 0, 0],
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+				},
+			],
+	})
+	const [data2, setData2] = useState({})
+	const [data3, setData3] = useState({})
 	const changeHandler = (e) => {
 		setSelectedFile(e.target.files[0]);
 		setIsFilePicked(true);
 	};
 	//   console.log(employees);
+	useEffect(()=>{
+		setData1({
+			labels: ['Quality', 'Innovation', 'Agility', 'Efficiency', 'Integrity'],
+			datasets: [
+				{
+				label: 'Consistency with Alliance Values',
+				data: [1, 9, 3, 5, 2, 3],
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+				},
+			],
+		})
+
+	}, [])
 	return (
 		<MainLayout>
 			<div>
@@ -93,28 +142,53 @@ const Assess = () => {
 						<TabPanel width={"60%"}>
 							<div className="flex flex-row flex-wrap gap-3">
 								{activeEmployees.map((e) => {
-									return <EmployeeTrainingItem setActive={setActive} e={e} />;
+									return <EmployeeTrainingItem setAssessment={setAssessment} setActive={setActive} e={e} />;
 								})}
 							</div>
-							<div className="fixed top-0 right-0 bg-gray-100 p h-full w-[40rem]">
+							<div className="fixed top-0 right-0 bg-gray-50 p h-full w-[40rem] overflow-x-scroll">
 								<div className="">
-									<img className=" w-[100%]  left-0" src={dhbg} alt="" />
+									<img className="sticky w-[100%] left-0" src={dhbg} alt="" />
 									{active ? (
-										<div className=" absolute left-5 top-6 overflow-hidden flex justify-center w-14 h-14 rounded-full">
-											{console.log(active)}
-											<img
-												src={
-													active.imageSrc &&
-													(active.imageSrc.split("/")[5].includes("jpeg") ||
-														active.imageSrc.split("/")[5].includes("png") ||
-														active.imageSrc.split("/")[5].includes("svg") ||
-														active.imageSrc.split("/")[5].includes("jpg"))
-														? active.imageSrc
-														: def
-												}
-												className={`object-cover `}
-											></img>
+										<div className="flex flex-col px-10 pt-3">
+											<div className=" absolute left-5 top-6 overflow-hidden flex justify-center w-20 h-20 rounded-full">
+												<img
+													src={
+														active.imageSrc &&
+														(active.imageSrc.split("/")[5].includes("jpeg") ||
+															active.imageSrc.split("/")[5].includes("png") ||
+															active.imageSrc.split("/")[5].includes("svg") ||
+															active.imageSrc.split("/")[5].includes("jpg"))
+															? active.imageSrc
+															: def
+														}
+														className={`object-cover`}
+												>
+												</img>
+											</div>
+											<div className="leading-3 absolute top-10 left-32">
+												<h1 className=" font-bold text-xl">
+													{active.firstName} {active.lastName}
+												</h1>
+												<h2>{active.positionApplied}</h2>
+											</div>
+											<h1 className="font-bold text-2xl">Results</h1>
+											<Tabs variant={'unstyled'}>
+												<TabList gap={'.2rem'}>
+													<Tab _selected={{ color: 'white', bg: '#E0585B' }} bg={'#1A1A1A'} borderRadius={'.5rem'} color={'white'}>CAV</Tab>
+													<Tab _selected={{ color: 'white', bg: '#E0585B' }} bg={'#1A1A1A'} borderRadius={'.5rem'} color={'white'}>ACMR</Tab>
+													<Tab _selected={{ color: 'white', bg: '#E0585B' }} bg={'#1A1A1A'} borderRadius={'.5rem'} color={'white'}>Performance</Tab>
+												</TabList>
+												<TabPanels>
+													<TabPanel>
+														{console.log(assessment)}
+														<Radar data={data1}/>
+													</TabPanel>
+													<TabPanel></TabPanel>
+													<TabPanel></TabPanel>
+												</TabPanels>
+											</Tabs>
 										</div>
+										
 									) : (
 										""
 									)}
