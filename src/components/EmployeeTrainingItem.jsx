@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import React from 'react'
 import {HiDotsHorizontal} from 'react-icons/hi'
 
-const EmployeeTrainingItem = ({setActive, e}) =>{
+const EmployeeTrainingItem = ({setAssessment, setActive, e}) =>{
     const [assessments, setAssessments] = useState([])
 
     const getAssessments = async() => {
@@ -27,10 +27,18 @@ const EmployeeTrainingItem = ({setActive, e}) =>{
 
     const onClickHandler = () =>{
         setActive(e)
+        setAssessment(assessments.forEach(ev=>{
+            if(e.id == ev.employeeId){
+                return ev;
+            }
+        }))
+        assessments.forEach(e=>{
+            console.log(e)
+        })
         // console.log(active)
     }
     return(
-       <div
+        <div
         onClick={onClickHandler}
         >
          {assessments.length!==0?(
