@@ -8,6 +8,8 @@ import Sidebar from "./components/Sidebar";
 import TimeLogs from "./routes/main/TimeLogs";
 import Dashboard from "./routes/main/Dashboard";
 import Employees from "./routes/main/Employees";
+import Benefits from "./routes/main/Benefits";
+import Trainings from "./routes/main/Trainings";
 import Assess from "./routes/main/Assess";
 import { useState } from "react";
 import Projects from "./routes/main/Projects";
@@ -72,8 +74,16 @@ function App() {
 							element={jwt ? <Assess /> : <Navigate to="/login" />}
 						/>
 						<Route
-							path="/main/benefits"
+							path="/main/timelogs"
 							element={jwt ? <TimeLogs /> : <Navigate to="/login" />}
+						/>
+						<Route
+							path="/main/benefits"
+							element={jwt ? <Benefits /> : <Navigate to="/login" />}
+						/>
+						<Route
+							path="/main/trainings"
+							element={jwt ? <Trainings /> : <Navigate to="/login" />}
 						/>
 						<Route path="/" element={<Navigate to="/login" />} />
 						<Route

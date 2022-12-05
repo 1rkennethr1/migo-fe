@@ -23,18 +23,14 @@ const EmployeeTrainingItem = ({setAssessment, setActive, e}) =>{
     }
     useEffect(()=>{
         getAssessments()
-    }, [])
+    }, [setActive])
 
     const onClickHandler = () =>{
         setActive(e)
-        setAssessment(assessments.forEach(ev=>{
-            if(e.id == ev.employeeId){
-                return ev;
-            }
-        }))
-        assessments.forEach(e=>{
-            console.log(e)
-        })
+        setAssessment(assessments)
+        // assessments.forEach(e=>{
+        //     console.log(e)
+        // })
         // console.log(active)
     }
     return(
@@ -42,7 +38,7 @@ const EmployeeTrainingItem = ({setAssessment, setActive, e}) =>{
         onClick={onClickHandler}
         >
          {assessments.length!==0?(
-            <div className="dark:text-white relative dark:hover:border-2 dark:border-2 text-black flex flex-row gap-5 text-3xl p-4 dark:border-white shadow-md w-64 h-32 rounded-md hover:cursor-pointer hover:bg-[#e8e8e8] dark:hover:bg-zinc-900 items-center justify-start">
+            <div className="dark:text-white relative dark:hover:border-2 dark:border-2 text-black grid grid-flow-col-dense gap-3 text-3xl p-4 dark:border-white shadow-md w-56 h-32 rounded-md hover:cursor-pointer hover:bg-[#e8e8e8] dark:hover:bg-zinc-900 items-center justify-start">
                 <div className="overflow-hidden flex justify-center w-14 h-14 rounded-full">
                 <img
                     src={
@@ -65,7 +61,7 @@ const EmployeeTrainingItem = ({setAssessment, setActive, e}) =>{
                     <HiDotsHorizontal/>
                 </div>
             </div>
-        ):('')}
+        ):("")}
        </div>
     )
 

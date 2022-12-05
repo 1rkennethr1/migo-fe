@@ -12,11 +12,12 @@ import {
 	MdAvTimer,
 } from "react-icons/md";
 
-import { BiLogOut } from "react-icons/bi";
+import { BiLogOut, BiDumbbell } from "react-icons/bi";
 import DarkModeButton from "./DarkModeButton";
 import { useStateContext } from "../lib/context";
 import { Tooltip } from "@chakra-ui/react";
-import { AiOutlineFundProjectionScreen } from "react-icons/ai";
+import { AiOutlineFundProjectionScreen, AiFillGift } from "react-icons/ai";
+
 
 const tabs = [
 	{
@@ -42,7 +43,17 @@ const tabs = [
 	{
 		label: "Time Logs",
 		icon: <MdAvTimer />,
+		path: "/main/timeLogs",
+	},
+	{
+		label: "Benefits",
+		icon: <AiFillGift />,
 		path: "/main/benefits",
+	},
+	{
+		label: "Trainings",
+		icon: <BiDumbbell />,
+		path: "/main/trainings",
 	},
 ];
 
@@ -133,11 +144,12 @@ const Sidebar = () => {
 						minimized ? "" : "ml-2"
 					} `}
 				/>
+				<div className="">
 				{tabs.map((e) => {
 					return (
 						<div key={e.label}>
-						{tabs.indexOf(e)===0? (<h1 className=" whitespace-nowrap text-ellipsis overflow-hidden text-sm font-bold text-gray-500 mb-3">General</h1>):('')}
-						{tabs.indexOf(e)===3? (<h1 className=" whitespace-nowrap text-ellipsis overflow-hidden text-sm font-bold text-gray-500 mb-3">Tables</h1>):('')}
+						{tabs.indexOf(e)===0? (<h1 className=" whitespace-nowrap text-ellipsis overflow-hidden text-sm font-bold text-gray-500 mb-1">General</h1>):('')}
+						{tabs.indexOf(e)===3? (<h1 className=" whitespace-nowrap text-ellipsis overflow-hidden text-sm font-bold text-gray-500 mb-1 mt-3">Tables</h1>):('')}
 						<div className="relative dark:text-white text-black">
 							
 							<Tooltip label={minimized ? e.label : ""} placement="right">
@@ -187,6 +199,7 @@ const Sidebar = () => {
 					</div>
 					);
 				})}
+				</div>
 			</div>
 		</motion.div>
 		);

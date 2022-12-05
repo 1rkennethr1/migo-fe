@@ -91,6 +91,8 @@ const EmployeeRow = ({ e }) => {
 		is: e.imageSrc, //image source
 		if: null, //image file
 		status: e.status,
+		ev: e.evaluated,
+		de: e.dateEvaluated
 	});
 	const changeHandler = (e) => {
 		let imageFile = e.target.files[0];
@@ -124,6 +126,7 @@ const EmployeeRow = ({ e }) => {
 
 	let poscode;
 	useEffect(() => {
+		console.log(e)
 		poscode = position.find((e) => e.name === update.posApp);
 		setUpdate({ ...update, posCode: poscode ? poscode.code : "" });
 	}, [update.posApp]);
@@ -264,6 +267,8 @@ const EmployeeRow = ({ e }) => {
 		formData.append("emergencyName", update.en);
 		formData.append("emergencyAddress", update.ea);
 		formData.append("status", e.status);
+		formData.append("evaluated", update.ev);
+		formData.append("dateEvaluated", update.de);
 		formData.append("emergencyContactNumber", update.ecn);
 		formData.append("emergencyRelationship", update.er);
 		formData.append("imageName", update.if ? update.if.name : update.in);
@@ -350,6 +355,8 @@ const EmployeeRow = ({ e }) => {
 		formData.append("emergencyName", update.en);
 		formData.append("emergencyAddress", update.ea);
 		formData.append("status", !e.status);
+		formData.append("evaluated", update.ev);
+		formData.append("dateEvaluated", update.de);
 		formData.append("emergencyContactNumber", update.ecn);
 		formData.append("emergencyRelationship", update.er);
 		formData.append("imageName", update.if ? update.if.name : update.in);

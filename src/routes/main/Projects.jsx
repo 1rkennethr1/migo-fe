@@ -114,7 +114,7 @@ const Projects = () => {
 				}}
 			>
 				<h1 className="text-6xl font-semibold">Projects</h1>
-				<Button className="w-[10%]" onClick={onOpen}>
+				<Button className="w-[10%] dark:bg-[#1a1a1a] dark:border-white dark:border-2 dark:hover:bg-[#313131]" onClick={onOpen}>
 					Add Project
 				</Button>
 
@@ -125,7 +125,7 @@ const Projects = () => {
 					onClose={onClose}
 				>
 					<ModalOverlay />
-					<ModalContent>
+					<ModalContent className="dark:bg-[#1a1a1a] dark:text-white dark:border-2">
 						<ModalHeader>Add Project</ModalHeader>
 						<ModalCloseButton />
 						<ModalBody className="h-[30rem]">
