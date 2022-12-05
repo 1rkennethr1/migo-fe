@@ -30,11 +30,11 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useStateContext } from "../lib/context";
-const EmployeeAssessItem = ({ e, disabled}) => {
+const EmployeeAssessItem = ({ e, disabled }) => {
 	const btnRef = React.useRef();
-    const {getEmployees} = useStateContext()
+	const { getEmployees } = useStateContext();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [data, setData] = useState({
 		quality: {
@@ -78,16 +78,14 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 			p_E_Q1: 0,
 		},
 	});
-    // console.log(e)
-
+	// console.log(e)
 
 	const [isFormFilled, setFilled] = useState(false);
 	const onChangeHandler = (event) => {
 		const { value, name, attributes } = event.target;
 		if (event.target.value >= 0 && event.target.value <= 5) {
 			event.target.value = event.target.value.slice(0, 4);
-		} 
-        else {
+		} else {
 			event.target.value = event.target.value.slice(0, 0);
 		}
 		let section = attributes.section.value;
@@ -282,7 +280,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 	}, [data]);
 	const submitHandler = async () => {
 		const url = `https://localhost:7241/api/Assessment?empId=${e.id}`;
-        const url2 = `https://localhost:7241/Employee/${e.id}`;
+		const url2 = `https://localhost:7241/Employee/${e.id}`;
 		let formData = new FormData();
 		formData.append("id", e.id);
 		formData.append("firstName", e.firstName);
@@ -290,7 +288,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 		formData.append("lastName", e.lastName);
 		formData.append("cityAddress", e.cityAddress);
 		formData.append("cityContactNumber", e.cityContactNumber);
-		formData.append("numberOfDependents", e.numberOfDependents|| 0);
+		formData.append("numberOfDependents", e.numberOfDependents || 0);
 		formData.append("civicClubAffiliation", e.civicClubAffiliation);
 		formData.append("religion", e.religion);
 		formData.append("bloodType", e.bloodType);
@@ -314,8 +312,8 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 		formData.append("imageName", e.imageFile ? e.imageFile.name : e.imageName);
 		formData.append("imageSrc", e.imageSrc);
 		formData.append("imageFile", e.imageFile);
-        formData.append("evaluated", true)
-        formData.append("dateEvaluated", new Date().toISOString())
+		formData.append("evaluated", true);
+		formData.append("dateEvaluated", new Date().toISOString());
 		try {
 			const res = await fetch(url2, {
 				method: "put",
@@ -373,7 +371,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 				}),
 			});
 			const data2 = await res.json();
-			// console.log(data2);
+			console.log(data2);
 			if (data2.length > 0) {
 				onClose();
 				setFilled(false);
@@ -421,34 +419,34 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 				});
 			}
 		} catch (err) {
-			// console.log(err);
+			console.log(err);
 		}
-		toast({
-			title: `${e.firstName} ${e.lastName}`,
-			description: `successfully evaluated!`,
-			status: "success",
-			duration: 1000,
-			isClosable: true,
-		});
-        getEmployees()
+
+		getEmployees();
 	};
 	return (
 		<div
-			className={disabled? 
-                    `dark:text-gray-500 dark:hover:border-2 dark:border-2 text-black flex flex-col gap-2 text-3xl p-4 dark:border-white shadow-md w-72 h-80 rounded-md before:content-[' '] before:absolute before:bg-[rgba(0,0,0,.1)] before:rounded-lg before:p-[9rem] before:pb-[11rem] before:ml-[-1rem] before:mt-[-1rem]` 
-                    : 'dark:text-white dark:hover:border-2 dark:border-2 text-black flex flex-col gap-2 text-3xl p-4 dark:border-white shadow-md w-72 h-80 rounded-md hover:cursor-pointer hover:bg-[#e8e8e8] dark:hover:bg-zinc-900'}
-			onClick={disabled? '': onOpen}
+			className={
+				disabled
+					? `dark:text-gray-500 dark:hover:border-2 dark:border-2 text-black flex flex-col gap-2 text-3xl p-4 dark:border-white shadow-md w-72 h-80 rounded-md before:content-[' '] before:absolute before:bg-[rgba(0,0,0,.1)] before:rounded-lg before:p-[9rem] before:pb-[11rem] before:ml-[-1rem] before:mt-[-1rem]`
+					: "dark:text-white dark:hover:border-2 dark:border-2 text-black flex flex-col gap-2 text-3xl p-4 dark:border-white shadow-md w-72 h-80 rounded-md hover:cursor-pointer hover:bg-[#e8e8e8] dark:hover:bg-zinc-900"
+			}
+			onClick={disabled ? null : onOpen}
 			ref={btnRef}
 		>
-			{((new Date() - new Date(e.dateJoined))/1000/60/60/24) < 180 ? (
-				<div className={`text-sm self-end border-2 ${disabled? 'border-gray-600 text-gray-600': 'border-green-600 text-green-600'} rounded-md px-3`}>
+			{(new Date() - new Date(e.dateJoined)) / 1000 / 60 / 60 / 24 < 180 ? (
+				<div
+					className={`text-sm self-end border-2 ${
+						disabled
+							? "border-gray-600 text-gray-600"
+							: "border-green-600 text-green-600"
+					} rounded-md px-3`}
+				>
 					{" "}
 					New
 				</div>
 			) : (
-				<div className="p-3">
-					{/* Inactive */}
-				</div>
+				<div className="p-3">{/* Inactive */}</div>
 			)}
 			<div className="flex flex-col gap-5 items-center justify-center">
 				<div className="overflow-hidden flex justify-center w-20 h-20 rounded-full">
@@ -462,7 +460,7 @@ const EmployeeAssessItem = ({ e, disabled}) => {
 								? e.imageSrc
 								: def
 						}
-						className={`object-cover ${disabled?' grayscale': ''}`}
+						className={`object-cover ${disabled ? " grayscale" : ""}`}
 					></img>
 				</div>
 				<h1 className="font-bold text-[.6em] leading-5 overflow-hidden text-center mb-[-1rem]">

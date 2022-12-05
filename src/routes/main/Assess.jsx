@@ -23,9 +23,9 @@ import {
 	Filler,
 	Tooltip,
 	Legend,
-  } from 'chart.js';
-  import { Radar } from 'react-chartjs-2';
-  
+} from "chart.js";
+import { Radar } from "react-chartjs-2";
+
 import EmployeeAssessItem from "../../components/EmployeeAssessItem";
 import EmployeeTrainingItem from "../../components/EmployeeTrainingItem";
 import { useEffect } from "react";
@@ -38,7 +38,7 @@ ChartJS.register(
 	Filler,
 	Tooltip,
 	Legend
-  );
+);
 const Assess = () => {
 	const { employees } = useStateContext();
 	const { minimized, allEmployees, activeEmployees, isFetchingEmployees } =
@@ -68,39 +68,38 @@ const Assess = () => {
 		}
 	};
 	const [data1, setData1] = useState({
-		labels: ['Quality', 'Innovation', 'Agility', 'Efficiency', 'Integrity'],
-			datasets: [
-				{
-				label: 'Consistency with Alliance Values',
+		labels: ["Quality", "Innovation", "Agility", "Efficiency", "Integrity"],
+		datasets: [
+			{
+				label: "Consistency with Alliance Values",
 				data: [0, 0, 0, 0, 0],
-				backgroundColor: 'rgba(255, 99, 132, 0.2)',
-				borderColor: 'rgba(255, 99, 132, 1)',
+				backgroundColor: "rgba(255, 99, 132, 0.2)",
+				borderColor: "rgba(255, 99, 132, 1)",
 				borderWidth: 1,
-				},
-			],
-	})
-	const [data2, setData2] = useState({})
-	const [data3, setData3] = useState({})
+			},
+		],
+	});
+	const [data2, setData2] = useState({});
+	const [data3, setData3] = useState({});
 	const changeHandler = (e) => {
 		setSelectedFile(e.target.files[0]);
 		setIsFilePicked(true);
 	};
 	//   console.log(employees);
-	useEffect(()=>{
+	useEffect(() => {
 		setData1({
-			labels: ['Quality', 'Innovation', 'Agility', 'Efficiency', 'Integrity'],
+			labels: ["Quality", "Innovation", "Agility", "Efficiency", "Integrity"],
 			datasets: [
 				{
-				label: 'Consistency with Alliance Values',
-				data: [1, 9, 3, 5, 2, 3],
-				backgroundColor: 'rgba(255, 99, 132, 0.2)',
-				borderColor: 'rgba(255, 99, 132, 1)',
-				borderWidth: 1,
+					label: "Consistency with Alliance Values",
+					data: [1, 9, 3, 5, 2, 3],
+					backgroundColor: "rgba(255, 99, 132, 0.2)",
+					borderColor: "rgba(255, 99, 132, 1)",
+					borderWidth: 1,
 				},
 			],
-		})
-
-	}, [])
+		});
+	}, []);
 	return (
 		<MainLayout>
 			<div>
@@ -142,7 +141,13 @@ const Assess = () => {
 						<TabPanel width={"60%"}>
 							<div className="flex flex-row flex-wrap gap-3">
 								{activeEmployees.map((e) => {
-									return <EmployeeTrainingItem setAssessment={setAssessment} setActive={setActive} e={e} />;
+									return (
+										<EmployeeTrainingItem
+											setAssessment={setAssessment}
+											setActive={setActive}
+											e={e}
+										/>
+									);
 								})}
 							</div>
 							<div className="fixed top-0 right-0 bg-gray-50 p h-full w-[40rem] overflow-x-scroll">
@@ -160,10 +165,9 @@ const Assess = () => {
 															active.imageSrc.split("/")[5].includes("jpg"))
 															? active.imageSrc
 															: def
-														}
-														className={`object-cover`}
-												>
-												</img>
+													}
+													className={`object-cover`}
+												></img>
 											</div>
 											<div className="leading-3 absolute top-10 left-32">
 												<h1 className=" font-bold text-xl">
@@ -172,23 +176,43 @@ const Assess = () => {
 												<h2>{active.positionApplied}</h2>
 											</div>
 											<h1 className="font-bold text-2xl">Results</h1>
-											<Tabs variant={'unstyled'}>
-												<TabList gap={'.2rem'}>
-													<Tab _selected={{ color: 'white', bg: '#E0585B' }} bg={'#1A1A1A'} borderRadius={'.5rem'} color={'white'}>CAV</Tab>
-													<Tab _selected={{ color: 'white', bg: '#E0585B' }} bg={'#1A1A1A'} borderRadius={'.5rem'} color={'white'}>ACMR</Tab>
-													<Tab _selected={{ color: 'white', bg: '#E0585B' }} bg={'#1A1A1A'} borderRadius={'.5rem'} color={'white'}>Performance</Tab>
+											<Tabs variant={"unstyled"}>
+												<TabList gap={".2rem"}>
+													<Tab
+														_selected={{ color: "white", bg: "#E0585B" }}
+														bg={"#1A1A1A"}
+														borderRadius={".5rem"}
+														color={"white"}
+													>
+														CAV
+													</Tab>
+													<Tab
+														_selected={{ color: "white", bg: "#E0585B" }}
+														bg={"#1A1A1A"}
+														borderRadius={".5rem"}
+														color={"white"}
+													>
+														ACMR
+													</Tab>
+													<Tab
+														_selected={{ color: "white", bg: "#E0585B" }}
+														bg={"#1A1A1A"}
+														borderRadius={".5rem"}
+														color={"white"}
+													>
+														Performance
+													</Tab>
 												</TabList>
 												<TabPanels>
 													<TabPanel>
 														{console.log(assessment)}
-														<Radar data={data1}/>
+														<Radar data={data1} />
 													</TabPanel>
 													<TabPanel></TabPanel>
 													<TabPanel></TabPanel>
 												</TabPanels>
 											</Tabs>
 										</div>
-										
 									) : (
 										""
 									)}
