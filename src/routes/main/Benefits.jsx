@@ -24,11 +24,11 @@ import {
 	FormHelperText,
 	Textarea,
 } from "@chakra-ui/react";
-const Projects = () => {
-	const { employees } = useStateContext();
+const Benefits = () => {
+	const { benefits ,employees, getBenefits} = useStateContext();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [clicked, setClicked] = useState(false);
-	const [clickedData, setClickedData] = useState({});
+    const [clickedData, setClickedData] = useState({});
 	const { projects, minimized, getProjects } = useStateContext();
 	const [added, setAdded] = useState(false);
 	const [assigned, setAssigned] = useState([]);
@@ -40,7 +40,7 @@ const Projects = () => {
 		description: "czcccxcxzcz",
 	});
 	useEffect(() => {
-		getProjects();
+		getBenefits();
 	}, []);
 	const emp = employees.map((e) => {
 		return { value: e.id, label: e.firstName + " " + e.lastName };
@@ -113,9 +113,9 @@ const Projects = () => {
 					stiffness: 90,
 				}}
 			>
-				<h1 className="text-6xl font-semibold">Projects</h1>
+				<h1 className="text-6xl font-semibold">Benefits</h1>
 				<Button className="w-[10%] dark:bg-[#1a1a1a] dark:border-white dark:border-2 dark:hover:bg-[#313131]" onClick={onOpen}>
-					Add Project
+					Add Benefit
 				</Button>
 
 				<Modal
@@ -263,4 +263,4 @@ const Projects = () => {
 	);
 };
 
-export default Projects;
+export default Benefits;

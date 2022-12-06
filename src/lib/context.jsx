@@ -17,8 +17,10 @@ export default function StateContext({ children }) {
 		//employees
 		const [employees, setEmployees] = useState([]);
 		const [activeEmployees, setActiveEmployees] = useState([]);
-	
 		const [allEmployees, setAllEmployees] = useState([])
+		
+		const [benefits, setBenefits] = useState([])
+		const [trainings, setTrainings] = useState([])
 		const [projects, setProjects] = useState([]);
 		const [timeLogs, setTimeLogs] = useState([]);
 
@@ -61,6 +63,16 @@ export default function StateContext({ children }) {
 		const data = await res.json();
 		setProjects(data);
 	};
+	const getBenefits = async () => {
+		const res = await fetch("https://localhost:7241/api/Benefits");
+		const data = await res.json();
+		setBenefits(data);
+	};
+	const getTrainings = async () => {
+		const res = await fetch("https://localhost:7241/api/Trainings");
+		const data = await res.json();
+		setTrainings(data);
+	};
 	const getTimeLogs = async () => {
 		const res = await fetch("https://localhost:7241/api/EmployeeTimeLog");
 		const data = await res.json();
@@ -73,6 +85,7 @@ export default function StateContext({ children }) {
 		getEmployees()
 		// setIsFetchingAllEmployees(false);
 		// getAllEmployees();
+		getBenefits()
 		setIsFetchingEmployees(false);
 		getTimeLogs();
 		setIsFetchingTimeLogs(false);
@@ -152,6 +165,8 @@ export default function StateContext({ children }) {
 				isFetchingEmployees,
 				setEmployees,
 				getEmployees,
+				benefits,
+				getBenefits,
 				timeLogs,
 				isFetchingTimeLogs,
 				getTimeLogs,
