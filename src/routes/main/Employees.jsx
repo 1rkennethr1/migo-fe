@@ -18,10 +18,13 @@ import { useState } from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { BsPeopleFill } from "react-icons/bs";
+import { useRef } from "react";
 const Employees = () => {
 	const {
 		minimized,
 		employees,
+		allEmployees,
+		activeEmployees,
 		getEmployees,
 		setEmployees,
 		isFetchingEmployees,
@@ -30,18 +33,24 @@ const Employees = () => {
 		searchValue,
 		searchHandler,
 		setSearchValue,
-		allEmployees,
 		searchEmployees,
 	} = useStateContext();
-	useEffect(() => {
-		searchEmployees();
-	}, [status]);
 	const [statusDescending, setStatusDescending] = useState(true);
 	const [idDescending, setIdDescending] = useState(true);
+	const newHires = useRef([])
+	newHires.current = activeEmployees.filter(e=>{
+		if((new Date() - new Date(e.dateJoined)) / 1000 / 60 / 60 / 24 < 180)
+			return e
+	})
+	useEffect(() => {
+		searchEmployees();
+			
+	}, [status, newHires]);
 	const statusHandler = (e) => {
 		const { value } = e.target;
 		setStatus(value);
 		getEmployees();
+	
 	};
 
 	if (isFetchingEmployees) {
@@ -274,7 +283,8 @@ const Employees = () => {
 							<div className="flex flex-col justify-center items-start">
 								<div className="text-lg font-bold text-white">New Hires</div>
 								<div className="text-3xl  font-bold text-white">
-									{allEmployees.length}
+									
+									{newHires.current.length}
 								</div>
 							</div>
 						</div>
@@ -284,10 +294,10 @@ const Employees = () => {
 							</div>
 							<div className="flex flex-col justify-center items-start">
 								<div className="text-lg font-bold text-white">
-									Total Employees
+									Active Employees
 								</div>
 								<div className="text-3xl  font-bold text-white">
-									{allEmployees.length}
+									{activeEmployees.length}
 								</div>
 							</div>
 						</div>
