@@ -14,15 +14,15 @@ export default function StateContext({ children }) {
 	const [searchValue, setSearchValue] = useState("");
 
 	//data
-		//employees
-		const [employees, setEmployees] = useState([]);
-		const [activeEmployees, setActiveEmployees] = useState([]);
-		const [allEmployees, setAllEmployees] = useState([])
-		
-		const [benefits, setBenefits] = useState([])
-		const [trainings, setTrainings] = useState([])
-		const [projects, setProjects] = useState([]);
-		const [timeLogs, setTimeLogs] = useState([]);
+	//employees
+	const [employees, setEmployees] = useState([]);
+	const [activeEmployees, setActiveEmployees] = useState([]);
+	const [allEmployees, setAllEmployees] = useState([]);
+
+	const [benefits, setBenefits] = useState([]);
+	const [trainings, setTrainings] = useState([]);
+	const [projects, setProjects] = useState([]);
+	const [timeLogs, setTimeLogs] = useState([]);
 
 	//fetch loader
 	// const [isFetchingAllEmployees, setIsFetchingAllEmployees] = useState(true);
@@ -30,16 +30,8 @@ export default function StateContext({ children }) {
 	const [isFetchingTimeLogs, setIsFetchingTimeLogs] = useState(true);
 	const [isFetchingProjects, setIsFetchingProjects] = useState(true);
 
-	//login state
-	const [user, setUser] = useState(
-		JSON.parse(localStorage.getItem("user")) || {
-			username: "",
-			password: "",
-		}
-	);
-
 	//JSON Web Token for Login
-	const [jwt, setJwt] = useState(localStorage.getItem("jwt") || "");
+	const [jwt, setJwt] = useState(JSON.parse(localStorage.getItem("jwt")) || "");
 
 	const searchHandler = (e) => {
 		const { value } = e.target;
@@ -51,7 +43,11 @@ export default function StateContext({ children }) {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
 		setAllEmployees(data);
-		setActiveEmployees(data.filter(e=>{if(e.status) return e}))
+		setActiveEmployees(
+			data.filter((e) => {
+				if (e.status) return e;
+			})
+		);
 		status === "active"
 			? setEmployees(data.filter((e) => e.status === true))
 			: status === "all"
@@ -77,15 +73,14 @@ export default function StateContext({ children }) {
 		const res = await fetch("https://localhost:7241/api/EmployeeTimeLog");
 		const data = await res.json();
 		setTimeLogs(data);
-		console.log(data)
 	};
 	//---------------------------------------------------//
 	useEffect(() => {
 		searchEmployees();
-		getEmployees()
+		getEmployees();
 		// setIsFetchingAllEmployees(false);
 		// getAllEmployees();
-		getBenefits()
+		getBenefits();
 		setIsFetchingEmployees(false);
 		getTimeLogs();
 		setIsFetchingTimeLogs(false);
@@ -93,6 +88,18 @@ export default function StateContext({ children }) {
 		setIsFetchingProjects(false);
 	}, [searchValue]);
 
+	// Use the useEffect hook to check if the JWT has expired
+	useEffect(() => {
+		// Check if the JWT is set and has not expired
+		if (jwt && jwt.exp * 1000 > Date.now()) {
+			// The JWT is valid, do nothing
+			return;
+		}
+
+		// The JWT has expired or is not set, clear it from the state
+		setJwt(null);
+		localStorage.removeItem("jwt");
+	}, [jwt]);
 	const searchEmployees = async () => {
 		const res = await fetch("https://localhost:7241/Employee");
 		const data = await res.json();
@@ -152,8 +159,6 @@ export default function StateContext({ children }) {
 				projects,
 				status,
 				setStatus,
-				user,
-				setUser,
 				minimized,
 				setMinimized,
 				activeEmployees,

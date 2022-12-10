@@ -29,7 +29,7 @@ const Projects = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [clicked, setClicked] = useState(false);
 	const [clickedData, setClickedData] = useState({});
-	const { projects, minimized, getProjects } = useStateContext();
+	const { projects, minimized, getProjects, getEmployees } = useStateContext();
 	const [added, setAdded] = useState(false);
 	const [assigned, setAssigned] = useState([]);
 
@@ -75,26 +75,30 @@ const Projects = () => {
 			}
 		} else {
 			const url = "https://localhost:7241/Employee/project";
-			assigned.forEach(async (e) => {
-				try {
-					console.log(projects);
-					const res = await fetch(url, {
-						method: "post",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({
-							employeeId: e.value,
-							projectId: projects[projects.length - 1].id,
-						}),
-					});
-					const data2 = await res.json();
-					console.log(data2);
-					await getProjects();
-				} catch (error) {
-					console.log(error);
-				}
-			});
+			if (assigned.length > 0) {
+				assigned.forEach(async (e) => {
+					try {
+						console.log(projects);
+						const res = await fetch(url, {
+							method: "post",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								employeeId: e.value,
+								projectId: projects[projects.length - 1].id,
+							}),
+						});
+						const data2 = await res.json();
+						console.log(data2);
+						await getProjects();
+					} catch (error) {
+						console.log(error);
+					}
+				});
+			} else {
+				setAdded(false);
+			}
 			onClose();
 		}
 	};
@@ -114,7 +118,10 @@ const Projects = () => {
 				}}
 			>
 				<h1 className="text-6xl font-semibold">Projects</h1>
-				<Button className="w-[10%] dark:bg-[#1a1a1a] dark:border-white dark:border-2 dark:hover:bg-[#313131]" onClick={onOpen}>
+				<Button
+					className="w-[10%] dark:bg-[#1a1a1a] dark:border-white dark:border-2 dark:hover:bg-[#313131]"
+					onClick={onOpen}
+				>
 					Add Project
 				</Button>
 

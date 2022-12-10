@@ -1,17 +1,22 @@
 import axios from "axios";
 import { motion } from "framer-motion";
+import jwtDecode from "jwt-decode";
 import { useState } from "react";
 import { BiArrowToRight } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtExp } from "../../utils/jwtExp";
 import login from "../assets/login.jpeg";
 import migo from "../assets/migo.svg";
 import DarkModeButton from "../components/DarkModeButton";
 import { useStateContext } from "../lib/context";
 export default function LoginPage() {
 	const [wrf, setWrf] = useState(false);
-
+	const [user, setUser] = useState({
+		username: "",
+		password: "",
+	});
 	const [response, setResponse] = useState("");
-	const { jwt, setJwt, user, setUser } = useStateContext();
+	const { jwt, setJwt } = useStateContext();
 
 	const navigate = useNavigate();
 	const fade = {
@@ -44,7 +49,6 @@ export default function LoginPage() {
 		setUser({ ...user, [name]: value });
 	};
 	const handleLogin = async () => {
-		localStorage.setItem("user", JSON.stringify(user));
 		axios({
 			url: "https://localhost:7241/api/Auth/login",
 			method: "post",
@@ -55,8 +59,19 @@ export default function LoginPage() {
 		})
 			.then((e) => {
 				setResponse("");
-				setJwt(e.data);
-				localStorage.setItem("jwt", JSON.stringify(e.data));
+
+				setJwt({
+					name: Object.entries(jwtDecode(e.data))[0][1],
+					exp: jwtDecode(e.data).exp,
+				});
+
+				localStorage.setItem(
+					"jwt",
+					JSON.stringify({
+						name: Object.entries(jwtDecode(e.data))[0][1],
+						exp: jwtDecode(e.data).exp,
+					})
+				);
 				navigate("/main/dashboard");
 			})
 			.catch((e) => {

@@ -7,14 +7,16 @@ import image4 from "../../assets/dashboard/4.webp";
 import image5 from "../../assets/dashboard/5.webp";
 import { useStateContext } from "../../lib/context";
 const Dashboard = () => {
-	const {user} = useStateContext()
+	const { jwt } = useStateContext();
 	return (
 		<MainLayout>
 			<div className="flex flex-col w-full">
 				<div className="mb-20">
-					<h1 className="text-5xl font-semibold">
-						Welcome back, {user.username}!
-					</h1>
+					{jwt && (
+						<h1 className="text-5xl font-semibold">
+							Welcome back, {jwt.name}!
+						</h1>
+					)}
 					<h1 className="text-xl text-gray-400 ">
 						Here are today's performance reports
 					</h1>

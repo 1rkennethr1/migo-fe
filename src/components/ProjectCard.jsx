@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { IoMdOpen } from "react-icons/io";
 import ProjectModal from "./ProjectModal";
 const ProjectCard = ({ e, setClicked, setClickedData }) => {
+	const [isUpdated, setUpdated] = useState(false);
 	return (
 		<motion.div
 			onClick={() => {

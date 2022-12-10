@@ -10,9 +10,12 @@ const ProjectModal = ({ e, setClicked }) => {
 	const [editAssigned, setEditAssigned] = useState(false);
 	const { employees, projects, getProjects, getEmployees } = useStateContext();
 	const [assigned, setAssigned] = useState([]);
+	const [assignedEmployees, setAssignedEmployees] = useState(
+		e.assignedEmployees
+	);
 	const [finalAss, setFinal] = useState([]);
 	const [test, setTest] = useState(true);
-	const emp = e.assignedEmployees.map((e) => {
+	const emp = assignedEmployees.map((e) => {
 		return { value: e.id, label: e.firstName + " " + e.lastName };
 	});
 
@@ -21,24 +24,39 @@ const ProjectModal = ({ e, setClicked }) => {
 			return { value: e.id, label: e.firstName + " " + e.lastName };
 		}
 	});
+	function* setMinus(A, B) {
+		const setA = new Set(A);
+		const setB = new Set(B);
+
+		for (const v of setB.values()) {
+			if (!setA.delete(v)) {
+				yield v;
+			}
+		}
+
+		for (const v of setA.values()) {
+			yield v;
+		}
+	}
 	useEffect(() => {
-		const newArr = [];
-		assigned.map((e) => {
-			return emp.map((elem) => {
-				if (e.label !== elem.label) {
+		let newArr = [];
+		if (assigned) {
+			assigned.map((e) => {
+				if (!JSON.stringify(emp).includes(JSON.stringify(e))) {
 					newArr.push(e);
 				}
 			});
-		});
+		}
 		console.log(newArr);
-		setFinal(newArr);
+		setFinal(Array.from(new Set(newArr)));
 	}, [assigned]);
-	console.log(finalAss);
+
 	const assignedEdit = async () => {
 		const url = "https://localhost:7241/Employee/project";
+		let arr = [];
 		finalAss.forEach(async (elem) => {
+			arr.push(employees.find((e) => e.id === elem.value));
 			try {
-				console.log(projects);
 				const res = await fetch(url, {
 					method: "post",
 					headers: {
@@ -50,15 +68,16 @@ const ProjectModal = ({ e, setClicked }) => {
 					}),
 				});
 				const data2 = await res.json();
-				console.log(data2);
 			} catch (error) {
 				console.log(error);
+			} finally {
+				getProjects();
+				setEditAssigned(false);
 			}
-			setEditAssigned(false);
-			getProjects();
-			getEmployees();
 		});
+		setAssignedEmployees([...assignedEmployees, ...arr]);
 	};
+
 	const assignHandler = (e) => {
 		setAssigned(e);
 	};
@@ -76,7 +95,7 @@ const ProjectModal = ({ e, setClicked }) => {
 				initial={{ opacity: 0, scale: 0.4 }}
 				animate={{ opacity: 1, scale: 1, transition: { duration: 0.3 } }}
 				exit={{ opacity: 0, scale: 0.4, transition: { duration: 0.3 } }}
-				className="w-[70rem] dark:bg-[#191919] h-[37rem] bg-white rounded-2xl p-12"
+				className={`w-[70rem] dark:bg-[#191919] h-[37rem] bg-white rounded-2xl p-12 `}
 			>
 				<div className="flex items-center gap-10">
 					<h1 className="text-4xl font-semibold">{e.name}</h1>
@@ -121,7 +140,9 @@ const ProjectModal = ({ e, setClicked }) => {
 					<div className="flex gap-3 items-center mb-5">
 						<h2 className="text-xl font-semibold ">Assigned Employees</h2>
 						<div
-							onClick={() => setEditAssigned(!editAssigned)}
+							onClick={() => {
+								setEditAssigned(!editAssigned);
+							}}
 							className="text-xl cursor-pointer transition-opacity hover:opacity-80"
 						>
 							<AiFillEdit />
@@ -130,7 +151,7 @@ const ProjectModal = ({ e, setClicked }) => {
 					{!editAssigned ? (
 						test ? (
 							<div className="flex gap-3 flex-wrap items-center">
-								{e.assignedEmployees.map((e) => {
+								{assignedEmployees.map((e) => {
 									return (
 										<div
 											className={`flex gap-2 items-center py-1 px-5 border rounded-full ${
