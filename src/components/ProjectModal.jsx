@@ -6,7 +6,11 @@ import Select from "react-select";
 import { useStateContext } from "../lib/context";
 import { useState } from "react";
 import { useEffect } from "react";
+
+import { Toaster, toast } from "react-hot-toast";
+import { useToast } from "@chakra-ui/react";
 const ProjectModal = ({ e, setClicked }) => {
+	console.log(e);
 	const [editAssigned, setEditAssigned] = useState(false);
 	const { employees, projects, getProjects, getEmployees } = useStateContext();
 	const [assigned, setAssigned] = useState([]);
@@ -24,20 +28,7 @@ const ProjectModal = ({ e, setClicked }) => {
 			return { value: e.id, label: e.firstName + " " + e.lastName };
 		}
 	});
-	function* setMinus(A, B) {
-		const setA = new Set(A);
-		const setB = new Set(B);
-
-		for (const v of setB.values()) {
-			if (!setA.delete(v)) {
-				yield v;
-			}
-		}
-
-		for (const v of setA.values()) {
-			yield v;
-		}
-	}
+	const toast = useToast();
 	useEffect(() => {
 		let newArr = [];
 		if (assigned) {
@@ -76,6 +67,15 @@ const ProjectModal = ({ e, setClicked }) => {
 			}
 		});
 		setAssignedEmployees([...assignedEmployees, ...arr]);
+		toast({
+			title: `Successfully assigned ${finalAss.length} ${
+				finalAss.length > 1 ? "employees" : "employee"
+			} to ${e.name}`,
+			variant: "top-accent",
+			status: "success",
+			duration: 2000,
+			isClosable: true,
+		});
 	};
 
 	const assignHandler = (e) => {
@@ -119,22 +119,27 @@ const ProjectModal = ({ e, setClicked }) => {
 					</div>
 				</div>
 				<hr className="my-5" />
-				<div className="flex flex-col gap-5 mt-10">
-					<p className="text-lg">
-						<span className="font-semibold">Client :</span>{" "}
-						<span>{e.clientName}</span>
-					</p>
-					<p className="text-lg">
-						<span className="font-semibold">Date Started:</span>{" "}
-						<span>{e.dateStarted}</span>
-					</p>
-					<p className="text-lg">
-						<span className="font-semibold">Deadline:</span>{" "}
-						<span>{e.deadline}</span>
-					</p>
-					<p className="text-neutral-600 leading-8 dark:text-white ">
-						{e.description}
-					</p>
+				<div className="flex gap-40">
+					<div className="flex flex-col gap-5 mt-10">
+						<p className="text-lg">
+							<span className="font-semibold">Client :</span>{" "}
+							<span>{e.clientName}</span>
+						</p>
+						<p className="text-lg">
+							<span className="font-semibold">Date Started:</span>{" "}
+							<span>{e.dateStarted}</span>
+						</p>
+						<p className="text-lg">
+							<span className="font-semibold">Deadline:</span>{" "}
+							<span>{e.deadline}</span>
+						</p>
+						<p className="text-neutral-600 leading-8 dark:text-white ">
+							{e.description}
+						</p>
+					</div>
+					<div className="h-[5rem]">
+						<img src={e.imageSrc} className="h-[25rem] rounded-md" alt="" />
+					</div>
 				</div>
 				<div className="mt-5">
 					<div className="flex gap-3 items-center mb-5">

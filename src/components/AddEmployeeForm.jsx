@@ -99,7 +99,7 @@ const AddEmployeeForm = () => {
 		in: "", //image name
 		is: "", //image source
 		if: "", //image file
-		e: ""
+		e: "",
 	});
 	// const changeHandler = (e) =>{
 	// 	let imageFile = e.target.files[0]
@@ -174,7 +174,7 @@ const AddEmployeeForm = () => {
 					is: x.target.result,
 					if: imageFile,
 				}),
-				setPic(x.target.result);
+					setPic(x.target.result);
 				console.log(x.target.result);
 			};
 			// console.log(add)
@@ -198,7 +198,7 @@ const AddEmployeeForm = () => {
 
 		return years;
 	}
-
+	console.log(add);
 	const validate = useRef();
 	const [isFormValid, setIsFormValid] = useState(false);
 	useEffect(() => {
