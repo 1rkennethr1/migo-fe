@@ -61,30 +61,30 @@ const Benefits = () => {
 	console.log(benefits);
 	const addBenefit = async () => {
 		const url = "https://localhost:7241/api/Benefits";
-		if (!added) {
-			try {
-				let formData = new FormData();
-				formData.append("name", data.name);
-				formData.append("benefitType", data.benefitType);
-				formData.append("description", data.description);
-				formData.append("imageFile", data.imageFile);
-				formData.append("imageName", "");
-				formData.append("imageSrc", "");
-				const res = await fetch(url, {
-					method: "post",
 
-					body: formData,
-				});
-				const data2 = await res.json();
-				console.log(data2);
-				if (data2.length > 0) {
-					setAdded(true);
-					await getBenefits();
-				}
-			} catch (error) {
-				console.log(error);
+		try {
+			let formData = new FormData();
+			formData.append("name", data.name);
+			formData.append("benefitType", data.benefitType);
+			formData.append("description", data.description);
+			formData.append("imageFile", data.imageFile);
+			formData.append("imageName", "");
+			formData.append("imageSrc", "");
+			const res = await fetch(url, {
+				method: "post",
+
+				body: formData,
+			});
+			const data2 = await res.json();
+			console.log(data2);
+			if (data2.length > 0) {
+				setAdded(true);
+				await getBenefits();
 			}
+		} catch (error) {
+			console.log(error);
 		}
+
 		// else {
 		// 	const url = "https://localhost:7241/api/Benefits";
 		// 	assigned.forEach(async (e) => {
@@ -109,6 +109,18 @@ const Benefits = () => {
 		// 	});
 		// 	onClose();
 		// }
+
+		setData({
+			name: "",
+			benefitType: "",
+			description: "",
+			imageName: "",
+			imageSrc: "",
+			imageFile: "",
+		});
+		setPic("");
+		setIsPicSelected(false);
+		onClose();
 	};
 
 	const handlePicChange = (event) => {
@@ -164,91 +176,91 @@ const Benefits = () => {
 						<ModalCloseButton />
 						<ModalBody className="h-[30rem]">
 							<div className="h-[30rem] overflow-scroll overflow-x-hidden">
-								<AnimatePresence>
-									{!added && (
-										<motion.div
-											className={`flex flex-col justify-center items-center px-3 ${
-												added ? "blur-2xl" : ""
-											}`}
-											exit={{
-												x: -700,
-												opacity: 0,
-												transition: { duration: 0.5 },
-											}}
-										>
-											<FormControl className="w-[20rem]">
-												{isPicSelected && pic != undefined ? (
-													<label>
-														<div className="overflow-hidden flex justify-center min-w-[39rem] min-h-64 max-h-64 rounded-md">
-															<img
-																src={pic}
-																className="mb-[-1rem] hover:opacity-40 cursor-pointer object-fill"
-															/>
-														</div>
-														<input
-															type={"file"}
-															name="image"
-															accept="image/*"
-															onChange={handlePicChange}
-															hidden
-														></input>
-													</label>
-												) : (
-													<label>
-														<div className=" w-[37rem] h-64 border-4 border-black border-dashed hover:border-[#EC2224] hover:cursor-pointer hover:text-[#EC2224] flex flex-col justify-center rounded-md items-center text-[3em]">
-															<BsImage />
-															<h1 className="text-sm">Add Image</h1>
-														</div>
-														<input
-															type={"file"}
-															name="image"
-															accept="image/*"
-															onChange={handlePicChange}
-															hidden
-														></input>
-													</label>
-												)}
-											</FormControl>
-											<FormControl className="mt-5">
-												<FormLabel>Name of the Benefit</FormLabel>
-												<Input
-													className="border px-3 py-2 rounded-lg w-full"
-													type="text"
-													name="name"
-													id=""
-													placeholder="Free Medical Checkup, etc..."
-												/>
-											</FormControl>
-											<div className="grid grid-cols-2 gap-2 w-[100%]">
-												<FormControl className="mt-2">
-													<FormLabel>Available until: </FormLabel>
-													<Input
-														className="border px-3 py-2 rounded-lg w-full"
-														type="date"
-														name="duration"
-														id=""
-														min={new Date().toISOString().substring(0, 10)}
+								<motion.div
+									className={`flex flex-col justify-center items-center px-3`}
+									exit={{
+										x: -700,
+										opacity: 0,
+										transition: { duration: 0.5 },
+									}}
+								>
+									<FormControl className="w-[20rem]">
+										{isPicSelected && pic != undefined ? (
+											<label>
+												<div className="overflow-hidden flex justify-center min-w-[39rem] min-h-64 max-h-64 rounded-md">
+													<img
+														src={pic}
+														className="mb-[-1rem] hover:opacity-40 cursor-pointer object-fill"
 													/>
-												</FormControl>
-												<FormControl className="mt-2">
-													<FormLabel>Benefit Type </FormLabel>
-													<Input
-														className="border px-3 py-2 rounded-lg w-full"
-														type="text"
-														name="type"
-														id=""
-														placeholder="Paid Medical Leave, etc..."
-														min={new Date().toISOString().substring(0, 10)}
-													/>
-												</FormControl>
-											</div>
-											<FormControl className="mt-2">
-												<FormLabel>Description</FormLabel>
-												<Textarea name="desc"></Textarea>
-											</FormControl>
-										</motion.div>
-									)}
-								</AnimatePresence>
+												</div>
+												<input
+													type={"file"}
+													name="image"
+													accept="image/*"
+													onChange={handlePicChange}
+													hidden
+												></input>
+											</label>
+										) : (
+											<label>
+												<div className=" w-[37rem] h-64 border-4 border-black border-dashed hover:border-[#EC2224] hover:cursor-pointer hover:text-[#EC2224] flex flex-col justify-center rounded-md items-center text-[3em]">
+													<BsImage />
+													<h1 className="text-sm">Add Image</h1>
+												</div>
+												<input
+													type={"file"}
+													name="image"
+													accept="image/*"
+													onChange={handlePicChange}
+													hidden
+												></input>
+											</label>
+										)}
+									</FormControl>
+									<FormControl className="mt-5">
+										<FormLabel>Name of the Benefit</FormLabel>
+										<Input
+											className="border px-3 py-2 rounded-lg w-full"
+											type="text"
+											name="name"
+											onChange={changeHandler}
+											id=""
+											placeholder="Free Medical Checkup, etc..."
+										/>
+									</FormControl>
+									<div className="grid grid-cols-2 gap-2 w-[100%]">
+										<FormControl className="mt-2">
+											<FormLabel>Available until: </FormLabel>
+											<Input
+												className="border px-3 py-2 rounded-lg w-full"
+												type="date"
+												name="duration"
+												onChange={changeHandler}
+												id=""
+												min={new Date().toISOString().substring(0, 10)}
+											/>
+										</FormControl>
+										<FormControl className="mt-2">
+											<FormLabel>Benefit Type </FormLabel>
+											<Input
+												className="border px-3 py-2 rounded-lg w-full"
+												type="text"
+												name="type"
+												onChange={changeHandler}
+												id=""
+												placeholder="Paid Medical Leave, etc..."
+												min={new Date().toISOString().substring(0, 10)}
+											/>
+										</FormControl>
+									</div>
+									<FormControl className="mt-2">
+										<FormLabel>Description</FormLabel>
+										<Textarea
+											onChange={changeHandler}
+											name="description"
+										></Textarea>
+									</FormControl>
+								</motion.div>
 							</div>
 							<div className="my-5"></div>
 						</ModalBody>
@@ -259,19 +271,18 @@ const Benefits = () => {
 								mr={3}
 								onClick={() => {
 									onClose();
-									setAdded(false);
 								}}
 							>
 								Close
 							</Button>
 							<Button onClick={addBenefit} variant="ghost">
-								{added ? "Assign" : "Add"}
+								Add
 							</Button>
 						</ModalFooter>
 					</ModalContent>
 				</Modal>
 
-				<motion.div className="grid grid-cols-[repeat(auto-fit,minmax(230px,450px))] gap-5">
+				<motion.div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-5">
 					{benefits.map((benefit) => {
 						return (
 							<div
@@ -284,7 +295,7 @@ const Benefits = () => {
 								<img
 									src={benefit.imageSrc}
 									alt=""
-									className="w-32 h-full object-cover"
+									className="w-32 h-full object-cover object-top"
 								/>
 								<div className="flex flex-col">
 									<p className="text-lg font-semibold">{benefit.name}</p>

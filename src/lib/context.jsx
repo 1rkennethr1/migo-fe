@@ -65,7 +65,7 @@ export default function StateContext({ children }) {
 		setBenefits(data);
 	};
 	const getTrainings = async () => {
-		const res = await fetch("https://localhost:7241/api/Trainings");
+		const res = await fetch("https://localhost:7241/api/Training");
 		const data = await res.json();
 		setTrainings(data);
 	};
@@ -80,6 +80,7 @@ export default function StateContext({ children }) {
 		getEmployees();
 		// setIsFetchingAllEmployees(false);
 		// getAllEmployees();
+		getTrainings();
 		getBenefits();
 		setIsFetchingEmployees(false);
 		getTimeLogs();
@@ -168,6 +169,8 @@ export default function StateContext({ children }) {
 				setAllEmployees,
 				// getAllEmployees,
 				isFetchingEmployees,
+				trainings,
+				getTrainings,
 				setEmployees,
 				getEmployees,
 				benefits,
