@@ -897,6 +897,7 @@ const EmployeeRow = ({ e }) => {
 									<hr className=" pb-6" />
 								</TabPanel>
 								<TabPanel>
+									<h1 className='font-bold text-3xl mb-2'>Assigned Projects</h1>
 									{e.assignedProjects
 										? e.assignedProjects.map((e) => (
 												<div className="px-5 py-5 shadow-md w-[50%] mb-8 rounded-lg text-2xl font-semibold">

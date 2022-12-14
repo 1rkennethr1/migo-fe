@@ -44,8 +44,7 @@ const Employees = () => {
 	})
 	useEffect(() => {
 		searchEmployees();
-			
-	}, [status, newHires]);
+	}, [status]);
 	const statusHandler = (e) => {
 		const { value } = e.target;
 		setStatus(value);

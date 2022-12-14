@@ -119,7 +119,7 @@ const Sidebar = () => {
 						minimized ? "" : "ml-2"
 					} `}
 				/>
-				<div className="flex-col tabz flex gap-4">
+				<div className="flex-col tabz flex gap-2">
 					{tabs.map((e) => {
 						return (
 							<div key={e.label}>
