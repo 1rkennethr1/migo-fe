@@ -45,8 +45,8 @@ const Benefits = () => {
 	const [data, setData] = useState({
 		name: "",
 		url: "",
-		category: "",
-		type: "",
+		category: position[0].name,
+		type: 1,
 		imageName: "",
 		imageSrc: "",
 		imageFile: "",
@@ -66,7 +66,7 @@ const Benefits = () => {
 	const addTraining = async () => {
 		const url = "https://localhost:7241/api/Training";
 
-		console.log(data.type)
+		console.log(data.type);
 		try {
 			let formData = new FormData();
 			formData.append("name", data.name);
@@ -101,6 +101,7 @@ const Benefits = () => {
 		setIsPicSelected(false);
 		onClose();
 	};
+	console.log(data);
 	const handlePicChange = (event) => {
 		console.log(event.target.value);
 		let imageFile = event.target.files[0];
@@ -221,13 +222,17 @@ const Benefits = () => {
 											<Select
 												name="category"
 												onChange={changeHandler}
+												value={data.category}
 												className="border rounded-lg w-full"
 												id=""
-												defaultValue={position[0]}
 											>
 												{position.map((e, i) => {
 													return (
-														<option className="dark:bg-black" key={i} value={e.name}>
+														<option
+															className="dark:bg-black"
+															key={i}
+															value={e.name}
+														>
 															{e.name}
 														</option>
 													);
@@ -245,14 +250,18 @@ const Benefits = () => {
 												placeholder=""
 											/> */}
 											<Select
-												name="category"
+												name="type"
 												onChange={changeHandler}
 												className="border rounded-lg w-full"
 												id=""
 												defaultValue={1}
 											>
-												<option className="dark:bg-black" key='1' value={1}>Position-Specific Training</option>
-												<option className="dark:bg-black" key='2' value={2}>Personality Development Training</option>
+												<option className="dark:bg-black" key="1" value={1}>
+													Position-Specific Training
+												</option>
+												<option className="dark:bg-black" key="2" value={2}>
+													Personality Development Training
+												</option>
 											</Select>
 										</FormControl>
 									</div>
