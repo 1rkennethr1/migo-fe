@@ -7,7 +7,6 @@ import { BsImage } from "react-icons/bs";
 import ProjectCard from "../../components/ProjectCard";
 import ProjectModal from "../../components/ProjectModal";
 import { useStateContext } from "../../lib/context";
-import Select from "react-select";
 import {
 	Modal,
 	ModalOverlay,
@@ -18,6 +17,7 @@ import {
 	ModalCloseButton,
 	Button,
 	useDisclosure,
+	Select,
 	FormControl,
 	FormLabel,
 	FormErrorMessage,
@@ -26,6 +26,7 @@ import {
 	Textarea,
 } from "@chakra-ui/react";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { position } from "../../../utils/position";
 const Benefits = () => {
 	const { trainings, employees, getTrainings } = useStateContext();
 
@@ -65,6 +66,7 @@ const Benefits = () => {
 	const addTraining = async () => {
 		const url = "https://localhost:7241/api/Training";
 
+		console.log(data.type)
 		try {
 			let formData = new FormData();
 			formData.append("name", data.name);
@@ -76,7 +78,6 @@ const Benefits = () => {
 			formData.append("imageFile", data.imageFile);
 			const res = await fetch(url, {
 				method: "post",
-
 				body: formData,
 			});
 			const data2 = await res.json();
@@ -217,25 +218,42 @@ const Benefits = () => {
 										</FormControl>
 										<FormControl className="mt-2">
 											<FormLabel>Training Category</FormLabel>
-											<Input
-												className="border px-3 py-2 rounded-lg w-full"
-												type="text"
+											<Select
 												name="category"
 												onChange={changeHandler}
+												className="border rounded-lg w-full"
 												id=""
-												placeholder="Backend Development"
-											/>
+												defaultValue={position[0]}
+											>
+												{position.map((e, i) => {
+													return (
+														<option className="dark:bg-black" key={i} value={e.name}>
+															{e.name}
+														</option>
+													);
+												})}
+											</Select>
 										</FormControl>
 										<FormControl className="mt-2">
 											<FormLabel>Training Type</FormLabel>
-											<Input
+											{/* <Input
 												className="border px-3 py-2 rounded-lg w-full"
 												type="text"
 												name="type"
 												id=""
 												onChange={changeHandler}
 												placeholder=""
-											/>
+											/> */}
+											<Select
+												name="category"
+												onChange={changeHandler}
+												className="border rounded-lg w-full"
+												id=""
+												defaultValue={1}
+											>
+												<option className="dark:bg-black" key='1' value={1}>Position-Specific Training</option>
+												<option className="dark:bg-black" key='2' value={2}>Personality Development Training</option>
+											</Select>
 										</FormControl>
 									</div>
 									<FormControl className="mt-2">
@@ -269,7 +287,7 @@ const Benefits = () => {
 					{trainings.map((e) => {
 						return (
 							<div
-								className="shadow-md rounded-md flex flex-col overflow-hidden items-center gap-5 w-full  relative cursor-pointer hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.01]"
+								className="dark:border-white dark:border-2 shadow-md rounded-md flex flex-col overflow-hidden items-center w-full  relative cursor-pointer hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.01]"
 								key={e.id}
 							>
 								<img
@@ -277,8 +295,8 @@ const Benefits = () => {
 									alt=""
 									className="w-full object-cover h-[15rem]"
 								/>
-								<div className="flex flex-col">
-									<p className="text-2xl font-semibold pb-5">{e.name}</p>
+								<div className="flex flex-col dark:bg-black w-[100%] py-4 items-center">
+									<p className="text-2xl font-semibold">{e.name}</p>
 								</div>
 							</div>
 						);

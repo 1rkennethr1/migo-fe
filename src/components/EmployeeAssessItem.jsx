@@ -375,6 +375,7 @@ const EmployeeAssessItem = ({ e, disabled }) => {
 						p_E_Q1: data.performance.p_E_Q1,
 					},
 					performanceRemark: '',
+					trainingAssessment: '', 
 				}),
 			});
 			const data2 = await res.json();
