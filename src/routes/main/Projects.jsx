@@ -153,7 +153,7 @@ const Projects = () => {
 			onClose();
 		}
 	};
-	console.log(data);
+
 	return (
 		<MainLayout className="flex">
 			<motion.div

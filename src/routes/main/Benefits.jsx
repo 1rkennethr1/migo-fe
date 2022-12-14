@@ -8,7 +8,7 @@ import { BsImage } from "react-icons/bs";
 import ProjectModal from "../../components/ProjectModal";
 import { useStateContext } from "../../lib/context";
 import Select from "react-select";
-import def from "../../assets/default.png"
+import def from "../../assets/default.png";
 import {
 	Modal,
 	ModalOverlay,
@@ -26,21 +26,24 @@ import {
 	FormHelperText,
 	Textarea,
 } from "@chakra-ui/react";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 const Benefits = () => {
-	const { benefits ,employees, getBenefits} = useStateContext();
+	const { benefits, employees, getBenefits } = useStateContext();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [clicked, setClicked] = useState(false);
-    const [clickedData, setClickedData] = useState({});
+	const [clickedData, setClickedData] = useState({});
 	const { projects, minimized, getProjects } = useStateContext();
 	const [added, setAdded] = useState(false);
 	const [assigned, setAssigned] = useState([]);
-	const [isPicSelected, setIsPicSelected] = useState(false)
-	const [pic, setPic] = useState()
+	const [isPicSelected, setIsPicSelected] = useState(false);
+	const [pic, setPic] = useState();
 	const [data, setData] = useState({
 		name: "asdaads",
-		clientName: "adsdas",
-		deadline: "dasasd",
+		benefitType: "adsdas",
 		description: "czcccxcxzcz",
+		imageName: "",
+		imageSrc: "",
+		imageFile: "",
 	});
 	useEffect(() => {
 		getBenefits();
@@ -55,17 +58,22 @@ const Benefits = () => {
 	const assignHandler = (e) => {
 		setAssigned(e);
 	};
-
+	console.log(benefits);
 	const addBenefit = async () => {
 		const url = "https://localhost:7241/api/Benefits";
 		if (!added) {
 			try {
+				let formData = new FormData();
+				formData.append("name", data.name);
+				formData.append("benefitType", data.benefitType);
+				formData.append("description", data.description);
+				formData.append("imageFile", data.imageFile);
+				formData.append("imageName", "");
+				formData.append("imageSrc", "");
 				const res = await fetch(url, {
 					method: "post",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(data),
+
+					body: formData,
 				});
 				const data2 = await res.json();
 				console.log(data2);
@@ -76,7 +84,7 @@ const Benefits = () => {
 			} catch (error) {
 				console.log(error);
 			}
-		} 
+		}
 		// else {
 		// 	const url = "https://localhost:7241/api/Benefits";
 		// 	assigned.forEach(async (e) => {
@@ -102,26 +110,26 @@ const Benefits = () => {
 		// 	onClose();
 		// }
 	};
- 
-	const handlePicChange = (event) =>{
+
+	const handlePicChange = (event) => {
 		console.log(event.target.value);
 		let imageFile = event.target.files[0];
 		console.log(event.target.value);
 		const reader = new FileReader();
 		reader.onload = (x) => {
-			// setAdd({
-			// 	...add,
-			// 	in: "",
-			// 	is: x.target.result,
-			// 	if: imageFile,
-			// }),
-			setPic(x.target.result);
+			setData({
+				...data,
+				imageName: "",
+				imageSrc: x.target.result,
+				imageFile: imageFile,
+			}),
+				setPic(x.target.result);
 			console.log(x.target.result);
 		};
 		// console.log(add)
 		reader.readAsDataURL(imageFile);
 		setIsPicSelected(true);
-	}
+	};
 	return (
 		<MainLayout className="flex">
 			<motion.div
@@ -137,10 +145,12 @@ const Benefits = () => {
 				}}
 			>
 				<h1 className="text-6xl font-semibold">Benefits</h1>
-				<Button className="w-[10%] dark:bg-[#1a1a1a] dark:border-white dark:border-2 dark:hover:bg-[#313131]" onClick={onOpen}>
+				<Button
+					className="w-[10%] dark:bg-[#1a1a1a] dark:border-white dark:border-2 dark:hover:bg-[#313131]"
+					onClick={onOpen}
+				>
 					Add Benefit
 				</Button>
-				
 
 				<Modal
 					size={"2xl"}
@@ -186,7 +196,7 @@ const Benefits = () => {
 												) : (
 													<label>
 														<div className=" w-[37rem] h-64 border-4 border-black border-dashed hover:border-[#EC2224] hover:cursor-pointer hover:text-[#EC2224] flex flex-col justify-center rounded-md items-center text-[3em]">
-															<BsImage/>
+															<BsImage />
 															<h1 className="text-sm">Add Image</h1>
 														</div>
 														<input
@@ -217,7 +227,7 @@ const Benefits = () => {
 														type="date"
 														name="duration"
 														id=""
-														min={new Date().toISOString().substring(0,10)}
+														min={new Date().toISOString().substring(0, 10)}
 													/>
 												</FormControl>
 												<FormControl className="mt-2">
@@ -228,26 +238,19 @@ const Benefits = () => {
 														name="type"
 														id=""
 														placeholder="Paid Medical Leave, etc..."
-														min={new Date().toISOString().substring(0,10)}
+														min={new Date().toISOString().substring(0, 10)}
 													/>
 												</FormControl>
 											</div>
 											<FormControl className="mt-2">
-													<FormLabel>Description</FormLabel>
-														<Textarea
-															name="desc"
-														>
-														</Textarea>
+												<FormLabel>Description</FormLabel>
+												<Textarea name="desc"></Textarea>
 											</FormControl>
-											
 										</motion.div>
-										
 									)}
 								</AnimatePresence>
 							</div>
-							<div className="my-5">
-								
-							</div>
+							<div className="my-5"></div>
 						</ModalBody>
 
 						<ModalFooter>
@@ -267,13 +270,29 @@ const Benefits = () => {
 						</ModalFooter>
 					</ModalContent>
 				</Modal>
-				<motion.div className="grid grid-cols-[repeat(auto-fit,minmax(230px,350px))] gap-10">
-					<AnimatePresence>
-						{clicked && (
-							<ProjectModal e={clickedData} setClicked={setClicked} />
-						)}
-					</AnimatePresence>
-					
+
+				<motion.div className="grid grid-cols-[repeat(auto-fit,minmax(230px,450px))] gap-5">
+					{benefits.map((benefit) => {
+						return (
+							<div
+								className="shadow-md rounded-md flex overflow-hidden items-center gap-5 h-28 relative"
+								key={benefit.id}
+							>
+								<div className="absolute top-0 right-1 text-xl">
+									<BiDotsHorizontalRounded />
+								</div>
+								<img
+									src={benefit.imageSrc}
+									alt=""
+									className="w-32 h-full object-cover"
+								/>
+								<div className="flex flex-col">
+									<p className="text-lg font-semibold">{benefit.name}</p>
+									<p className="">{benefit.description}</p>
+								</div>
+							</div>
+						);
+					})}
 				</motion.div>
 			</motion.div>
 		</MainLayout>

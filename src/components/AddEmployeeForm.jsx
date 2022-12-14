@@ -160,7 +160,6 @@ const AddEmployeeForm = () => {
 			} else {
 				setIsPhoneValid({ ...isPhoneValid, [name]: null });
 			}
-			// console.log(validatePhone(phone));
 		}
 		if (name == "image") {
 			console.log(value);
