@@ -25,6 +25,7 @@ import {
 	Legend,
 } from "chart.js";
 import { Radar } from "react-chartjs-2";
+import { BsArrowRight } from "react-icons/bs";
 
 import EmployeeAssessItem from "../../components/EmployeeAssessItem";
 import EmployeeTrainingItem from "../../components/EmployeeTrainingItem";
@@ -44,7 +45,7 @@ ChartJS.register(
 );
 const Assess = () => {
 	const { employees } = useStateContext();
-	const { minimized, allEmployees, activeEmployees, isFetchingEmployees } =
+	const { minimized, allEmployees, activeEmployees, trainings, getTrainings, isFetchingEmployees } =
 		useStateContext();
 	const [selectedFile, setSelectedFile] = useState();
 	const [isFilePicked, setIsFilePicked] = useState(false);
@@ -92,7 +93,7 @@ const Assess = () => {
 		datasets: [
 			{
 				label: "Consistency with Alliance Values",
-				data: assessment.length!=0 ? []:[0, 0, 0, 0, 0],
+				data: [0, 0, 0, 0, 0],
 				backgroundColor: "rgba(255, 99, 132, 0.2)",
 				borderColor: "rgba(255, 99, 132, 1)",
 				borderWidth: 1,
@@ -130,7 +131,7 @@ const Assess = () => {
 	//   console.log(employees);
 	useEffect(() => {
 		if(Object.keys(assessment).length!==0){
-			console.log(assessment[0])
+			// console.log(assessment[0])
 			setAgility((assessment[0].agility.cA_Q1 + assessment[0].agility.cA_Q2 + assessment[0].agility.cA_Q3)/3)
 			setQuality((assessment[0].quality.cA_Q1 + assessment[0].quality.cA_Q2)/2)
 			setInnovation((assessment[0].innovation.cA_Q1 + assessment[0].innovation.cA_Q2)/2)
@@ -355,6 +356,42 @@ const Assess = () => {
 													</TabPanel>
 												</TabPanels>
 											</Tabs>
+											<div className="flex flex-col gap-5">
+												{trainings.map(e=>{
+													if(assessment[0]!==undefined){
+														if(e.aspects == assessment[0].trainingAssessment){
+															if(e.category === active.positionApplied){
+																return(
+																	<div className="relative">
+																		<h1 className=" font-bold mt-3 ">Recommended Training</h1>
+																		<div className="absolute w-full z-50 flex justify-center items-center transition-all hover:bg-white h-[8.2rem] rounded-lg hover:text-black text-transparent">Recommend this training &nbsp;<BsArrowRight/></div>
+																		<div className="flex flex-row dark:border-2 gap-10 items-center justify-end shadow-lg dark:border-white rounded-lg">
+																			<div>
+																				<h1 className="font-bold">{e.name}</h1>
+																				<h1 className="italic">{e.url}</h1>
+																			</div>
+																			<div className="overflow-hidden flex justify-end w-56 h-32">
+																				<img
+																					src={
+																						e.imageSrc &&
+																						(e.imageSrc.split("/")[5].includes("jpeg") ||
+																							e.imageSrc.split("/")[5].includes("png") ||
+																							e.imageSrc.split("/")[5].includes("svg") ||
+																							e.imageSrc.split("/")[5].includes("jpg"))
+																							? e.imageSrc
+																							: def
+																					}
+																					className={`object-cover bg-white`}
+																				></img>
+																				</div>
+																		</div>
+																	</div>
+																)
+															}
+														}
+													}
+												})}
+											</div>
 										</div>
 									) : (
 										""
