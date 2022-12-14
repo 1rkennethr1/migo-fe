@@ -92,7 +92,7 @@ const Assess = () => {
 		datasets: [
 			{
 				label: "Consistency with Alliance Values",
-				data: [0, 0, 0, 0, 0],
+				data: assessment.length!=0 ? []:[0, 0, 0, 0, 0],
 				backgroundColor: "rgba(255, 99, 132, 0.2)",
 				borderColor: "rgba(255, 99, 132, 1)",
 				borderWidth: 1,
@@ -128,7 +128,6 @@ const Assess = () => {
 		setIsFilePicked(true);
 	};
 	//   console.log(employees);
-
 	useEffect(() => {
 		if(Object.keys(assessment).length!==0){
 			console.log(assessment[0])
@@ -216,9 +215,9 @@ const Assess = () => {
 		// filteredAllAssessment.current = filteredAllAssessment.current.filter
 		filteredAllAssessment.current = filteredAllAssessment.current.filter(ev=>{
 			if(	ev[0].agilityRemark==='Negative' || 
-			ev[0].efficiencyRemark ==='Negative' || 
-			ev[0].functionalComponentsRemark ==='Negative'  ||
-			ev[0].innovationRemark ==='Negative' ||
+				ev[0].efficiencyRemark ==='Negative' || 
+				ev[0].functionalComponentsRemark ==='Negative'  ||
+				ev[0].innovationRemark ==='Negative' ||
 				ev[0].integrityRemark ==='Negative' ||
 				ev[0].performanceRemark ==='Negative' ||
 				ev[0].qualityRemark ==='Negative')
@@ -251,7 +250,7 @@ const Assess = () => {
 				<Tabs variant="enclosed" colorScheme={"red"}>
 					<TabList>
 						<Tab selected={{ color: "#E0585B, " }}>Evaluate</Tab>
-						<Tab>In Need of Training <span className="rounded-full bg-gray-200 w-6 h-6 ml-2">{filteredEmployees.length}</span></Tab>
+						<Tab>In Need of Training <span className="rounded-full transition-all bg-gray-200 w-6 h-6 ml-2 dark:bg-[#464646]">{filteredEmployees.length}</span></Tab>
 						<Tab></Tab>
 					</TabList>
 					<TabPanels>
@@ -316,7 +315,7 @@ const Assess = () => {
 												</h1>
 												<h2 className="dark:text-black">{active.positionApplied}</h2>
 											</div>
-											<h1 className="font-bold text-2xl">Evaluate esults</h1>
+											<h1 className="font-bold text-2xl">Evaluate Results</h1>
 											<Tabs variant={"unstyled"}>
 												<TabList gap={".2rem"}>
 													<Tab

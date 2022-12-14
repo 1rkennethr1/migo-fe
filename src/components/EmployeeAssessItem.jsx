@@ -334,26 +334,31 @@ const EmployeeAssessItem = ({ e, disabled }) => {
 						cA_Q1: data.quality.cA_Q1,
 						cA_Q2: data.quality.cA_Q2,
 					},
+					qualityRemark: '',
 					innovation: {
 						cA_Q1: data.innovation.cA_Q1,
 						cA_Q2: data.innovation.cA_Q2,
 					},
+					innovationRemark: '',
 					agility: {
 						cA_Q1: data.agility.cA_Q1,
 						cA_Q2: data.agility.cA_Q2,
 						cA_Q3: data.agility.cA_Q3,
 					},
+					agilityRemark: '',
 					efficiency: {
 						cA_Q1: data.efficiency.cA_Q1,
 						cA_Q2: data.efficiency.cA_Q2,
 						cA_Q3: data.efficiency.cA_Q3,
 					},
+					efficiencyRemark: '',
 					integrity: {
 						cA_Q1: data.integrity.cA_Q1,
 						cA_Q2: data.integrity.cA_Q2,
 						cA_Q3: data.integrity.cA_Q3,
 						cA_Q4: data.integrity.cA_Q4,
 					},
+					integrityRemark: '',
 					functionalComponents: {
 						fC_PE_Q1: data.functionalComponents.fC_PE_Q1,
 						fC_KS_Q1: data.functionalComponents.fC_KS_Q1,
@@ -361,6 +366,7 @@ const EmployeeAssessItem = ({ e, disabled }) => {
 						fC_EC_Q1: data.functionalComponents.fC_EC_Q1,
 						fC_LTS_Q1: data.functionalComponents.fC_LTS_Q1,
 					},
+					functionalComponentsRemark: '',
 					performance: {
 						p_A_Q1: data.performance.p_A_Q1,
 						p_B_Q1: data.performance.p_B_Q1,
@@ -368,6 +374,7 @@ const EmployeeAssessItem = ({ e, disabled }) => {
 						p_D_Q1: data.performance.p_D_Q1,
 						p_E_Q1: data.performance.p_E_Q1,
 					},
+					performanceRemark: '',
 				}),
 			});
 			const data2 = await res.json();
@@ -624,7 +631,7 @@ const EmployeeAssessItem = ({ e, disabled }) => {
 																Q1. Maintains highest standard in the quality of
 																our products and services and focuses on
 																continuous process improvement, to make
-																processes, visible, repeaCustomTable and
+																processes, visible, repeatable and
 																measurable.
 															</h1>
 															<FormControl className="flex items-center justify-start">
@@ -751,7 +758,7 @@ const EmployeeAssessItem = ({ e, disabled }) => {
 															<h1 className="bg-[#ddd] p-5 rounded-lg">
 																Q2. Maintains effective work behavior despite
 																set-backs or pressure due to change. Remains
-																calm, sCustomTable and in control.
+																calm, stable and in control.
 															</h1>
 															<FormControl className="flex items-center justify-start">
 																<FormLabel className="w-[30%] px-2">
@@ -1352,7 +1359,7 @@ const EmployeeAssessItem = ({ e, disabled }) => {
 															<div className="flex flex-col gap-2 border-2 border-[#aaa] rounded-lg">
 																<h1 className="bg-[#ddd] p-5 rounded-lg">
 																	Q1. 60% of total Monthly Productivity within
-																	accepCustomTable target, Endorsed to TI vs.
+																	acceptable target, Endorsed to TI vs.
 																	successful placement hit rate
 																</h1>
 																<FormControl className="flex items-center justify-start">

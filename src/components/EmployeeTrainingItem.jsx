@@ -28,10 +28,6 @@ const EmployeeTrainingItem = ({setAssessment, setActive, e}) =>{
     const onClickHandler = () =>{
         setActive(e)
         setAssessment(assessments)
-        // assessments.forEach(e=>{
-        //     console.log(e)
-        // })
-        // console.log(active)
     }
     return(
         <div
@@ -57,7 +53,7 @@ const EmployeeTrainingItem = ({setAssessment, setActive, e}) =>{
                     <h1 className="text-sm font-bold">{e.firstName} {e.lastName}</h1>
                     <h1 className="text-sm text-ellipsis overflow-hidden">{e.positionApplied}</h1>
                 </div>
-                <div className="absolute top-3 right-3 text-xl bg-white p-1 rounded-md">
+                <div className="absolute top-3 right-3 text-xl  dark:bg-[#1a1a1a] bg-white p-1 rounded-md">
                     <HiDotsHorizontal/>
                 </div>
             </div>
