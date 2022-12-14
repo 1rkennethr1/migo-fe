@@ -23,7 +23,9 @@ import {
 	Input,
 	FormHelperText,
 	Textarea,
+	useToast,
 } from "@chakra-ui/react";
+import def from "../../assets/default.png";
 const Projects = () => {
 	const { employees } = useStateContext();
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,12 +34,16 @@ const Projects = () => {
 	const { projects, minimized, getProjects, getEmployees } = useStateContext();
 	const [added, setAdded] = useState(false);
 	const [assigned, setAssigned] = useState([]);
-
+	const [isPicSelected, setIsPicSelected] = useState(false);
+	const [pic, setPic] = useState();
 	const [data, setData] = useState({
 		name: "asdaads",
 		clientName: "adsdas",
 		deadline: "dasasd",
 		description: "czcccxcxzcz",
+		imageName: "", //image name
+		imageSrc: "", //image source
+		imageFile: "", //image file
 	});
 	useEffect(() => {
 		getProjects();
@@ -48,27 +54,57 @@ const Projects = () => {
 	const changeHandler = (e) => {
 		const { value, name } = e.target;
 		setData({ ...data, [name]: value });
+
+		if (name == "image") {
+			let imageFile = e.target.files[0];
+
+			const reader = new FileReader();
+			reader.onload = (x) => {
+				setData({
+					...data,
+					imageName: "",
+					imageSrc: x.target.result,
+					imageFile: imageFile,
+				}),
+					setPic(x.target.result);
+			};
+
+			reader.readAsDataURL(imageFile);
+			setIsPicSelected(true);
+		}
 	};
 	const assignHandler = (e) => {
 		setAssigned(e);
 	};
-
+	const toast = useToast();
 	const addProject = async () => {
 		const url = "https://localhost:7241/Project";
 		if (!added) {
+			let formData = new FormData();
+			formData.append("name", data.name);
+			formData.append("clientName", data.clientName);
+			formData.append("deadline", data.deadline);
+			formData.append("description", data.description);
+			formData.append("imageFile", data.imageFile);
+			formData.append("imageName", "");
+			formData.append("imageSrc", "");
 			try {
 				const res = await fetch(url, {
 					method: "post",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(data),
+					body: formData,
 				});
 				const data2 = await res.json();
 				console.log(data2);
 				if (data2.length > 0) {
 					setAdded(true);
 					await getProjects();
+					toast({
+						title: `Successfully created a project! You may or may not assign employees to the project.`,
+						variant: "top-accent",
+						status: "success",
+						duration: 2000,
+						isClosable: true,
+					});
 				}
 			} catch (error) {
 				console.log(error);
@@ -96,13 +132,28 @@ const Projects = () => {
 						console.log(error);
 					}
 				});
+
+				toast({
+					title: `Successfully assigned employees`,
+					variant: "top-accent",
+					status: "success",
+					duration: 1000,
+					isClosable: true,
+				});
 			} else {
 				setAdded(false);
+				toast({
+					title: `No employees were assigned :)`,
+					variant: "subtle",
+					status: "info",
+					duration: 1000,
+					isClosable: true,
+				});
 			}
 			onClose();
 		}
 	};
-
+	console.log(data);
 	return (
 		<MainLayout className="flex">
 			<motion.div
@@ -136,7 +187,7 @@ const Projects = () => {
 						<ModalHeader>Add Project</ModalHeader>
 						<ModalCloseButton />
 						<ModalBody className="h-[30rem]">
-							<div className="h-[30rem] overflow-hidden ">
+							<div className="h-[40rem] overflow-hidden ">
 								<AnimatePresence>
 									{!added && (
 										<motion.div
@@ -149,6 +200,42 @@ const Projects = () => {
 												transition: { duration: 0.5 },
 											}}
 										>
+											{" "}
+											<div className="flex flex-col items-center">
+												{isPicSelected && pic != undefined ? (
+													<label>
+														<div className=" flex justify-center w-28 h-28 ">
+															<img
+																src={pic}
+																className="mb-[-1rem] hover:opacity-80 transition-opacity duration-300 cursor-pointer object-cover"
+															/>
+														</div>
+														<input
+															type={"file"}
+															name="image"
+															accept="image/*"
+															onChange={changeHandler}
+															hidden
+														></input>
+													</label>
+												) : (
+													<label>
+														<img
+															src={def}
+															width={90}
+															className="mb-[-1rem] hover:opacity-40 cursor-pointer"
+														/>
+														<input
+															type={"file"}
+															name="image"
+															accept="image/*"
+															onChange={changeHandler}
+															hidden
+														></input>
+													</label>
+												)}
+												<p className="mt-5 text-sm">Project Photo</p>
+											</div>
 											<FormControl>
 												<FormLabel>Project Name</FormLabel>
 												<Input
@@ -165,7 +252,6 @@ const Projects = () => {
 													type="text"
 												/>
 											</FormControl>
-
 											<FormControl mt={5}>
 												<FormLabel>Deadline</FormLabel>
 												<Input
@@ -182,6 +268,7 @@ const Projects = () => {
 													maxHeight="10rem"
 													height="10rem"
 													name="description"
+													onChange={changeHandler}
 												/>
 											</FormControl>
 										</motion.div>

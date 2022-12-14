@@ -190,7 +190,7 @@ const Sidebar = () => {
 				</div>
 			</div>
 			<div
-				className={`w-full   bottom-0 right-0 justify-between left-[-10px] h-max flex gap-3 items-center p-5 bg-[#EC2224] z-10`}
+				className={`w-full   bottom-0 right-0 justify-between left-[-10px] h-max flex gap-3 items-center p-5 bg-[#4a5f62] z-10`}
 			>
 				<div className="flex gap-3 items-center">
 					<img src={user} alt="" width={30} />
