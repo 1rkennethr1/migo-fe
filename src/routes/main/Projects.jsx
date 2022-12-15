@@ -168,13 +168,15 @@ const Projects = () => {
 					stiffness: 90,
 				}}
 			>
-				<h1 className="text-6xl font-semibold">Projects</h1>
-				<Button
-					className="w-[10%] dark:bg-[#1a1a1a] dark:border-white dark:border-2 dark:hover:bg-[#313131]"
-					onClick={onOpen}
-				>
-					Add Project
-				</Button>
+				<div className="flex items-center gap-5">
+					<h1 className="text-2xl font-semibold">Projects</h1>
+					<button
+						className="w-max text-sm bg-[#eaeaea] py-1 px-5 rounded-md font-semibold dark:bg-[#1a1a1a] dark:hover:bg-[#313131]"
+						onClick={onOpen}
+					>
+						Add Project
+					</button>
+				</div>
 
 				<Modal
 					size={"2xl"}

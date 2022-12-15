@@ -92,7 +92,7 @@ const EmployeeRow = ({ e }) => {
 		if: null, //image file
 		status: e.status,
 		ev: e.evaluated,
-		de: e.dateEvaluated
+		de: e.dateEvaluated,
 	});
 	const changeHandler = (e) => {
 		let imageFile = e.target.files[0];
@@ -126,7 +126,7 @@ const EmployeeRow = ({ e }) => {
 
 	let poscode;
 	useEffect(() => {
-		console.log(e)
+		console.log(e);
 		poscode = position.find((e) => e.name === update.posApp);
 		setUpdate({ ...update, posCode: poscode ? poscode.code : "" });
 	}, [update.posApp]);
@@ -397,7 +397,7 @@ const EmployeeRow = ({ e }) => {
 	return (
 		<tr
 			onClick={onOpen}
-			className={`p-4 cursor-pointer hover:bg-neutral-100 dark:hover:bg-[#111] transition duration-300 ease-in-out shadow-md`}
+			className={`p-4 rounded-md cursor-pointer hover:bg-neutral-100 dark:hover:bg-[#111] transition duration-300 ease-in-out `}
 			ref={btnRef}
 		>
 			{/* <td className="whitespace-nowrap">
@@ -897,14 +897,62 @@ const EmployeeRow = ({ e }) => {
 									<hr className=" pb-6" />
 								</TabPanel>
 								<TabPanel>
-									<h1 className='font-bold text-3xl mb-2'>Assigned Projects</h1>
-									{e.assignedProjects
-										? e.assignedProjects.map((e) => (
-												<div className="px-5 py-5 shadow-md w-[50%] mb-8 rounded-lg text-2xl font-semibold">
+									<h1 className="font-semibold  text-xl mb-5">
+										Assigned Projects
+									</h1>
+									<div className="flex flex-wrap gap-3 w-full">
+										{e.assignedProjects?.map((e) => {
+											console.log(e);
+											return (
+												<div className="px-5 py-5 flex items-center gap-5 shadow-md w-[40%] mb-8 rounded-[3px] ">
+													<img
+														src={
+															"https://localhost:7241/Images/Projects/" +
+															e.imageName
+														}
+														className="w-10 h-10 rounded-full"
+														alt=""
+													/>
 													<p>{e.name}</p>
 												</div>
-										  ))
-										: ""}
+											);
+										})}
+									</div>
+									<h1 className="font-semibold  text-xl mb-5">Trainings</h1>
+									<div className="flex flex-wrap gap-3">
+										{e.trainings?.length > 0 ? (
+											e.trainings.map((e) => {
+												return (
+													<div className="flex  h-28 overflow-hidden items-center gap-5 shadow-md w-[50%] mb-8 rounded-[5px] ">
+														<img
+															src={
+																"https://localhost:7241/Images/Trainings/" +
+																e.imageName
+															}
+															className="w-28 object-cover h-full "
+															alt=""
+														/>
+														<div className="flex flex-col ">
+															<p className="text-xl mb-2">{e.name}</p>
+
+															<p className="text-sm text-[#707070]">
+																{e.aspects === 1
+																	? "Position-specific Training"
+																	: "Personality Development Training"}
+															</p>
+															<p className="text-sm font-semibold text-[#707070]">
+																{e.category}
+															</p>
+														</div>
+													</div>
+												);
+											})
+										) : (
+											<div className="">
+												no trainings for {update.fn} {update.ln}
+											</div>
+										)}
+									</div>
 								</TabPanel>
 								<TabPanel></TabPanel>
 							</TabPanels>

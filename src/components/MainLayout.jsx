@@ -12,7 +12,7 @@ export default function MainLayout({ children }) {
 				damping: 10,
 				stiffness: 100,
 			}}
-			className="p-10 min-h-screen   flex w-screen "
+			className="p-10 py-20 min-h-screen   flex w-screen "
 		>
 			{children}
 		</motion.div>

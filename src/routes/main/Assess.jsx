@@ -45,31 +45,54 @@ ChartJS.register(
 );
 const Assess = () => {
 	const { employees } = useStateContext();
-	const { minimized, allEmployees, activeEmployees, trainings, getTrainings, isFetchingEmployees } =
-		useStateContext();
+	const {
+		minimized,
+		allEmployees,
+		activeEmployees,
+		trainings,
+		getTrainings,
+		isFetchingEmployees,
+	} = useStateContext();
 	const [selectedFile, setSelectedFile] = useState();
 	const [isFilePicked, setIsFilePicked] = useState(false);
 	const [active, setActive] = useState({});
 	const [assessment, setAssessment] = useState({});
 	const [allAssessments, setAllAssessments] = useState([]);
 	const [filteredEmployees, setFilteredEmployees] = useState([]);
-	
-	//assessment values
-	const [agility, setAgility] = useState(0)
-	const [quality,setQuality] = useState()
-	const [innovation,setInnovation] = useState()
-	const [efficiency, setEfficiency] = useState()
-	const [integrity, setIntegrity] = useState()
-	
-	const getAssessments = async(e) => {
-        const res = await fetch(`https://localhost:7241/api/Assessment?empId=${e.id}`);
-		const data = await res.json();
-		return data
-    }
 
+	//assessment values
+	const [agility, setAgility] = useState(0);
+	const [quality, setQuality] = useState();
+	const [innovation, setInnovation] = useState();
+	const [efficiency, setEfficiency] = useState();
+	const [integrity, setIntegrity] = useState();
+
+	const getAssessments = async (e) => {
+		const res = await fetch(
+			`https://localhost:7241/api/Assessment?empId=${e.id}`
+		);
+		const data = await res.json();
+		return data;
+	};
+	const addTraining = async (empId, trainingId) => {
+		console.log(empId);
+		console.log(trainingId);
+		const res = await fetch(`https://localhost:7241/Employee/training`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: {
+				employeeId: empId,
+				trainingId: trainingId,
+			},
+		});
+		const data = await res.json();
+		console.log(data);
+	};
 	const commonConfig = { delimiter: "," };
-	const count = useRef(0)
-	const filteredAllAssessment = useRef([])
+	const count = useRef(0);
+	const filteredAllAssessment = useRef([]);
 	const [CSVData, setCSVData] = useState();
 	const handleAssess = (e) => {
 		if (selectedFile != undefined) {
@@ -101,7 +124,13 @@ const Assess = () => {
 		],
 	});
 	const [data2, setData2] = useState({
-		labels: ["Personal Excellence", "Knowledge and Skills", "Team Player", "Effective Communication", "Learned/Technical Skills"],
+		labels: [
+			"Personal Excellence",
+			"Knowledge and Skills",
+			"Team Player",
+			"Effective Communication",
+			"Learned/Technical Skills",
+		],
 		datasets: [
 			{
 				label: "Functional Components",
@@ -113,7 +142,13 @@ const Assess = () => {
 		],
 	});
 	const [data3, setData3] = useState({
-		labels: ["Schedule/On-Time Delivery 1", "Schedule/On-Time Delivery 2", "Quality", "Productivity", "Process"],
+		labels: [
+			"Schedule/On-Time Delivery 1",
+			"Schedule/On-Time Delivery 2",
+			"Quality",
+			"Productivity",
+			"Process",
+		],
 		datasets: [
 			{
 				label: "Performance",
@@ -130,13 +165,33 @@ const Assess = () => {
 	};
 	//   console.log(employees);
 	useEffect(() => {
-		if(Object.keys(assessment).length!==0){
+		if (Object.keys(assessment).length !== 0) {
 			// console.log(assessment[0])
-			setAgility((assessment[0].agility.cA_Q1 + assessment[0].agility.cA_Q2 + assessment[0].agility.cA_Q3)/3)
-			setQuality((assessment[0].quality.cA_Q1 + assessment[0].quality.cA_Q2)/2)
-			setInnovation((assessment[0].innovation.cA_Q1 + assessment[0].innovation.cA_Q2)/2)
-			setEfficiency((assessment[0].efficiency.cA_Q1 + assessment[0].efficiency.cA_Q2 + assessment[0].efficiency.cA_Q3)/3)
-			setIntegrity((assessment[0].integrity.cA_Q1 + assessment[0].integrity.cA_Q2 + assessment[0].integrity.cA_Q3 + assessment[0].integrity.cA_Q4)/4)
+			setAgility(
+				(assessment[0].agility.cA_Q1 +
+					assessment[0].agility.cA_Q2 +
+					assessment[0].agility.cA_Q3) /
+					3
+			);
+			setQuality(
+				(assessment[0].quality.cA_Q1 + assessment[0].quality.cA_Q2) / 2
+			);
+			setInnovation(
+				(assessment[0].innovation.cA_Q1 + assessment[0].innovation.cA_Q2) / 2
+			);
+			setEfficiency(
+				(assessment[0].efficiency.cA_Q1 +
+					assessment[0].efficiency.cA_Q2 +
+					assessment[0].efficiency.cA_Q3) /
+					3
+			);
+			setIntegrity(
+				(assessment[0].integrity.cA_Q1 +
+					assessment[0].integrity.cA_Q2 +
+					assessment[0].integrity.cA_Q3 +
+					assessment[0].integrity.cA_Q4) /
+					4
+			);
 			setData1({
 				labels: ["Quality", "Innovation", "Agility", "Efficiency", "Integrity"],
 				datasets: [
@@ -153,20 +208,28 @@ const Assess = () => {
 						beginAtZero: true,
 						max: 5,
 						min: 0,
-						stepSize: 1
-					}
-				}
+						stepSize: 1,
+					},
+				},
 			});
 			setData2({
-				labels: ["Personal Excellence", "Knowledge and Skills", "Team Player", "Effective Communication", "Learned/Technical Skills"],
+				labels: [
+					"Personal Excellence",
+					"Knowledge and Skills",
+					"Team Player",
+					"Effective Communication",
+					"Learned/Technical Skills",
+				],
 				datasets: [
 					{
 						label: "Functional Components",
-						data: [	assessment[0].functionalComponents.fC_PE_Q1, 
-								assessment[0].functionalComponents.fC_KS_Q1, 
-								assessment[0].functionalComponents.fC_TP_Q1, 
-								assessment[0].functionalComponents.fC_EC_Q1, 
-								assessment[0].functionalComponents.fC_LTS_Q1],
+						data: [
+							assessment[0].functionalComponents.fC_PE_Q1,
+							assessment[0].functionalComponents.fC_KS_Q1,
+							assessment[0].functionalComponents.fC_TP_Q1,
+							assessment[0].functionalComponents.fC_EC_Q1,
+							assessment[0].functionalComponents.fC_LTS_Q1,
+						],
 						backgroundColor: "rgba(255, 99, 132, 0.2)",
 						borderColor: "rgba(255, 99, 132, 1)",
 						borderWidth: 1,
@@ -177,16 +240,28 @@ const Assess = () => {
 						beginAtZero: true,
 						max: 5,
 						min: 0,
-						stepSize: 1
-					}
-				}
+						stepSize: 1,
+					},
+				},
 			});
 			setData3({
-				labels: ["Schedule/On-Time Delivery 1", "Schedule/On-Time Delivery 2", "Quality", "Productivity", "Process"],
+				labels: [
+					"Schedule/On-Time Delivery 1",
+					"Schedule/On-Time Delivery 2",
+					"Quality",
+					"Productivity",
+					"Process",
+				],
 				datasets: [
 					{
 						label: "Performance",
-						data: [assessment[0].performance.p_A_Q1, assessment[0].performance.p_B_Q1, assessment[0].performance.p_C_Q1, assessment[0].performance.p_D_Q1, assessment[0].performance.p_E_Q1],
+						data: [
+							assessment[0].performance.p_A_Q1,
+							assessment[0].performance.p_B_Q1,
+							assessment[0].performance.p_C_Q1,
+							assessment[0].performance.p_D_Q1,
+							assessment[0].performance.p_E_Q1,
+						],
 						backgroundColor: "rgba(255, 99, 132, 0.2)",
 						borderColor: "rgba(255, 99, 132, 1)",
 						borderWidth: 1,
@@ -197,61 +272,74 @@ const Assess = () => {
 						beginAtZero: true,
 						max: 5,
 						min: 0,
-						stepSize: 1
-					}
+						stepSize: 1,
+					},
+				},
+			});
+		}
+		if (count.current === 0) {
+			if (allAssessments.length < employees.length) {
+				employees.forEach(async (e) => {
+					const a = await getAssessments(e);
+					setAllAssessments((current) => [...current, a]);
+				});
+				count.current = 1;
+			}
+		}
+		filteredAllAssessment.current = allAssessments.filter(
+			(e) => e.length !== 0
+		);
+		// filteredAllAssessment.current = filteredAllAssessment.current.filter
+		filteredAllAssessment.current = filteredAllAssessment.current.filter(
+			(ev) => {
+				if (
+					ev[0].agilityRemark === "Negative" ||
+					ev[0].efficiencyRemark === "Negative" ||
+					ev[0].functionalComponentsRemark === "Negative" ||
+					ev[0].innovationRemark === "Negative" ||
+					ev[0].integrityRemark === "Negative" ||
+					ev[0].performanceRemark === "Negative" ||
+					ev[0].qualityRemark === "Negative"
+				) {
+					return ev;
+				}
+			}
+		);
+		{
+			filteredAllAssessment.current.forEach((ev) => {
+				{
+					activeEmployees.map((e) => {
+						if (Number(e.id) == Number(ev[0].employeeId)) {
+							if (!filteredEmployees.some((e) => e.id == ev[0].employeeId))
+								setFilteredEmployees((current) => [...current, e]);
+						}
+					});
 				}
 			});
 		}
-		if(count.current ===0){
-			if(allAssessments.length < employees.length){
-				employees.forEach(async (e)=>{
-					const a = await getAssessments(e)
-					 setAllAssessments(current => [...current, a]) 
-					})
-					count.current=1
-			}
-			
-		}
-		filteredAllAssessment.current = allAssessments.filter(e=>e.length!==0)
-		// filteredAllAssessment.current = filteredAllAssessment.current.filter
-		filteredAllAssessment.current = filteredAllAssessment.current.filter(ev=>{
-			if(	ev[0].agilityRemark==='Negative' || 
-				ev[0].efficiencyRemark ==='Negative' || 
-				ev[0].functionalComponentsRemark ==='Negative'  ||
-				ev[0].innovationRemark ==='Negative' ||
-				ev[0].integrityRemark ==='Negative' ||
-				ev[0].performanceRemark ==='Negative' ||
-				ev[0].qualityRemark ==='Negative')
-				{
-					return ev
-				}
-			})
-			{filteredAllAssessment.current.forEach(ev=>{
-				{activeEmployees.map((e) => {
-					if(Number(e.id) == Number(ev[0].employeeId)){
-						if(!filteredEmployees.some(e=> e.id==ev[0].employeeId))
-							setFilteredEmployees(current => [...current, e])
-					}
-				})}
-			})}
-			console.log(filteredEmployees)
-			// console.log(allAssessments)
-			// console.log(count.current)
-			// console.log(allAssessments)
-		}, [assessment, allAssessments, filteredEmployees,employees]);
-		return (
-			<MainLayout>
-			<div>
+		console.log(filteredEmployees);
+		// console.log(allAssessments)
+		// console.log(count.current)
+		// console.log(allAssessments)
+	}, [assessment, allAssessments, filteredEmployees, employees]);
+	return (
+		<MainLayout>
+			<div className="">
 				<div className="mb-20">
-					<h1 className="text-5xl font-semibold">Assess Employees</h1>
-					<h1 className="text-xl text-gray-400 ">
+					<h1 className="text-2xl font-semibold mt-10">Assess Employees</h1>
+					<h1 className="text text-gray-400 ">
 						Evaluate Alliance Software Inc. employees
 					</h1>
 				</div>
 				<Tabs variant="enclosed" colorScheme={"red"}>
 					<TabList>
 						<Tab selected={{ color: "#E0585B, " }}>Evaluate</Tab>
-						<Tab>In Need of Training <span className="rounded-full transition-all bg-gray-200 w-6 h-6 ml-2 dark:bg-[#464646]">{filteredEmployees.length}</span></Tab>
+						<Tab>
+							In Need of Training{" "}
+							<span className="rounded-full transition-all bg-gray-200 w-6 h-6 ml-2 dark:bg-[#464646]">
+								{filteredEmployees.length}
+							</span>
+						</Tab>
 						<Tab></Tab>
 					</TabList>
 					<TabPanels>
@@ -279,7 +367,7 @@ const Assess = () => {
 						</TabPanel>
 						<TabPanel width={"65%"}>
 							<div className="flex flex-row flex-wrap gap-1 w-[30rem]">
-								{filteredEmployees.map(e=>{
+								{filteredEmployees.map((e) => {
 									return (
 										<EmployeeTrainingItem
 											setAssessment={setAssessment}
@@ -289,7 +377,6 @@ const Assess = () => {
 										/>
 									);
 								})}
-								
 							</div>
 							<div className="fixed top-0 right-0 bg-gray-50 p h-full w-[40rem] overflow-y-scroll dark:bg-[#1a1a1a]">
 								<div className="">
@@ -314,7 +401,9 @@ const Assess = () => {
 												<h1 className=" font-bold text-xl dark:text-black">
 													{active.firstName} {active.lastName}
 												</h1>
-												<h2 className="dark:text-black">{active.positionApplied}</h2>
+												<h2 className="dark:text-black">
+													{active.positionApplied}
+												</h2>
 											</div>
 											<h1 className="font-bold text-2xl">Evaluate Results</h1>
 											<Tabs variant={"unstyled"}>
@@ -352,19 +441,32 @@ const Assess = () => {
 														<Radar data={data2} />
 													</TabPanel>
 													<TabPanel className="bg-white dark:bg-[#b4b4b4] rounded-md">
-													<Radar data={data3} />
+														<Radar data={data3} />
 													</TabPanel>
 												</TabPanels>
 											</Tabs>
 											<div className="flex flex-col gap-5">
-												{trainings.map(e=>{
-													if(assessment[0]!==undefined){
-														if(e.aspects == assessment[0].trainingAssessment){
-															if(e.category === active.positionApplied){
-																return(
-																	<div className="relative">
-																		<h1 className=" font-bold mt-3 ">Recommended Training</h1>
-																		<div className="absolute w-full z-50 flex justify-center items-center transition-all hover:bg-white h-[8.2rem] rounded-lg hover:text-black text-transparent">Recommend this training &nbsp;<BsArrowRight/></div>
+												{trainings.map((e) => {
+													if (assessment[0] !== undefined) {
+														if (e.aspects == assessment[0].trainingAssessment) {
+															if (e.category === active.positionApplied) {
+																return (
+																	<div
+																		onClick={() => {
+																			addTraining(
+																				assessment[0].employeeId,
+																				e.id
+																			);
+																		}}
+																		className="relative  rounded-lg py-10 overflow-hidden"
+																	>
+																		<h1 className=" font-bold my-3 ">
+																			Recommended Training
+																		</h1>
+																		<div className="absolute w-full z-50 flex justify-center items-center transition-all hover:bg-white cursor-pointer h-[8.2rem] rounded-lg hover:text-black text-transparent">
+																			Recommend this training &nbsp;
+																			<BsArrowRight />
+																		</div>
 																		<div className="flex flex-row dark:border-2 gap-10 items-center justify-end shadow-lg dark:border-white rounded-lg">
 																			<div>
 																				<h1 className="font-bold">{e.name}</h1>
@@ -374,19 +476,27 @@ const Assess = () => {
 																				<img
 																					src={
 																						e.imageSrc &&
-																						(e.imageSrc.split("/")[5].includes("jpeg") ||
-																							e.imageSrc.split("/")[5].includes("png") ||
-																							e.imageSrc.split("/")[5].includes("svg") ||
-																							e.imageSrc.split("/")[5].includes("jpg"))
+																						(e.imageSrc
+																							.split("/")[5]
+																							.includes("jpeg") ||
+																							e.imageSrc
+																								.split("/")[5]
+																								.includes("png") ||
+																							e.imageSrc
+																								.split("/")[5]
+																								.includes("svg") ||
+																							e.imageSrc
+																								.split("/")[5]
+																								.includes("jpg"))
 																							? e.imageSrc
 																							: def
 																					}
 																					className={`object-cover bg-white`}
 																				></img>
-																				</div>
+																			</div>
 																		</div>
 																	</div>
-																)
+																);
 															}
 														}
 													}

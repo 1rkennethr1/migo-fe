@@ -13,7 +13,7 @@ const Dashboard = () => {
 			<div className="flex flex-col w-full">
 				<div className="mb-20">
 					{jwt && (
-						<h1 className="text-5xl font-semibold">
+						<h1 className="text-2xl font-semibold">
 							Welcome back, {jwt.name}!
 						</h1>
 					)}
