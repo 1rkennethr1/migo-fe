@@ -446,7 +446,7 @@ const Assess = () => {
 												</TabPanels>
 											</Tabs>
 											<div className="flex flex-col gap-5">
-												{trainings.map((e) => {
+												{trainings.map((e,i) => {
 													if (assessment[0] !== undefined) {
 														if (e.aspects == assessment[0].trainingAssessment) {
 															if (e.category === active.positionApplied) {
@@ -468,11 +468,11 @@ const Assess = () => {
 																			<BsArrowRight />
 																		</div>
 																		<div className="flex flex-row dark:border-2 gap-10 items-center justify-end shadow-lg dark:border-white rounded-lg">
-																			<div>
+																			<div className="pl-5">
 																				<h1 className="font-bold">{e.name}</h1>
 																				<h1 className="italic">{e.url}</h1>
 																			</div>
-																			<div className="overflow-hidden flex justify-end w-56 h-32">
+																			<div className="overflow-hidden flex rounded-t-md rounded-b-md justify-end w-56 h-32">
 																				<img
 																					src={
 																						e.imageSrc &&
