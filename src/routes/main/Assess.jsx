@@ -14,6 +14,7 @@ import {
 	TabPanels,
 	Tab,
 	TabPanel,
+	useToast,
 } from "@chakra-ui/react";
 import {
 	Chart as ChartJS,
@@ -34,6 +35,7 @@ import def from "../../assets/default.png";
 import { useRef } from "react";
 import { MdEmojiObjects } from "react-icons/md";
 import { json } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 ChartJS.register(
 	RadialLinearScale,
@@ -82,10 +84,10 @@ const Assess = () => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: {
+			body: JSON.stringify({
 				employeeId: empId,
 				trainingId: trainingId,
-			},
+			}),
 		});
 		const data = await res.json();
 		console.log(data);
@@ -324,6 +326,7 @@ const Assess = () => {
 	}, [assessment, allAssessments, filteredEmployees, employees]);
 	return (
 		<MainLayout>
+			<Toaster position="bottom-center" />
 			<div className="">
 				<div className="mb-20">
 					<h1 className="text-2xl font-semibold mt-10">Assess Employees</h1>
@@ -457,6 +460,7 @@ const Assess = () => {
 																				assessment[0].employeeId,
 																				e.id
 																			);
+																			toast.success("Training Added");
 																		}}
 																		className="relative  rounded-lg py-10 overflow-hidden"
 																	>
