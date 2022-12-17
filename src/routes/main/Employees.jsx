@@ -77,8 +77,8 @@ const Employees = () => {
 				}}
 			>
 				<div className="flex flex-col px-10 w-full ">
-					<div className="flex flex-row gap-3 h-[15%] w-[60%] self-center	  justify-center rounded-lg shadow-lg dark:shadow-none dark:bg-[#1a1a1a] p-5 mb-10 mt-5">
-						<div className="flex gap-10  bg-[#E0585B] w-[80%] p-8 rounded-lg items-center justify-center">
+					<div className="flex flex-row gap-3 h-[15%] w-[60%]   justify-center rounded-lg shadow-lg dark:shadow-none dark:bg-[#1a1a1a] p-5 mb-10 mt-5">
+						<div className="flex gap-10  bg-[#E0585B] w-[90%] p-8 rounded-lg items-center justify-center">
 							<div>
 								<BsPeopleFill size={25} color="white" />
 							</div>
@@ -89,7 +89,7 @@ const Employees = () => {
 								</div>
 							</div>
 						</div>
-						<div className="flex gap-10  bg-[#ddad1d] w-[80%] p-8 rounded-lg items-center justify-center">
+						<div className="flex gap-10  bg-[#ddad1d] w-[90%] p-8 rounded-lg items-center justify-center">
 							<div>
 								<BsPeopleFill size={25} color="white" />
 							</div>
@@ -100,7 +100,7 @@ const Employees = () => {
 								</div>
 							</div>
 						</div>
-						<div className="flex gap-10 bg-[#FF9549] w-[80%] p-8 rounded-lg items-center justify-center">
+						<div className="flex gap-10 bg-[#FF9549] w-[90%] p-8 rounded-lg items-center justify-center">
 							<div>
 								<BsPeopleFill size={25} color="white" />
 							</div>
